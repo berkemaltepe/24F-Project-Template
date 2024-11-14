@@ -35,6 +35,7 @@ def create_app():
     app.logger.info('current_app(): starting the database connection')
     db.init_app(app)
 
+    # IGNORE TILL HERE !!!!!!!!!!!!!!!!
 
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each

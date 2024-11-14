@@ -7,7 +7,7 @@ import streamlit as st
 
 #### ------------------------ General ------------------------
 def HomeNav():
-    st.sidebar.page_link("Home.py", label="Home", icon="🏠")
+    st.sidebar.page_link("Home.py", label="Home Page", icon="🏠")
 
 
 def AboutPageNav():
