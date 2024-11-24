@@ -34,15 +34,15 @@ SideBarLinks(show_home=True)
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.title('NU SkillMatch')
+st.title('Welcome to NU SkillMatch')
 st.write('\n\n')
-st.write('### Choose a user to log in as:')
+st.write('## Select a user: ')
 
 # For each of the user personas for which we are implementing
 # functionality, we put a button on the screen that the user 
 # can click to MIMIC logging in as that mock user. 
 
-if st.button("Act as John, a Political Strategy Advisor", 
+if st.button("Act as Yuta, a Student", 
             type = 'primary', 
             use_container_width=True):
     # when user clicks the button, they are now considered authenticated
@@ -57,7 +57,7 @@ if st.button("Act as John, a Political Strategy Advisor",
     logger.info("Logging in as Political Strategy Advisor Persona")
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
-if st.button('Act as Mohammad, an USAID worker', 
+if st.button('Act as Colin, an Department Head', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
@@ -65,13 +65,22 @@ if st.button('Act as Mohammad, an USAID worker',
     st.session_state['first_name'] = 'Mohammad'
     st.switch_page('pages/10_USAID_Worker_Home.py')
 
-if st.button('Act as System Administrator', 
+if st.button('Act as Nick, Employer', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
     st.switch_page('pages/20_Admin_Home.py')
+
+if st.button("Act as Berke, a Co-op Advisor", 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'pol_strat_advisor'
+    st.session_state['first_name'] = 'John'
+    logger.info("Logging in as Co-Op Advisor")
+    st.switch_page('pages/00_Pol_Strat_Home.py')
 
 
 
