@@ -57,14 +57,14 @@ if st.button("Act as Yuta, a Student",
     logger.info("Logging in as Political Strategy Advisor Persona")
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
-# (Nick) currently working on
+# (Nick) currently working on pls don't change
 if st.button('Act as Nick, an Employer', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'usaid_worker'
     st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/10_USAID_Worker_Home.py')
+    st.switch_page('pages/Emp_Home_Page.py')
 
 if st.button('Act as Lea, System Admin', 
             type = 'primary', 
