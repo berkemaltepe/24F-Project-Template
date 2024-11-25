@@ -122,3 +122,4 @@ CREATE TABLE IF NOT EXISTS Job_Skill (
             ON DELETE cascade
 );
 
+
