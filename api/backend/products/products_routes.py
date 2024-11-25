@@ -30,6 +30,12 @@ def handle_students():
         cursor.get_db().cursor()
         # use cursor to exectute query
         cursor.execute(query)
+        # fetch all the data from the cursor
+        theData = cursor.fetchall()
+        # reate a HTTP Response object and add results of the query to it
+        response = make_response(jsonify(theData))
+        # send the response back
+        return response
     query = '''
         SELECT  id, 
                 product_code, 
