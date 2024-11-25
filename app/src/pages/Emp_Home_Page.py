@@ -9,17 +9,17 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.title(f"Welcome Nick, {st.session_state['first_name']}.")
+st.title(f"Welcome to the Employer Home Page, {st.session_state['first_name']}.")
 st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Predict Value Based on Regression Model', 
+if st.button('View Your Job Listings (Currently prediction page temp)', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/11_Prediction.py')
 
-if st.button('View the Simple API Demo', 
+if st.button('View a list of your matched candidates (Currently Simple API Demo temp)', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/12_API_Test.py')
