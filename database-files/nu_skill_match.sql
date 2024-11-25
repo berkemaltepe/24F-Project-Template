@@ -122,4 +122,11 @@ CREATE TABLE IF NOT EXISTS Job_Skill (
             ON DELETE cascade
 );
 
+INSERT INTO Skill (skill_id, skill_name, skill_type, weight) VALUES
+(1, 'Python', 'Programming', 10),
+(2, 'Data Analysis', 'Skill', 8),
+(3, 'Leadership', 'Soft Skill', 7),
+(4, 'Project Management', 'Soft Skill', 9),
+(5, 'SQL', 'Programming', 10);
+
 
