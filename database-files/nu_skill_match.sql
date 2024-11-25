@@ -129,4 +129,7 @@ INSERT INTO Skill (skill_id, skill_name, skill_type, weight) VALUES
 (4, 'Project Management', 'Soft Skill', 9),
 (5, 'SQL', 'Programming', 10);
 
-
+-- System_Admin Table
+INSERT INTO System_Admin (admin_id, name, email, industry, num_applications) VALUES
+(1, 'Alice Johnson', 'alice.johnson@example.com', 'Tech', 50),
+(2, 'Bob Smith', 'bob.smith@example.com', 'Education', 30);
