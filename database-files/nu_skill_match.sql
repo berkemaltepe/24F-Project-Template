@@ -133,3 +133,9 @@ INSERT INTO Skill (skill_id, skill_name, skill_type, weight) VALUES
 INSERT INTO System_Admin (admin_id, name, email, industry, num_applications) VALUES
 (1, 'Alice Johnson', 'alice.johnson@example.com', 'Tech', 50),
 (2, 'Bob Smith', 'bob.smith@example.com', 'Education', 30);
+
+-- Dpt_Faculty Table
+INSERT INTO Dpt_Faculty (faculty_id, admin_id, name, email, department) VALUES
+(1, 1, 'Dr. Emily Davis', 'emily.davis@example.edu', 'Computer Science'),
+(2, 1, 'Dr. John Lee', 'john.lee@example.edu', 'Information Systems'),
+(3, 2, 'Dr. Clara Oswald', 'clara.oswald@example.edu', 'Mathematics');
