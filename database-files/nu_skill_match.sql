@@ -145,3 +145,9 @@ INSERT INTO Advisor (advisor_id, admin_id, name, email, department) VALUES
 (1, 1, 'Mark Brown', 'mark.brown@example.edu', 'Engineering'),
 (2, 2, 'Linda White', 'linda.white@example.edu', 'Business'),
 (3, 1, 'Nancy Green', 'nancy.green@example.edu', 'Science');
+
+-- Employer Table
+INSERT INTO Employer (emp_id, admin_id, name, email, industry, num_applications) VALUES
+(1, 1, 'TechCorp', 'hr@techcorp.com', 'Technology', 25),
+(2, 2, 'EduWorld', 'contact@eduworld.com', 'Education', 15),
+(3, 1, 'MediCare', 'jobs@medicare.com', 'Healthcare', 10);
