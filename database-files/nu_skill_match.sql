@@ -139,3 +139,9 @@ INSERT INTO Dpt_Faculty (faculty_id, admin_id, name, email, department) VALUES
 (1, 1, 'Dr. Emily Davis', 'emily.davis@example.edu', 'Computer Science'),
 (2, 1, 'Dr. John Lee', 'john.lee@example.edu', 'Information Systems'),
 (3, 2, 'Dr. Clara Oswald', 'clara.oswald@example.edu', 'Mathematics');
+
+-- Advisor Table
+INSERT INTO Advisor (advisor_id, admin_id, name, email, department) VALUES
+(1, 1, 'Mark Brown', 'mark.brown@example.edu', 'Engineering'),
+(2, 2, 'Linda White', 'linda.white@example.edu', 'Business'),
+(3, 1, 'Nancy Green', 'nancy.green@example.edu', 'Science');
