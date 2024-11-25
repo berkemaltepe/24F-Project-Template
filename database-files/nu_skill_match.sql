@@ -151,3 +151,31 @@ INSERT INTO Employer (emp_id, admin_id, name, email, industry, num_applications)
 (1, 1, 'TechCorp', 'hr@techcorp.com', 'Technology', 25),
 (2, 2, 'EduWorld', 'contact@eduworld.com', 'Education', 15),
 (3, 1, 'MediCare', 'jobs@medicare.com', 'Healthcare', 10);
+
+-- Student Table
+INSERT INTO Student (student_id, name, email, location, major, coop_status, resume, level, linkedin_profile, gpa, advisor_id, admin_id) VALUES
+(1, 'Jane Doe', 'jane.doe@example.com', 'New York', 'Computer Science', 'Seeking', 'Resume Link 1', 'Junior', 'linkedin.com/janedoe', 3.8, 1, 1),
+(2, 'John Smith', 'john.smith@example.com', 'Los Angeles', 'Information Systems', 'Co-op', 'Resume Link 2', 'Senior', 'linkedin.com/johnsmith', 3.6, 2, 1),
+(3, 'Sara Connor', 'sara.connor@example.com', 'Chicago', 'Engineering', 'Seeking', 'Resume Link 3', 'Sophomore', 'linkedin.com/saraconnor', 3.7, 1, 2);
+
+-- Student_Skill Table
+INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
+(1, 1, 5),
+(2, 1, 4),
+(3, 2, 3),
+(4, 2, 4),
+(5, 3, 5);
+
+-- Job Table
+INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, date_posted, status) VALUES
+(1, 'Software Engineer', 1, 'Develop software applications.', 'Remote', '70k-90k', '2024-11-01', 'Open'),
+(2, 'Data Analyst', 2, 'Analyze data and generate insights.', 'Los Angeles', '60k-80k', '2024-11-02', 'Open'),
+(3, 'Project Manager', 3, 'Manage projects and teams.', 'Chicago', '80k-100k', '2024-11-03', 'Open');
+
+-- Job_Skill Table
+INSERT INTO Job_Skill (skill_id, job_id, weight) VALUES
+(1, 1, 5),
+(2, 1, 4),
+(3, 2, 3),
+(4, 3, 4),
+(5, 3, 5);
