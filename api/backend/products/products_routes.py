@@ -13,13 +13,23 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-products = Blueprint('products', __name__)
+advisors = Blueprint('advisors', __name__)
 
 #------------------------------------------------------------
 # Get all the products from the database, package them up,
 # and return them to the client
-@products.route('/products', methods=['GET'])
-def get_products():
+@advisors.route('/advisors/students/', methods=['GET', 'POST', 'DELETE'])
+def handle_students():
+    if request.method == 'GET':
+        # get all students
+        query = '''
+            SELECT *
+            FROM Students
+        '''
+        # cursor object from the database
+        cursor.get_db().cursor()
+        # use cursor to exectute query
+        cursor.execute(query)
     query = '''
         SELECT  id, 
                 product_code, 
