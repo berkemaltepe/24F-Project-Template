@@ -18,24 +18,8 @@ advisors = Blueprint('advisors', __name__)
 #------------------------------------------------------------
 # Get all the products from the database, package them up,
 # and return them to the client
-@advisors.route('/advisors/students/', methods=['GET', 'POST', 'DELETE'])
-def handle_students():
-    if request.method == 'GET':
-        # get all students
-        query = '''
-            SELECT *
-            FROM Students
-        '''
-        # cursor object from the database
-        cursor.get_db().cursor()
-        # use cursor to exectute query
-        cursor.execute(query)
-        # fetch all the data from the cursor
-        theData = cursor.fetchall()
-        # reate a HTTP Response object and add results of the query to it
-        response = make_response(jsonify(theData))
-        # send the response back
-        return response
+@products.route('/products', methods=['GET'])
+def get_products():
     query = '''
         SELECT  id, 
                 product_code, 
