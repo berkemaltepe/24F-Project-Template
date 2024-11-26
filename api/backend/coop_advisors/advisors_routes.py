@@ -62,3 +62,5 @@ def delete_student():
     student_id = data.get('student_id')
     # SQL query to delete a student record by ID
     query = f"DELETE FROM students WHERE id = {student_id}"
+    # execute the query and commit the changes to the database
+    cursor = db.get_db().cursor()
