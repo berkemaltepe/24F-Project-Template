@@ -17,8 +17,7 @@ from backend.db_connection import db
 advisors = Blueprint('advisors', __name__)
 
 #------------------------------------------------------------
-# Get all the products from the database, package them up,
-# and return them to the client
+# Get all students from the database
 @advisors.route('/students/', methods=['GET'])
 def get_students():
     # get all students
@@ -32,8 +31,24 @@ def get_students():
     cursor.execute(query)
     # fetch all the data from the cursor
     theData = cursor.fetchall()
-    # reate a HTTP Response object and add results of the query to it
+    # create a HTTP Response object and add results of the query to it
     response = make_response(jsonify(theData))
     # send the response back
     return response
 
+# Add new students to the database
+@advisors.route('/students/', methods=['POST'])
+def get_students():
+    # get the request JSON data
+    theData = request.json
+    # extract student details from the JSON payload
+    name = data.get('name')
+    age = data.get('age')
+    # query to insert a new student record
+    query = f"INSERT INTO students (name, age) VALUES ('{name}', {age})"
+    # execute the query and commit the changes to the database
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    # return a success message with a 201 HTTP status code
+    return make_response("Student added successfully.", 201)
