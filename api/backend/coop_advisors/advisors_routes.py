@@ -66,3 +66,5 @@ def delete_student():
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
+    # return a success message with a 200 HTTP status code
+    return make_response("Student removed successfully.", 200)
