@@ -58,3 +58,7 @@ def get_students():
 def delete_student():
     # get the request JSON data
     data = request.json
+    # extract the student ID from the JSON payload
+    student_id = data.get('student_id')
+    # SQL query to delete a student record by ID
+    query = f"DELETE FROM students WHERE id = {student_id}"
