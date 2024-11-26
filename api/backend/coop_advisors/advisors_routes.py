@@ -19,7 +19,7 @@ advisors = Blueprint('advisors', __name__)
 #------------------------------------------------------------
 # Get all the products from the database, package them up,
 # and return them to the client
-@advisors.route('/advisors/students/', methods=['GET'])
+@advisors.route('/students/', methods=['GET'])
 def get_students():
     # get all students
     query = '''
@@ -36,3 +36,4 @@ def get_students():
     response = make_response(jsonify(theData))
     # send the response back
     return response
+
