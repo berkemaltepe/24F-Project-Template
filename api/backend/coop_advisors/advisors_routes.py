@@ -65,3 +65,4 @@ def delete_student():
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
+    db.get_db().commit()
