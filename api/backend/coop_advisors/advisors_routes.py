@@ -55,3 +55,6 @@ def get_students():
 
 # Remove a student from the database
 @routes.route('/student/', methods=['DELETE'])
+def delete_student():
+    # get the request JSON data
+    data = request.json
