@@ -52,3 +52,6 @@ def get_students():
     db.get_db().commit()
     # return a success message with a 201 HTTP status code
     return make_response("Student added successfully.", 201)
+
+# Remove a student from the database
+@routes.route('/student/', methods=['DELETE'])
