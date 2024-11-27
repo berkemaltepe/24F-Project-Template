@@ -112,6 +112,7 @@ def get_student_skills(student_id):
     # return the results as JSON with a 200 HTTP status code
     return make_response(jsonify(skills), 200)
 
+#------------------------------------------------------------
 # Get all employers
 @advisors.route('/employer/', methods=['GET'])
 def get_employers():
