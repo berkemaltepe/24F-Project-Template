@@ -42,8 +42,8 @@ def get_students():
     # get the request JSON data
     theData = request.json
     # extract student details from the JSON payload
-    name = data.get('name')
-    age = data.get('age')
+    name = theData.get('name')
+    age = theData.get('age')
     # query to insert a new student record
     query = f"INSERT INTO students (name, age) VALUES ('{name}', {age})"
     # execute the query and commit the changes to the database
@@ -54,7 +54,7 @@ def get_students():
     return make_response("Student added successfully.", 201)
 
 # Remove a student from the database
-@routes.route('/student/', methods=['DELETE'])
+@advisors.route('/student/', methods=['DELETE'])
 def delete_student():
     # get the request JSON data
     data = request.json
@@ -68,3 +68,6 @@ def delete_student():
     db.get_db().commit()
     # return a success message with a 200 HTTP status code
     return make_response("Student removed successfully.", 200)
+
+# View a student's profile
+@advisors.route('/student/<int:student_id>', methods=['GET'])
