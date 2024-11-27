@@ -123,4 +123,7 @@ def get_employers():
     # return the results as JSON with a 200 HTTP status code
     return make_response(jsonify(employers), 200)
 
+# View a job posting
+@advisors.route('/job/<int:job_id>', methods=['GET'])
+
 
