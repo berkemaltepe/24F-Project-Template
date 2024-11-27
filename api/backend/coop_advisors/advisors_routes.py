@@ -127,4 +127,8 @@ def get_employers():
 @advisors.route('/job/<int:job_id>', methods=['GET'])
 def get_job_posting(job_id):
     # SQL query to fetch a job record by ID
-
+    query = f'''
+        SELECT * 
+        FROM jobs 
+        WHERE id = {job_id}
+    '''
