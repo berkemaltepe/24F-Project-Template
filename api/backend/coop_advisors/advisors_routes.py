@@ -142,3 +142,4 @@ def get_job_posting(job_id):
     cursor = db.get_db().cursor()
     cursor.execute(query)
     job = cursor.fetchone()
+    # return the result as JSON with a 200 HTTP status code
