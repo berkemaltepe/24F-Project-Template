@@ -139,3 +139,4 @@ def get_job_posting(job_id):
         WHERE id = {job_id}
     '''
     # execute the query and fetch the result
+    cursor = db.get_db().cursor()
