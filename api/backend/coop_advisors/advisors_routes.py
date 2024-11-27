@@ -93,3 +93,21 @@ def get_student_profile(student_id):
 
 # View a student's skills
 @advisors.route('/student/<int:student_id>/skills', methods=['GET'])
+def get_student_skills(student_id):
+    # SQL query to fetch skills for a specific student
+    query = f"""
+        SELECT skills.name 
+        FROM student_skills 
+        JOIN skills ON student_skills.skill_id = skills.id 
+        WHERE student_skills.student_id = {student_id}
+    """
+    # execute the query and fetch the results
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    skills = cursor.fetchall()
+    
+
+
+
+
+
