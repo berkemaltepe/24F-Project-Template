@@ -48,7 +48,7 @@ def get_students():
     query = f'''
         INSERT INTO students (name, age) 
         VALUES ('{name}', {age})
-        '''
+    '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
