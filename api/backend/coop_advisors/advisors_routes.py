@@ -116,5 +116,6 @@ def get_employers():
         SELECT * 
         FROM employers
         '''
+    # execute the query and fetch the results
 
 
