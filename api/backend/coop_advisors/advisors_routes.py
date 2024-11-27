@@ -143,3 +143,4 @@ def get_job_posting(job_id):
     cursor.execute(query)
     job = cursor.fetchone()
     # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(job), 200)
