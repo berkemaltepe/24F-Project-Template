@@ -138,3 +138,4 @@ def get_job_posting(job_id):
         FROM jobs 
         WHERE id = {job_id}
     '''
+    # execute the query and fetch the result
