@@ -24,7 +24,7 @@ def get_students():
     query = '''
         SELECT *
         FROM Students
-    '''
+        '''
     # cursor object from the database
     cursor.get_db().cursor()
     # use cursor to exectute query
@@ -46,9 +46,9 @@ def get_students():
     age = theData.get('age')
     # query to insert a new student record
     query = f'''
-    INSERT INTO students (name, age) 
-    VALUES ('{name}', {age})
-    '''
+        INSERT INTO students (name, age) 
+        VALUES ('{name}', {age})
+        '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -65,9 +65,9 @@ def delete_student():
     student_id = data.get('student_id')
     # SQL query to delete a student record by ID
     query = f'''
-    DELETE FROM students 
-    WHERE id = {student_id}
-    '''
+        DELETE FROM students 
+        WHERE id = {student_id}
+        '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -80,10 +80,10 @@ def delete_student():
 def get_student_profile(student_id):
     # SQL query to fetch a student record by ID
     query = f'''
-    SELECT * 
-    FROM students 
-    WHERE id = {student_id}
-    '''
+        SELECT * 
+        FROM students 
+        WHERE id = {student_id}
+        '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -95,12 +95,12 @@ def get_student_profile(student_id):
 @advisors.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
     # SQL query to fetch skills for a specific student
-    query = f"""
+    query = f'''
         SELECT skills.name 
         FROM student_skills 
         JOIN skills ON student_skills.skill_id = skills.id 
         WHERE student_skills.student_id = {student_id}
-    """
+        '''
     # execute the query and fetch the results
     cursor = db.get_db().cursor()
     cursor.execute(query)
