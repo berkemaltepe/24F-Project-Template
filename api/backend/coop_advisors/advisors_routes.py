@@ -100,7 +100,7 @@ def get_student_skills(student_id):
         FROM student_skills 
         JOIN skills ON student_skills.skill_id = skills.id 
         WHERE student_skills.student_id = {student_id}
-        '''
+    '''
     # execute the query and fetch the results
     cursor = db.get_db().cursor()
     cursor.execute(query)
