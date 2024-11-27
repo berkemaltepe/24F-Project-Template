@@ -94,6 +94,7 @@ def get_student_profile(student_id):
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(student), 200)
 
+#------------------------------------------------------------
 # View a student's skills
 @advisors.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
