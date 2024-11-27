@@ -120,5 +120,6 @@ def get_employers():
     cursor = db.get_db().cursor()
     cursor.execute(query)
     employers = cursor.fetchall()
+    # return the results as JSON with a 200 HTTP status code
 
 
