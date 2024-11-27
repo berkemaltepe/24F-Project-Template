@@ -121,5 +121,6 @@ def get_employers():
     cursor.execute(query)
     employers = cursor.fetchall()
     # return the results as JSON with a 200 HTTP status code
+    return make_response(jsonify(employers), 200)
 
 
