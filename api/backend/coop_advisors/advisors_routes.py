@@ -57,6 +57,7 @@ def get_students():
     # return a success message with a 201 HTTP status code
     return make_response("Student added successfully.", 201)
 
+#------------------------------------------------------------
 # Remove a student from the database
 @advisors.route('/student/', methods=['DELETE'])
 def delete_student():
