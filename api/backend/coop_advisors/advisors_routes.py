@@ -83,7 +83,7 @@ def get_student_profile(student_id):
         SELECT * 
         FROM students 
         WHERE id = {student_id}
-        '''
+    '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
