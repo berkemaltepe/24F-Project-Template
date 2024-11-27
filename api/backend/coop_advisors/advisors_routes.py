@@ -111,6 +111,7 @@ def get_student_skills(student_id):
 # Get all employers
 @advisors.route('/employer/', methods=['GET'])
 def get_employers():
-    
+    # SQL query to fetch all employers
+    query = "SELECT * FROM employers"
 
 
