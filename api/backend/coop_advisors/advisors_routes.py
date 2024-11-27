@@ -1,8 +1,8 @@
 
-########################################################
-# Sample customers blueprint of endpoints
-# Remove this file if you are not using it in your project
-########################################################
+############################################################
+# PERSONA: CO-OP ADVISOR
+# This file goes over the routes required for co-op advisors
+############################################################
 
 from flask import Blueprint
 from flask import request
