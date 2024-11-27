@@ -24,7 +24,7 @@ def get_students():
     query = '''
         SELECT *
         FROM Students
-        '''
+       '''
     # cursor object from the database
     cursor.get_db().cursor()
     # use cursor to exectute query
