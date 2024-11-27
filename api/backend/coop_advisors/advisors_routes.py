@@ -77,4 +77,6 @@ def get_student_profile(student_id):
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    db.get_db().commit()
+    student = cursor.fetchone()
+    # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(student), 200)
