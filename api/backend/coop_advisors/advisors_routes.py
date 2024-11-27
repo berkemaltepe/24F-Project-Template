@@ -115,7 +115,7 @@ def get_employers():
     query = '''
         SELECT * 
         FROM employers
-        '''
+    '''
     # execute the query and fetch the results
     cursor = db.get_db().cursor()
     cursor.execute(query)
