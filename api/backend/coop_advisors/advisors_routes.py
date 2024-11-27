@@ -72,4 +72,9 @@ def delete_student():
 # View a student's profile
 @advisors.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
-    
+    # SQL query to fetch a student record by ID
+    query = f"SELECT * FROM students WHERE id = {student_id}"
+    # execute the query and commit the changes to the database
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
