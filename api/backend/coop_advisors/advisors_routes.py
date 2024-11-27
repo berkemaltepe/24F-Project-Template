@@ -45,7 +45,10 @@ def get_students():
     name = theData.get('name')
     age = theData.get('age')
     # query to insert a new student record
-    query = f"INSERT INTO students (name, age) VALUES ('{name}', {age})"
+    query = f'''
+    INSERT INTO students (name, age) 
+    VALUES ('{name}', {age})
+    '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -61,7 +64,10 @@ def delete_student():
     # extract the student ID from the JSON payload
     student_id = data.get('student_id')
     # SQL query to delete a student record by ID
-    query = f"DELETE FROM students WHERE id = {student_id}"
+    query = f'''
+    DELETE FROM students 
+    WHERE id = {student_id}
+    '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -73,10 +79,16 @@ def delete_student():
 @advisors.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
     # SQL query to fetch a student record by ID
-    query = f"SELECT * FROM students WHERE id = {student_id}"
+    query = f'''
+    SELECT * 
+    FROM students 
+    WHERE id = {student_id}
+    '''
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
     student = cursor.fetchone()
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(student), 200)
+
+# View a student's skills
