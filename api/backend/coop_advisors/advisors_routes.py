@@ -77,6 +77,7 @@ def delete_student():
     # return a success message with a 200 HTTP status code
     return make_response("Student removed successfully.", 200)
 
+#------------------------------------------------------------
 # View a student's profile
 @advisors.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
