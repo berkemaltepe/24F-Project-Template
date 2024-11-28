@@ -37,8 +37,8 @@ def get_skill_gap(student_id, job_id):
         JOIN Student s
             ON ss.student_id = s.student_id
         WHERE
-            s.student_id = {str(student_id)}
-            and j.job_id = {str(job_id)}
+            s.student_id = {student_id}
+            and j.job_id = {job_id}
         GROUP BY
             j.job_id, s.student_id;
     '''
@@ -106,6 +106,47 @@ def get_student(student_id):
     current_app.logger.info(f'GET /student/<student_id>/ Result of query = {theData}')
     
     response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Update student profile
+@students.route('/student/<student_id>/', methods=['PUT'])
+def update_student(student_id):
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    name = the_data['name']
+    email = the_data['email']
+    location = the_data['location']
+    major = the_data['major']
+    coop_status = the_data['coop_status']
+    resume = the_data['resume']
+    level = the_data['level']
+    linkedin_profile = the_data['linkedin_profile']
+    gpa = the_data['gpa']
+    
+    query = f'''
+        UPDATE Student
+        SET name = '{name}',
+            email = '{email}',
+            location = '{location}',
+            major = '{major}',
+            coop_status = '{coop_status}',
+            resume = '{resume}',
+            level = '{level}',
+            linkedin_profile = '{linkedin_profile}',
+            gpa = {gpa}
+        WHERE student_id = {student_id};
+    '''
+
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully updated product")
     response.status_code = 200
     return response
 
