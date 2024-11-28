@@ -1,5 +1,5 @@
+DROP SCHEMA IF EXISTS skillmatch;
 CREATE DATABASE skillmatch;
-
 USE skillmatch;
 
 CREATE TABLE IF NOT EXISTS Skill (
