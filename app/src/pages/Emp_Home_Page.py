@@ -18,7 +18,7 @@ st.write('### What would you like to do today?')
 if st.button('View Your Job Listings (Currently prediction page temp)', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/11_Prediction.py')
+  st.switch_page('pages/emp1_tests.py')
 
 if st.button('View a list of your matched candidates (Currently Simple API Demo temp)', 
              type='primary',
@@ -29,3 +29,4 @@ if st.button("View Classification Demo",
              type='primary',
              use_container_width=True):
   st.switch_page('pages/13_Classification.py')
+
