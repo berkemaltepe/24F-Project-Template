@@ -56,7 +56,7 @@ def get_skill_gap(student_id, job_id):
     return response
 
 #------------------------------------------------------------
-# 
+# Compare student skills to job skills
 @students.route('/<student_id>/job/<job_id>/skills', methods=['GET'])
 def get_job_skill_comparison(student_id, job_id):
     query = f'''
@@ -86,3 +86,26 @@ def get_job_skill_comparison(student_id, job_id):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Get student information
+@students.route('/student/<student_id>/', methods=['GET'])
+def get_student(student_id):
+    query = f'''
+        SELECT *
+        FROM Student
+        WHERE student_id = {student_id};
+    '''
+
+    current_app.logger.info(f'GET /student/<student_id>/ query={query}')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    current_app.logger.info(f'GET /student/<student_id>/ Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
