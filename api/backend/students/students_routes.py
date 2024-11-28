@@ -54,3 +54,35 @@ def get_skill_gap(student_id, job_id):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# 
+@students.route('/<student_id>/job/<job_id>/skills', methods=['GET'])
+def get_job_skill_comparison(student_id, job_id):
+    query = f'''
+        SELECT
+            sk.skill_id,
+            sk.skill_name,
+            ss.proficiency AS student_proficiency,
+            js.weight AS job_requirement,
+            js.min_proficiency AS job_min_proficiency,
+            (ss.proficiency / js.min_proficiency) * js.weight AS level_of_fit
+        FROM Student_Skill AS ss
+        JOIN Skill AS sk ON ss.skill_id = sk.skill_id
+        LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
+        WHERE
+            ss.student_id = {student_id}
+            and js.job_id = {job_id};
+    '''
+
+    current_app.logger.info(f'GET /<student_id>/job/<job_id>/skill query={query}')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    current_app.logger.info(f'GET /<student_id>/job/<job_id>/skill Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
