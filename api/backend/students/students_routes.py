@@ -192,4 +192,24 @@ def get_best_jobs(student_id):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Get student skills
+@students.route('/student/<student_id>/skill/', methods=['GET'])
+def get_student_skills(student_id):
+    query = f'''
+        SELECT *
+        FROM Student_Skill
+        WHERE student_id = {student_id}
+    '''
+    
+    current_app.logger.info(f'GET /student/<student_id>/skill/ query={query}')
 
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    current_app.logger.info(f'GET /student/<student_id>/skill/ Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
