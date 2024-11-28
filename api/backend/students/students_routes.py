@@ -213,3 +213,29 @@ def get_student_skills(student_id):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# Add student skill
+@students.route('/student/<student_id>/skill/', methods=['POST'])
+def add_student_skill(student_id):
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    skill_id = the_data['skill_id']
+    weight = the_data['weight']
+
+    query = f'''
+        INSERT INTO Student_Skill
+        VALUES({skill_id}, {student_id}, {weight});
+    '''
+
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully added student skill")
+    response.status_code = 200
+    return response
+
