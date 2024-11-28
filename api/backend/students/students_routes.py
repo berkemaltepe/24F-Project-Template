@@ -239,3 +239,29 @@ def add_student_skill(student_id):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Update skill proficiency
+@students.route('/student/<student_id>/skill/', methods=['PUT'])
+def update_student_skill(student_id):
+    the_data = request.json
+    current_app.logger.info(the_data)
+
+    skill_id = the_data['skill_id']
+    weight = the_data['weight']
+
+    query = f'''
+        UPDATE Student_Skill
+        SET weight = {weight}
+        WHERE skill_id = {skill_id}
+        AND student_id = {student_id};
+    '''
+
+    current_app.logger.info(query)
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    
+    response = make_response("Successfully updated student skill")
+    response.status_code = 200
+    return response
