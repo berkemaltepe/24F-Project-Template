@@ -15,12 +15,12 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View Your Job Listings (Currently prediction page temp)', 
+if st.button('View the List of Students in the System', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/emp1_tests.py')
 
-if st.button('View a list of your matched candidates (Currently Simple API Demo temp)', 
+if st.button('View a the Best Matching Candidates (Currently Simple API Demo temp)', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/12_API_Test.py')
