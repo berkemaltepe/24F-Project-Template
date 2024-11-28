@@ -26,7 +26,7 @@ def get_students():
         FROM Students
        '''
     # cursor object from the database
-    cursor.get_db().cursor()
+    cursor = db.get_db().cursor()
     # use cursor to exectute query
     cursor.execute(query)
     # fetch all the data from the cursor
