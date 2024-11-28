@@ -265,3 +265,23 @@ def update_student_skill(student_id):
     response = make_response("Successfully updated student skill")
     response.status_code = 200
     return response
+
+#------------------------------------------------------------
+# View all jobs
+@students.route('/jobs/', methods=['GET'])
+def get_jobs():
+    query = '''
+        SELECT *
+        FROM Job;
+    '''
+    current_app.logger.info(f'GET /jobs/ query={query}')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    current_app.logger.info(f'GET /jobs/ Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
