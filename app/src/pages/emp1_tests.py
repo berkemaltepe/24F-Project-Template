@@ -47,20 +47,48 @@ if st.button("Fetch Students"):
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
-# Example: Test a GET route
-if st.button("Test GET Route"):
-    try:
-        response = requests.get(f"{BASE_URL}/job/1/get_match")
-        st.write("Response Status Code:", response.status_code)
-        st.json(response.json())
-    except Exception as e:
-        st.error(f"Error: {e}")
+student_id = st.text_input("Enter Student ID to Fetch Skills", "")
 
-# add a button to use the values entered into the number field to send to the 
-# prediction function via the REST API
-if st.button('Get Best Matches',
-             type='primary',
-             use_container_width=True):
-  results = requests.get(f'http://api:4000/c/prediction/{var_01}/{var_02}').json()
-  st.dataframe(results)
+# Button to fetch the student's skills
+if st.button("Fetch Student's Skills"):
+    if student_id:
+        try:
+            # Make a GET request to fetch the skills of the given student
+            response = requests.get(f"{BASE_URL}/students/{student_id}/skills")
+            if response.status_code == 200:
+                skills = response.json()
+                if skills:
+                    st.write(f"Skills for Student ID {student_id}:")
+                    for skill in skills:
+                        st.write(f"- Skill: {skill['skill_name']}, Weight: {skill['weight']}")
+                else:
+                    st.info(f"No skills found for Student ID {student_id}.")
+            else:
+                st.error(f"Error {response.status_code}: {response.text}")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+    else:
+        st.error("Please enter a valid Student ID.")
+
+job_id = st.text_input("Enter Job ID to Fetch Skills", "")
+
+if st.button("Fetch Job's Required Skills"):
+    if job_id:
+        try:
+            # Make a GET request to fetch the skills of the given student
+            response = requests.get(f"{BASE_URL}/jobs/{job_id}/skills")
+            if response.status_code == 200:
+                skills = response.json()
+                if skills:
+                    st.write(f"Skills for JOB ID {job_id}:")
+                    for skill in skills:
+                        st.write(f"- Skill: {skill['skill_name']}, Weight: {skill['weight']}")
+                else:
+                    st.info(f"No skills found for Job ID {job_id}.")
+            else:
+                st.error(f"Error {response.status_code}: {response.text}")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+    else:
+        st.error("Please enter a valid Job ID.")
   

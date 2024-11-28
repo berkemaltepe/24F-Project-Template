@@ -57,7 +57,7 @@ def AdminPageNav():
 
 
 # --------------------------------Links Function -----------------------------------------------
-def SideBarLinks(show_home=False):
+def SideBarLinks(show_home=True):
     """
     This function handles adding links to the sidebar of the app based upon the logged-in user's role, which was put in the streamlit session_state object when logging in.
     """

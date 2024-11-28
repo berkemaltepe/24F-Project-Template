@@ -59,12 +59,13 @@ if st.button("Act as Berke, a Student",
     st.switch_page('pages/00_Pol_Strat_Home.py')
 
 # (Nick) currently working on pls don't change
-if st.button('Act as Nick, an Employer', 
+if st.button('Act as Nick, an Employer at Tech Corp', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'employer'
     st.session_state['first_name'] = 'Nick'
+    st.session_state['emp_id'] = 1
     st.switch_page('pages/Emp_Home_Page.py')
 
 if st.button('Act as Yuta, Co-Op Advisor', 

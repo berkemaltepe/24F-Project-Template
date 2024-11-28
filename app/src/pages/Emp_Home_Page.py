@@ -15,18 +15,23 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
+if st.button("View Profile Info",
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/emp_profile.py')
+
 if st.button('View the List of Students in the System', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/emp1_tests.py')
+  st.switch_page('pages/emp_student_list.py')
 
-if st.button('View a the Best Matching Candidates (Currently Simple API Demo temp)', 
+if st.button('Candidate Match Chart and Info', 
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/12_API_Test.py')
+  st.switch_page('pages/emp_skill_match.py')
 
 if st.button("View Classification Demo",
              type='primary',
              use_container_width=True):
-  st.switch_page('pages/13_Classification.py')
+  st.switch_page('pages/emp1_tests.py')
 
