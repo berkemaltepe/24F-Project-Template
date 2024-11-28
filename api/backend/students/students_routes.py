@@ -1,3 +1,9 @@
+
+############################################################
+# PERSONA: STUDENT
+# This file goes over the routes required for students
+############################################################
+
 from flask import Blueprint
 from flask import request
 from flask import jsonify
@@ -7,7 +13,8 @@ from backend.db_connection import db
 
 students = Blueprint('students', __name__)
 
-#Calculate skill gap of student for job
+#------------------------------------------------------------
+# Calculate skill gap of student for job
 @students.route('/<student_id>/job/<job_id>', methods=['GET'])
 def get_skill_gap(student_id, job_id):
     query = f'''
