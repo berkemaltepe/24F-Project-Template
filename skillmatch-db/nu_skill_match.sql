@@ -3,7 +3,7 @@ CREATE DATABASE skillmatch;
 USE skillmatch;
 
 CREATE TABLE IF NOT EXISTS Skill (
-    skill_id int PRIMARY KEY,
+    skill_id int PRIMARY KEY AUTO_INCREMENT,
     skill_name varchar(50),
     skill_type varchar(50),
     weight int
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Student_Skill (
 );
 
 CREATE TABLE IF NOT EXISTS Job (
-    job_id int PRIMARY KEY,
+    job_id int PRIMARY KEY AUTO_INCREMENT,
     title varchar(50),
     emp_id int,
     description varchar(1000),

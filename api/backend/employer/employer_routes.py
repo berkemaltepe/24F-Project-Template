@@ -80,6 +80,22 @@ def get_student(student_id):
     except Exception as e:
         current_app.logger.error(f"Error fetching students: {e}")
         return jsonify({"error": str(e)}), 500
+    
+@employer_routes.route('/skills', methods=['GET'])
+def get_all_skills():
+    """
+    Endpoint to fetch all available skills.
+    """
+    try:
+        cursor = db.get_db().cursor()
+        query = "SELECT skill_id, skill_name FROM Skill;"
+        cursor.execute(query)
+        skills = cursor.fetchall()
+
+        return make_response(jsonify(skills)), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 @employer_routes.route('/students/<student_id>/skills', methods=['GET'])
@@ -114,17 +130,20 @@ def get_job_skills(job_id):
         cursor = db.get_db().cursor()
         # Database query to fetch job-required skills
         query = """
-        SELECT sk.skill_name, js.weight
+        SELECT sk.skill_id, sk.skill_name, js.weight
         FROM Job_Skill AS js
         JOIN Skill AS sk ON js.skill_id = sk.skill_id
-        WHERE js.job_id = {0};
-        """.format(job_id)
-        cursor.execute(query)
+        WHERE js.job_id = %s;
+        """
+        cursor.execute(query, (job_id,))
         # Transform query results into JSON response
-        data = cursor.fetchall()
-        return jsonify(data), 200
+        results = cursor.fetchall()
+
+        # Ensure proper keys in the response
+        return make_response(jsonify(results)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @employer_routes.route('/employers/<int:emp_id>/jobs', methods=['GET'])
 def get_jobs(emp_id):
@@ -146,6 +165,114 @@ def get_jobs(emp_id):
         return make_response(jsonify(results)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@employer_routes.route('/jobs/<job_id>', methods=['GET'])
+def get_job_details(job_id):
+    """
+    Endpoint to fetch detailed information about a specific job.
+    """
+    try:
+        cursor = db.get_db().cursor()
+        query = """
+        SELECT job_id, title, description, location, pay_range, status
+        FROM Job
+        WHERE job_id = {0};
+        """.format(job_id)
+        cursor.execute(query)
+        job_details = cursor.fetchall()
+        return jsonify(job_details), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@employer_routes.route('/jobs/<job_id>', methods=['PUT'])
+def update_job_details(job_id):
+    """
+    Endpoint to update job details.
+    """
+    try:
+        job_data = request.json
+        query = """
+        UPDATE Job
+        SET title = %s, description = %s, location = %s, pay_range = %s, status = %s
+        WHERE job_id = %s;
+        """
+        data = (
+            job_data['title'],
+            job_data['description'],
+            job_data['location'],
+            job_data['pay_range'],
+            job_data['status'],
+            job_id,
+        )
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "Job updated successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@employer_routes.route('/jobs/<job_id>/skills/<skill_id>', methods=['PUT'])
+def update_job_skill(job_id, skill_id):
+    """
+    Endpoint to update the weight of a skill for a specific job.
+    """
+    try:
+        skill_data = request.json
+        query = """
+        UPDATE Job_Skill
+        SET weight = %s
+        WHERE job_id = %s AND skill_id = %s;
+        """
+        data = (skill_data['weight'], job_id, skill_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "Job skill updated successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@employer_routes.route('/jobs', methods=['POST'])
+def add_job():
+    """
+    Endpoint to add a new job for an employer.
+    """
+    try:
+        job_data = request.json
+        query = """
+        INSERT INTO Job (title, description, location, pay_range, status, emp_id, date_posted)
+        VALUES (%s, %s, %s, %s, %s, %s, NOW());
+        """
+        data = (
+            job_data['title'],
+            job_data['description'],
+            job_data['location'],
+            job_data['pay_range'],
+            job_data['status'],
+            job_data['emp_id']
+        )
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "Job added successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@employer_routes.route('/jobs/<job_id>', methods=['DELETE'])
+def delete_job(job_id):
+    """
+    Endpoint to delete a job.
+    """
+    try:
+        query = "DELETE FROM Job WHERE job_id = %s;"
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (job_id,))
+        db.get_db().commit()
+
+        return jsonify({"message": f"Job ID {job_id} deleted successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 
 # Ensure to register this blueprint in your main application (e.g., backend_app.py)
