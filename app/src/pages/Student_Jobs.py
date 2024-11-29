@@ -42,7 +42,7 @@ if st.session_state.student_id:
         st.write("### Best Job Matches for You")
         # Display best job matches with expanders to show skill matches
         for job in best_jobs:
-            with st.expander(f"{job['job_title']} - {job['match_percentage']}% match"):
+            with st.expander(f"{job['job_title']}, {job['company']} - {job['match_percentage']}% match"):
                 st.markdown(f"**Job ID:** {job['job_id']}")
                 st.markdown(f"**Job Title:** {job['job_title']}")
                 st.markdown(f"**Location:** {job['location']}")
@@ -58,7 +58,7 @@ if st.session_state.student_id:
                     st.write("### Job Skill Match Details")
                     # Display job skill match details in a prettier format
                     for skill in job_skill_match:
-                        st.markdown(f"**Skill ID:** {skill['skill_id']} - **Skill Name:** {skill['skill_name']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Job Min Proficiency:** {skill['job_min_proficiency']} - **Level of Fit:** {skill['level_of_fit']}")
+                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Job Min Proficiency:** {skill['job_min_proficiency']} - **Level of Fit:** {skill['level_of_fit']}")
                 else:
                     st.write("No job skill match details available.")
     else:
