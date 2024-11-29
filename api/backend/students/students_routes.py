@@ -1,4 +1,3 @@
-
 ############################################################
 # PERSONA: STUDENT
 # This file goes over the routes required for students
@@ -158,6 +157,12 @@ def get_best_jobs(student_id):
         SELECT
             j.job_id,
             j.title AS job_title,
+            j.description,
+            j.location,
+            j.pay_range,
+            j.date_posted,
+            j.status,
+            e.name AS company,
             s.student_id,
             s.name AS student_name,
             ROUND(
@@ -173,10 +178,12 @@ def get_best_jobs(student_id):
             ON js.skill_id = ss.skill_id
         JOIN Student s
             ON ss.student_id = s.student_id
+        JOIN Employer e
+            ON j.emp_id = e.emp_id
         WHERE
-            s.student_id = 2 -- Replace with specific student ID
+            s.student_id = {student_id}
         GROUP BY
-            j.job_id
+            j.job_id, e.name, s.student_id
         ORDER BY match_percentage DESC;
     '''
 

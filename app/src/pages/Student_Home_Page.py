@@ -14,7 +14,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View Job Listings (Currently prediction page temp)', 
+if st.button('View Job Listings', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/Student_Jobs.py')
