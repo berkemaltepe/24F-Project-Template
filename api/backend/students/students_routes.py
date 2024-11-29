@@ -197,8 +197,13 @@ def get_best_jobs(student_id):
 @students.route('/student/<student_id>/skill/', methods=['GET'])
 def get_student_skills(student_id):
     query = f'''
-        SELECT *
-        FROM Student_Skill
+        SELECT ss.skill_id,
+            ss.proficiency,
+            s.skill_name,
+            s.skill_type
+
+        FROM Student_Skill ss
+        JOIN Skill s ON ss.skill_id = s.skill_id
         WHERE student_id = {student_id}
     '''
     
@@ -222,11 +227,11 @@ def add_student_skill(student_id):
     current_app.logger.info(the_data)
 
     skill_id = the_data['skill_id']
-    weight = the_data['weight']
+    proficiency = the_data['proficiency']
 
     query = f'''
         INSERT INTO Student_Skill
-        VALUES({skill_id}, {student_id}, {weight});
+        VALUES({skill_id}, {student_id}, {proficiency});
     '''
 
     current_app.logger.info(query)
@@ -247,11 +252,11 @@ def update_student_skill(student_id):
     current_app.logger.info(the_data)
 
     skill_id = the_data['skill_id']
-    weight = the_data['weight']
+    proficiency = the_data['proficiency']
 
     query = f'''
         UPDATE Student_Skill
-        SET weight = {weight}
+        SET weight = {proficiency}
         WHERE skill_id = {skill_id}
         AND student_id = {student_id};
     '''

@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Student (
 CREATE TABLE IF NOT EXISTS Student_Skill (
     skill_id int,
     student_id int,
-    weight int,
+    proficiency int,
     PRIMARY KEY (skill_id, student_id),
     CONSTRAINT fk_6
         FOREIGN KEY (skill_id) REFERENCES Skill (skill_id)
@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS Job_Skill (
     skill_id int,
     job_id int,
     weight int,
+    min_proficiency int,
     PRIMARY KEY (skill_id, job_id),
     CONSTRAINT fk_9
         FOREIGN KEY (skill_id) REFERENCES Skill (skill_id)
@@ -159,7 +160,7 @@ INSERT INTO Student (student_id, name, email, location, major, coop_status, resu
 (3, 'Sara Connor', 'sara.connor@example.com', 'Chicago', 'Engineering', 'Seeking', 'Resume Link 3', 'Sophomore', 'linkedin.com/saraconnor', 3.7, 1, 2);
 
 -- Student_Skill Table
-INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
+INSERT INTO Student_Skill (skill_id, student_id, proficiency) VALUES
 (1, 1, 5),
 (2, 1, 4),
 (3, 2, 3),
@@ -173,9 +174,9 @@ INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, date_p
 (3, 'Project Manager', 3, 'Manage projects and teams.', 'Chicago', '80k-100k', '2024-11-03', 'Open');
 
 -- Job_Skill Table
-INSERT INTO Job_Skill (skill_id, job_id, weight) VALUES
-(1, 1, 5),
-(2, 1, 4),
-(3, 2, 3),
-(4, 3, 4),
-(5, 3, 5);
+INSERT INTO Job_Skill (skill_id, job_id, weight, min_proficiency) VALUES
+(1, 1, 5, 1),
+(2, 1, 4, 1),
+(3, 2, 3, 1),
+(4, 3, 4, 1),
+(5, 3, 5, 1);
