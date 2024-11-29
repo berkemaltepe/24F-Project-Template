@@ -272,6 +272,36 @@ def delete_job(job_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@employer_routes.route('/jobs/<job_id>/skills', methods=['POST'])
+def add_job_skill(job_id):
+    try:
+        skill_data = request.json
+        query = """
+        INSERT INTO Job_Skill (job_id, skill_id, weight)
+        VALUES (%s, %s, %s);
+        """
+        data = (job_id, skill_data['skill_id'], skill_data['weight'])
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "Skill added successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@employer_routes.route('/jobs/<job_id>/skills/<skill_id>', methods=['DELETE'])
+def delete_job_skill(job_id, skill_id):
+    try:
+        query = """
+        DELETE FROM Job_Skill
+        WHERE job_id = %s AND skill_id = %s;
+        """
+        data = (job_id, skill_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+        return jsonify({"message": "Skill removed successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 

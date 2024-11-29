@@ -61,59 +61,118 @@ try:
                             skills_response = requests.get(f"{BASE_URL}/jobs/{job_id}/skills")
                             if skills_response.status_code == 200:
                                 skills = skills_response.json()
-                                skill_updates = []
                                 all_skills_response = requests.get(f"{BASE_URL}/skills")
                                 if all_skills_response.status_code == 200:
                                     all_skills = all_skills_response.json()
                                     skill_options = {skill['skill_name']: skill['skill_id'] for skill in all_skills}
 
-                                    for skill in skills:
-                                        selected_skill = st.selectbox(
-                                            f"Skill ({skill['skill_name']})", 
-                                            options=skill_options.keys(),
-                                            index=list(skill_options.keys()).index(skill['skill_name']),
-                                            key=f"select_skill_{skill['skill_id']}_{job_id}"
-                                        )
-                                        selected_skill_id = skill_options[selected_skill]
+                                    skill_updates = []
+                                    new_skills_to_add = []
+                                    skills_to_remove = []
 
-                                        weight = st.number_input(
-                                            f"Weight for {selected_skill}", 
-                                            value=skill['weight'], 
-                                            step=1, 
-                                            key=f"skill_weight_{skill['skill_id']}_{job_id}"
+                                    # Display current skills with options to update or delete
+                                    st.markdown("#### Current Skills")
+                                    for skill in skills:
+                                        col1, col2, col3 = st.columns([4, 2, 1])
+                                        with col1:
+                                            selected_skill = st.selectbox(
+                                                f"Skill ({skill['skill_name']})", 
+                                                options=list(skill_options.keys()),
+                                                index=list(skill_options.keys()).index(skill['skill_name']),
+                                                key=f"select_skill_{skill['skill_id']}_{job_id}"
+                                            )
+                                            selected_skill_id = skill_options[selected_skill]
+                                        with col2:
+                                            weight = st.number_input(
+                                                f"Weight for {selected_skill}", 
+                                                value=skill['weight'], 
+                                                step=1, 
+                                                key=f"skill_weight_{skill['skill_id']}_{job_id}"
+                                            )
+                                        with col3:
+                                            remove = st.checkbox(
+                                                "Remove", 
+                                                key=f"remove_skill_{skill['skill_id']}_{job_id}"
+                                            )
+                                            if remove:
+                                                skills_to_remove.append(skill['skill_id'])
+
+                                        skill_updates.append({"skill_id": selected_skill_id, "weight": weight, "job_id": job_id})
+
+                                    # Option to add new skills
+                                    # Add New Skills Section
+                                    st.markdown("#### Add New Skills")
+                                    col1, col2 = st.columns([4, 2])
+                                    with col1:
+                                        new_skill_name = st.selectbox(
+                                            "Select a New Skill to Add", 
+                                            options=list(skill_options.keys()),
+                                            key=f"add_new_skill_{job_id}"
                                         )
-                                        skill_updates.append({"skill_id": selected_skill_id, "weight": weight})
+                                        new_skill_id = skill_options[new_skill_name]
+                                    with col2:
+                                        new_skill_weight = st.number_input(
+                                            "Weight", 
+                                            min_value=1, 
+                                            step=1, 
+                                            key=f"add_new_skill_weight_{job_id}"
+                                        )
+
+                                    # Ensure button triggers correct POST request WHY ISN'T THIS WORKING (EDIT: i fixed it >:))
+                                    if st.button(f"Add New Skill to Job ID {job_id}", key=f"add_skill_btn_{job_id}"):
+                                        try:
+                                            # Ensure payload matches route expectations
+                                            payload = {"skill_id": new_skill_id, "weight": new_skill_weight}
+                                            add_skill_response = requests.post(
+                                                f"{BASE_URL}/jobs/{job_id}/skills",
+                                                json=payload
+                                            )
+                                            if add_skill_response.status_code == 200:
+                                                st.success(f"Skill '{new_skill_name}' added successfully!")
+                                            else:
+                                                st.error(f"Failed to add skill '{new_skill_name}': {add_skill_response.json()['error']}")
+                                        except Exception as e:
+                                            st.error(f"An error occurred while adding skill '{new_skill_name}': {e}")
+
+
+                                    # Save all changes together
+                                    if st.button(f"Save Changes for Job ID {job_id}", key=f"save_all_{job_id}"):
+                                        try:
+                                            # Update existing skills
+                                            for skill_update in skill_updates:
+                                                skill_update_response = requests.put(
+                                                    f"{BASE_URL}/jobs/{job_id}/skills/{skill_update['skill_id']}",
+                                                    json={"weight": skill_update['weight']}
+                                                )
+                                                if skill_update_response.status_code != 200:
+                                                    st.error(f"Failed to update skill '{skill_update['skill_id']}': {skill_update_response.text}")
+
+                                            # Add new skills
+                                            for new_skill in new_skills_to_add:
+                                                add_skill_response = requests.post(
+                                                    f"{BASE_URL}/jobs/{job_id}/skills",
+                                                    json=new_skill
+                                                )
+                                                if add_skill_response.status_code != 200:
+                                                    st.error(f"Failed to add skill '{new_skill['skill_id']}': {add_skill_response.text}")
+
+                                            # Remove skills
+                                            for skill_id in skills_to_remove:
+                                                remove_skill_response = requests.delete(
+                                                    f"{BASE_URL}/jobs/{job_id}/skills/{skill_id}"
+                                                )
+                                                if remove_skill_response.status_code != 200:
+                                                    st.error(f"Failed to remove skill ID '{skill_id}': {remove_skill_response.text}")
+
+                                            st.success(f"All changes for Job ID {job_id} saved successfully!")
+                                        except Exception as e:
+                                            st.error(f"An error occurred while saving changes for Job ID {job_id}: {e}")
                                 else:
-                                    st.warning("Failed to fetch all skills.")
+                                    st.warning("Failed to fetch all available skills.")
                             else:
                                 st.warning("No skills listed for this job.")
 
-                            # Save button to update the job
-                            if st.button(f"Save Changes to Job ID {job_id}", key=f"save_{job_id}"):
-                                try:
-                                    # Update job details
-                                    job_update_payload = {
-                                        "title": new_title,
-                                        "description": new_description,
-                                        "location": new_location,
-                                        "pay_range": new_pay_range,
-                                        "status": new_status,
-                                    }
-                                    job_update_response = requests.put(f"{BASE_URL}/jobs/{job_id}", json=job_update_payload)
 
-                                    # Update job skills
-                                    for skill_update in skill_updates:
-                                        skill_update_response = requests.put(
-                                            f"{BASE_URL}/jobs/{job_id}/skills/{skill_update['skill_id']}",
-                                            json={"weight": skill_update['weight']}
-                                        )
-
-                                    if job_update_response.status_code == 200:
-                                        st.success(f"Job ID {job_id} updated successfully!")
-                                    else:
-                                        st.error(f"Failed to update Job ID {job_id}: {job_update_response.text}")
-                                except Exception as e:
-                                    st.error(f"An error occurred while updating Job ID {job_id}: {e}")
 
                             # Delete job button
                             if st.button(f"Delete Job ID {job_id}", key=f"delete_{job_id}"):
@@ -126,7 +185,7 @@ try:
                                 except Exception as e:
                                     st.error(f"An error occurred while deleting Job ID {job_id}: {e}")
 
-            # Add a new job
+            # Add a new job 
             st.markdown("### Add a New Job")
             with st.form(key="add_job_form"):
                 title = st.text_input("Job Title")

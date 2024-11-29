@@ -35,6 +35,7 @@ try:
                 <div style="padding: 20px; border-radius: 10px; background-color: #ffffff; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
                     <h3 style="color: #FF0000;">Employer Details</h3>
                     <ul style="font-size: 16px; line-height: 1.8;">
+                        <li><strong>Copmany Name:</strong> {emp['name']}</li>
                         <li><strong>EMP_ID:</strong> {emp['emp_id']}</li>
                         <li>
                             <strong>Contact:</strong> {emp['email']}
