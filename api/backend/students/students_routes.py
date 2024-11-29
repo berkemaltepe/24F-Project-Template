@@ -278,21 +278,77 @@ def update_student_skill(student_id):
     response.status_code = 200
     return response
 
+# #------------------------------------------------------------
+# # Get all jobs
+# @students.route('/jobs/', methods=['GET'])
+# def get_all_jobs():
+#     query = '''
+#         SELECT
+#             j.job_id,
+#             j.title AS job_title,
+#             j.description,
+#             j.location,
+#             j.pay_range,
+#             j.date_posted,
+#             j.status,
+#             e.name AS company
+#         FROM Job AS j
+#         JOIN Employer AS e
+#             ON j.emp_id = e.emp_id;
+#     '''
+
+#     current_app.logger.info(f'GET /jobs/ query={query}')
+
+#     cursor = db.get_db().cursor()
+#     cursor.execute(query)
+#     theData = cursor.fetchall()
+    
+#     current_app.logger.info(f'GET /jobs/ Result of query = {theData}')
+    
+#     response = make_response(jsonify(theData))
+#     response.status_code = 200
+#     return response
+
 #------------------------------------------------------------
-# View all jobs
-@students.route('/jobs/', methods=['GET'])
-def get_jobs():
-    query = '''
-        SELECT *
-        FROM Job;
+# Get all jobs with skill match details
+@students.route('/jobs/<student_id>/', methods=['GET'])
+def get_all_jobs(student_id):
+    query = f'''
+        SELECT
+            j.job_id,
+            j.title AS job_title,
+            j.description,
+            j.location,
+            j.pay_range,
+            j.date_posted,
+            j.status,
+            e.name AS company,
+            ROUND(
+                (SUM(CASE
+                WHEN ss.skill_id = js.skill_id THEN 1
+                ELSE 0
+                 END) / COUNT(js.skill_id)) * 100, 2
+            ) AS match_percentage
+        FROM Job AS j
+        JOIN Employer AS e
+            ON j.emp_id = e.emp_id
+        LEFT JOIN Job_Skill AS js
+            ON j.job_id = js.job_id
+        LEFT JOIN Student_Skill AS ss
+            ON js.skill_id = ss.skill_id
+            AND ss.student_id = {student_id}
+        GROUP BY
+            j.job_id, e.name
+        ORDER BY match_percentage DESC;
     '''
-    current_app.logger.info(f'GET /jobs/ query={query}')
+
+    current_app.logger.info(f'GET /jobs/<student_id>/ query={query}')
 
     cursor = db.get_db().cursor()
     cursor.execute(query)
     theData = cursor.fetchall()
     
-    current_app.logger.info(f'GET /jobs/ Result of query = {theData}')
+    current_app.logger.info(f'GET /jobs/<student_id>/ Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
