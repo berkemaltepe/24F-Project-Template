@@ -102,6 +102,19 @@ if st.button("Generate Radar Chart", type='primary', use_container_width=True):
 
             # Display radar chart
             st.plotly_chart(fig)
+
+            # Fetch and display skill gap
+            skill_gap_response = requests.get(f"{BASE_URL}/job/{job_id}/{student_id}/student_matches")
+            if skill_gap_response.status_code == 200:
+                skill_gap_data = skill_gap_response.json()
+                for gap in skill_gap_data:
+                    if gap['student_id'] == student_id:
+                        st.header(f"**Total Skill Gap:** {gap['total_skill_gap']}%")
+                        break
+                else:
+                    st.warning("No skill gap data found for the selected student and job.")
+            else:
+                st.error("Failed to fetch skill gap data.")
         else:
             st.error("Failed to fetch data for student or job. Please check the inputs and try again.")
 

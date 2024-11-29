@@ -306,34 +306,40 @@ def delete_job_skill(job_id, skill_id):
 
 
 # Ensure to register this blueprint in your main application (e.g., backend_app.py)
-# @employer_routes.route('/job/<job_id>/student_matches', methods=['GET'])
-# def get_matches(job_id):
-#     try:
-#         cursor = db.get_db().cursor()
-#         query = """
-#         SELECT
-#         s.student_id,
-#         s.name AS student_name,
-#         j.job_id,
-#         j.title AS job_title,
-#         ROUND(
-#             SUM(
-#                 CASE
-#                     WHEN ss.weight IS NULL
-#                         THEN js.weight
-#                     WHEN ss.weight >= js.weight
-#                         THEN 0
-#                     ELSE
-#                         js.weight - ss.weight
-#                 END
-#             ) / SUM(js.weight) * 100, 2
-#         ) AS total_skill_gap
-#         FROM Student AS s
-#         CROSS JOIN Job AS j
-#         JOIN Job_Skill AS js ON js.job_id = j.job_id
-#         LEFT JOIN Student_Skill AS ss ON s.student_id = ss.student_id AND ss.skill_id = js.skill_id
-#         WHERE j.job_id = 3
-#         GROUP BY s.student_id, j.job_id;
-#         """
+@employer_routes.route('/job/<job_id>/<student_id>/student_matches', methods=['GET'])
+def get_matches(job_id, student_id):
+    try:
+        cursor = db.get_db().cursor()
+        query = """
+        SELECT
+        s.student_id,
+        s.name AS student_name,
+        j.job_id,
+        j.title AS job_title,
+        ROUND(
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS total_skill_gap
+        FROM Student AS s
+        CROSS JOIN Job AS j
+        JOIN Job_Skill AS js ON js.job_id = j.job_id
+        LEFT JOIN Student_Skill AS ss ON s.student_id = ss.student_id AND ss.skill_id = js.skill_id
+        WHERE j.job_id = %s AND s.student_id = %s
+        GROUP BY s.student_id, j.job_id;
+        """
         
-#         cursor.execute(query)
+        cursor.execute(query, (job_id, student_id))
+        gap = cursor.fetchall()
+        return make_response(jsonify(gap)), 200
+
+    except Exception as e:
+        current_app.logger.error(f"Error fetching gap: {e}")
+        return jsonify({"error": str(e)}), 500
