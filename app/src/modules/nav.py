@@ -6,7 +6,7 @@ import streamlit as st
 
 #### ------------------------ Student Navigation ------------------------
 def StudentHomePageNav():
-    st.sidebar.page_link("pages/Student_Home.py", label="Student Home", icon="🎓")
+    st.sidebar.page_link("pages/Student_Home_Page.py", label="Student Home", icon="🎓")
 
 def StudentProfileNav():
     st.sidebar.page_link("pages/Student_Profile.py", label="Student Profile", icon="📝")
