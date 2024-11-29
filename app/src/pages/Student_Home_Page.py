@@ -19,7 +19,7 @@ if st.button('View Job Listings',
              use_container_width=True):
   st.switch_page('pages/Student_Jobs.py')
 
-if st.button('View your profile', 
+if st.button('View Your profile', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/Student_Profile.py')
