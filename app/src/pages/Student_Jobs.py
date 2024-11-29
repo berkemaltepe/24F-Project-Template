@@ -45,11 +45,13 @@ if st.session_state.student_id:
             with st.expander(f"{job['job_title']} - {job['match_percentage']}% match"):
                 st.markdown(f"**Job ID:** {job['job_id']}")
                 st.markdown(f"**Job Title:** {job['job_title']}")
-                st.markdown(f"**Company:** {job['company']}")
                 st.markdown(f"**Location:** {job['location']}")
                 st.markdown(f"**Description:** {job['description']}")
-                st.markdown(f"**Requirements:** {job['requirements']}")
+                st.markdown(f"**Pay Range:** {job['pay_range']}")
+                st.markdown(f"**Date Posted:** {job['date_posted']}")
+                st.markdown(f"**Status:** {job['status']}")
                 st.markdown(f"**Match Percentage:** {job['match_percentage']}%")
+                st.markdown(f"**Company:** {job['company']}")
 
                 job_skill_match = get_job_skill_match(st.session_state.student_id, job['job_id'])
                 if job_skill_match:
