@@ -4,6 +4,20 @@
 
 import streamlit as st
 
+#### ------------------------ Student Navigation ------------------------
+def StudentHomePageNav():
+    st.sidebar.page_link("pages/Student_Home.py", label="Student Home", icon="🎓")
+
+def StudentProfileNav():
+    st.sidebar.page_link("pages/Student_Profile.py", label="Student Profile", icon="📝")
+
+def StudentSkillsNav():
+    st.sidebar.page_link("pages/Student_Skills.py", label="Student Skills", icon="🧠")
+
+def StudentJobsNav():
+    st.sidebar.page_link("pages/Student_Jobs.py", label="Student Jobs", icon="💼")
+
+
 
 #### ------------------------ General ------------------------
 def HomeNav():
@@ -76,6 +90,13 @@ def SideBarLinks(show_home=False):
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
+
+        # If the user is a student, show the student links
+        if st.session_state["role"] == "student":
+            StudentHomePageNav()
+            StudentProfileNav()
+            StudentSkillsNav()
+            StudentJobsNav()
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":
