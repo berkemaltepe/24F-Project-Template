@@ -132,14 +132,16 @@ def get_employers():
     return make_response(jsonify(employers), 200)
 
 #------------------------------------------------------------
-# View a job posting
+# View a job posting details
 @nu_skillmatch.route('/job/<int:job_id>', methods=['GET'])
 def get_job_posting(job_id):
     # SQL query to fetch a job record by ID
     query = f'''
-        SELECT * 
-        FROM jobs 
-        WHERE id = {job_id}
+        SELECT Job.title, Job.description, Job.location, Job.pay_range, Skill.skill_name, Job_Skill.min_proficiency
+        FROM Job
+        JOIN Job_Skill ON Job.job_id = Job_Skill.job_id
+        JOIN Skill ON Job_Skill.skill_id = Skill.skill_id
+        WHERE Job.job_id = {job_id}
     '''
     # execute the query and fetch the result
     cursor = db.get_db().cursor()
