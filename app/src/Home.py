@@ -52,11 +52,13 @@ if st.button("Act as Berke, a Student",
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
     st.session_state['first_name'] = 'Berke'
+    # add student id to session state
+    st.session_state['student_id'] = 1
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
     logger.info("Logging in as Student Persona")
     # CHANGE TO STUDENT HOME PAGE (make a new page or something like that)
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    st.switch_page('pages/Student_Home_Page.py')
 
 # (Nick) currently working on pls don't change
 if st.button('Act as Nick, an Employer at Tech Corp', 
