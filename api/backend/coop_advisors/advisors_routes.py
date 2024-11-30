@@ -103,10 +103,10 @@ def get_student_profile(student_id):
 def get_student_skills(student_id):
     # SQL query to fetch skills for a specific student
     query = f'''
-        SELECT skills.name 
-        FROM student_skills 
-        JOIN skills ON student_skills.skill_id = skills.id 
-        WHERE student_skills.student_id = {student_id}
+        SELECT Skill.skill_name, Student_Skill.proficiency
+        FROM Student_Skill
+        JOIN Skill ON Student_Skill.skill_id = Skill.skill_id
+        WHERE Student_Skill.student_id = {student_id}
     '''
     # execute the query and fetch the results
     cursor = db.get_db().cursor()
