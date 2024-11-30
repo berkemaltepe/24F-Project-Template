@@ -21,9 +21,9 @@ try:
             # Styled header
             st.markdown(
                 f"""
-                <div style="padding: 20px; border-radius: 10px; background-color: #f7f7f7; margin-bottom: 20px;">
-                    <h1 style="text-align: center; color: #333;">Information on Your Company: {emp['name']}</h1>
-                    <p style="text-align: center; font-size: 16px; color: #333;">Industry: <strong>{emp['industry']}</strong></p>
+                <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                    <h1 style="text-align: center; color: #FFFFFF;">Information on Your Company: {emp['name']}</h1>
+                    <p style="text-align: center; font-size: 16px; color: #FFFFFF;">Industry: <strong>{emp['industry']}</strong></p>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -92,8 +92,8 @@ try:
                     # Display job listings with improved styling
                     st.markdown(
                         f"""
-                        <div style="padding: 20px; border-radius: 10px; background-color: #f7f7f7; margin-bottom: 20px;">
-                            <h2 style="text-align: center; color: #333;"> <strong>{emp['name']}</strong> Job Listings and Required Skills</h2>
+                        <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                            <h2 style="text-align: center; color: #FFFFFF;"> <strong>{emp['name']}</strong> Job Listings and Required Skills</h2>
                         </div>
                         """,
                         unsafe_allow_html=True,

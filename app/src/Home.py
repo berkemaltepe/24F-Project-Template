@@ -68,6 +68,15 @@ if st.button('Act as Nick, an Employer at Tech Corp',
     st.session_state['emp_id'] = 1
     st.switch_page('pages/Emp_Home_Page.py')
 
+if st.button('Act as Steven, an Employer at EduWorld', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'employer'
+    st.session_state['first_name'] = 'Steven'
+    st.session_state['emp_id'] = 2
+    st.switch_page('pages/Emp_Home_Page.py')
+
 if st.button('Act as Yuta, Co-Op Advisor', 
             type = 'primary', 
             use_container_width=True):

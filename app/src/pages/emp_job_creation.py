@@ -28,8 +28,8 @@ try:
             if jobs:
                 st.markdown(
                     f"""
-                    <div style="padding: 20px; border-radius: 10px; background-color: #f7f7f7; margin-bottom: 20px;">
-                        <h2 style="text-align: center; color: #333;"> <strong>{emp['name']}</strong> Job Listings and Edit Options</h2>
+                    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                        <h2 style="text-align: center; color: #FFFFFF;"> <strong>{emp['name']}</strong> Job Listings and Edit Options</h2>
                     </div>
                     """,
                     unsafe_allow_html=True,

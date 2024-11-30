@@ -34,7 +34,14 @@ try:
     if response.status_code == 200:
         students = response.json()
         if students:
-            st.title("Students List:")
+            st.markdown(
+                    f"""
+                    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                        <h2 style="text-align: center; color: #FFFFFF;"> Student Listings and Information </h2>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
             for student in students:
                 student_id = student['student_id']
                 
@@ -43,13 +50,13 @@ try:
                     st.session_state["student_visibility"][student_id] = False
 
                 # Create a button for each student
-                if st.button(f"Name: {student['name']}, Major: {student['major']}", type='primary', use_container_width=True):
+                if st.button(f"Name: {student['name']}", type='primary', use_container_width=True):
                     # Toggle visibility state
                     st.session_state["student_visibility"][student_id] = not st.session_state["student_visibility"][student_id]
 
                 # Show or hide student details based on the visibility state
                 if st.session_state["student_visibility"][student_id]:
-                    st.write(f"Name: {student['name']}, Major: {student['major']}")
+                    st.write(f"Major: {student['major']}, ID: {student['student_id']}")
         else:
             st.info("No students found in the database.")
     else:

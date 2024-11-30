@@ -5,7 +5,14 @@ from modules.nav import SideBarLinks
 
 # Set Streamlit layout
 st.set_page_config(layout="wide")
-st.title("Radar Chart: Student vs Employer Skills")
+st.markdown(
+                    f"""
+                    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                        <h2 style="text-align: center; color: #FFFFFF;"> <strong>SkillMatch Comparison</h2>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
 SideBarLinks()
 
