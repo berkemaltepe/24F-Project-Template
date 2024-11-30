@@ -82,7 +82,9 @@ def delete_student():
 
 #------------------------------------------------------------
 # View student profile
-
+@nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
+def get_student_profile(student_id):
+    
 
 #------------------------------------------------------------
 # View a student's profile
