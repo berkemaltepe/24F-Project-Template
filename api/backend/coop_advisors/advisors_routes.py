@@ -261,4 +261,20 @@ def compare_student_to_job_skills(job_id, student_id):
 # Retrieve detailed profiles of all students assigned to a specific advisor
 @nu_skillmatch.route('/advisor/<int:advisor_id>/students', methods=['GET'])
 def get_students_by_advisor(advisor_id):
-    
+    query = f'''
+        SELECT
+            s.student_id,
+            s.name,
+            s.email,
+            s.location,
+            s.major,
+            s.coop_status,
+            s.resume,
+            s.level,
+            s.linkedin_profile,
+            s.gpa,
+            a.name AS advisor_name
+        FROM Student AS s
+        JOIN Advisor AS a ON s.advisor_id = a.advisor_id
+        WHERE a.advisor_id = {advisor_id}
+    '''
