@@ -332,7 +332,10 @@ def modify_advisor_students(advisor_id, student_id):
         '''
         action = 'removed from'
     # execute query and fetch the result
-        cursor = db.get_db().cursor()
-        cursor.execute(query)
-        db.get_db().commit()
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    # return the result as JSON with a 200 HTTP status code
+    return make_response(f"Student successfully {action} advisor's list.", 200)
 
+    
