@@ -149,3 +149,7 @@ def get_job_posting(job_id):
     job = cursor.fetchone()
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(job), 200)
+
+#------------------------------------------------------------
+# Calculate match percentage
+@nu_skillmatch.route('/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
