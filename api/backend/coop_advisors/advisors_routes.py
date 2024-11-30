@@ -94,6 +94,8 @@ def get_student_profile(student_id):
     cursor = db.get_db().cursor()
     cursor.execute(query)
     student = cursor.fetchone()
+    # Return the student profile as JSON with a 200 HTTP status
+    return make_response(jsonify(student), 200)
 
 #------------------------------------------------------------
 # View a student's profile
