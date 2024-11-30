@@ -278,3 +278,7 @@ def get_students_by_advisor(advisor_id):
         JOIN Advisor AS a ON s.advisor_id = a.advisor_id
         WHERE a.advisor_id = {advisor_id}
     '''
+    # execute query and fetch the result
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    students = cursor.fetchall()
