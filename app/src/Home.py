@@ -34,7 +34,14 @@ SideBarLinks(show_home=True)
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.title('Welcome to NU SkillMatch')
+st.markdown(
+                    f"""
+                    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                        <h2 style="text-align: center; color: #FFFFFF;"> <strong>Welcome to NU SkillMatch 👋</h2>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 st.write('\n\n')
 st.write('## Select a user: ')
 
@@ -52,19 +59,31 @@ if st.button("Act as Berke, a Student",
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
     st.session_state['first_name'] = 'Berke'
+    # add student id to session state
+    st.session_state['student_id'] = 1
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
     logger.info("Logging in as Student Persona")
     # CHANGE TO STUDENT HOME PAGE (make a new page or something like that)
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    st.switch_page('pages/Student_Home_Page.py')
 
 # (Nick) currently working on pls don't change
-if st.button('Act as Nick, an Employer', 
+if st.button('Act as Nick, an Employer at Tech Corp', 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'employer'
     st.session_state['first_name'] = 'Nick'
+    st.session_state['emp_id'] = 1
+    st.switch_page('pages/Emp_Home_Page.py')
+
+if st.button('Act as Steven, an Employer at EduWorld', 
+            type = 'primary', 
+            use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'employer'
+    st.session_state['first_name'] = 'Steven'
+    st.session_state['emp_id'] = 2
     st.switch_page('pages/Emp_Home_Page.py')
 
 if st.button('Act as Yuta, Co-Op Advisor', 

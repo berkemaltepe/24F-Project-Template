@@ -4,6 +4,32 @@
 
 import streamlit as st
 
+#### ------------------------ Student Navigation ------------------------
+def StudentHomePageNav():
+    st.sidebar.page_link("pages/Student_Home_Page.py", label="Student Home", icon="🎓")
+
+def StudentProfileNav():
+    st.sidebar.page_link("pages/Student_Profile.py", label="Student Profile", icon="📝")
+
+def StudentSkillsNav():
+    st.sidebar.page_link("pages/Student_Skills.py", label="Student Skills", icon="🧠")
+
+def StudentJobsNav():
+    st.sidebar.page_link("pages/Student_Jobs.py", label="Student Jobs", icon="💼")
+
+#### ------------------------ Employer Navigation ------------------------
+
+def EmpProfileNav():
+    st.sidebar.page_link("pages/emp_profile.py", label="Employer Profile", icon="📝")
+
+def EmpSkillMatchNav():
+    st.sidebar.page_link("pages/emp_skill_match.py", label="SkillMatch", icon="📈")
+
+def EditJobsNav():
+    st.sidebar.page_link("pages/emp_job_creation.py", label="Edit Jobs", icon="💼")
+
+def StudentListNav():
+    st.sidebar.page_link("pages/emp_student_list.py", label="See List of Students", icon="🎓")
 
 #### ------------------------ General ------------------------
 def HomeNav():
@@ -57,7 +83,7 @@ def AdminPageNav():
 
 
 # --------------------------------Links Function -----------------------------------------------
-def SideBarLinks(show_home=False):
+def SideBarLinks(show_home=True):
     """
     This function handles adding links to the sidebar of the app based upon the logged-in user's role, which was put in the streamlit session_state object when logging in.
     """
@@ -76,6 +102,20 @@ def SideBarLinks(show_home=False):
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
+
+        # If the user is a student, show the student links
+        if st.session_state["role"] == "student":
+            StudentHomePageNav()
+            StudentProfileNav()
+            StudentSkillsNav()
+            StudentJobsNav()
+
+        # If the user is an emp, show the emp links
+        if st.session_state["role"] == "employer":
+            EmpProfileNav()
+            EmpSkillMatchNav()
+            EditJobsNav()
+            StudentListNav()
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":

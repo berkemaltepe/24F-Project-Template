@@ -1,9 +1,9 @@
+DROP SCHEMA IF EXISTS skillmatch;
 CREATE DATABASE skillmatch;
-
 USE skillmatch;
 
 CREATE TABLE IF NOT EXISTS Skill (
-    skill_id int PRIMARY KEY,
+    skill_id int PRIMARY KEY AUTO_INCREMENT,
     skill_name varchar(50),
     skill_type varchar(50),
     weight int
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Student_Skill (
 );
 
 CREATE TABLE IF NOT EXISTS Job (
-    job_id int PRIMARY KEY,
+    job_id int PRIMARY KEY AUTO_INCREMENT,
     title varchar(50),
     emp_id int,
     description varchar(1000),
@@ -159,7 +159,7 @@ INSERT INTO Student (student_id, name, email, location, major, coop_status, resu
 (3, 'Sara Connor', 'sara.connor@example.com', 'Chicago', 'Engineering', 'Seeking', 'Resume Link 3', 'Sophomore', 'linkedin.com/saraconnor', 3.7, 1, 2);
 
 -- Student_Skill Table
-INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
+INSERT INTO Student_Skill (skill_id, student_id, proficiency) VALUES
 (1, 1, 5),
 (2, 1, 4),
 (3, 2, 3),
@@ -173,9 +173,9 @@ INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, date_p
 (3, 'Project Manager', 3, 'Manage projects and teams.', 'Chicago', '80k-100k', '2024-11-03', 'Open');
 
 -- Job_Skill Table
-INSERT INTO Job_Skill (skill_id, job_id, weight) VALUES
-(1, 1, 5),
-(2, 1, 4),
-(3, 2, 3),
-(4, 3, 4),
-(5, 3, 5);
+INSERT INTO Job_Skill (skill_id, job_id, weight, min_proficiency) VALUES
+(1, 1, 5, 1),
+(2, 1, 4, 1),
+(3, 2, 3, 1),
+(4, 3, 4, 1),
+(5, 3, 5, 1);
