@@ -81,6 +81,10 @@ def delete_student():
     return make_response("Student removed successfully.", 200)
 
 #------------------------------------------------------------
+# View student profile
+
+
+#------------------------------------------------------------
 # View a student's profile
 @nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
