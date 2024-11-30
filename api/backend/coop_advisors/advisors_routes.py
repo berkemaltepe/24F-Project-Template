@@ -257,3 +257,8 @@ def compare_student_to_job_skills(job_id, student_id):
     comparison = cursor.fetchall()
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(comparison), 200)
+
+# Retrieve detailed profiles of all students assigned to a specific advisor
+@nu_skillmatch.route('/advisor/<int:advisor_id>/students', methods=['GET'])
+def get_students_by_advisor(advisor_id):
+    
