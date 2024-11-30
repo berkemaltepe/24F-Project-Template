@@ -168,3 +168,6 @@ def calculate_match(job_id, student_id):
     # Execute query and fetch the result
     cursor = db.get_db().cursor()
     cursor.execute(query)
+    match = cursor.fetchone()
+    # Return the match percentage as JSON with a 200 HTTP status
+    return make_response(jsonify(match), 200)
