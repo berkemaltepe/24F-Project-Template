@@ -193,6 +193,7 @@ def calculate_match(job_id, student_id):
 # Retrieve detailed information about a job, including required skills
 @nu_skillmatch.route('/job/<int:job_id>/details', methods=['GET'])
 def get_job_details_with_skills(job_id):
+    # SQL query to retrieve information
     query = f'''
         SELECT
             j.job_id,
@@ -218,6 +219,7 @@ def get_job_details_with_skills(job_id):
 # Retrieve a student's skills and their proficiency levels
 @nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills_and_proficiency(student_id):
+    # SQL query to retrieve information
     query = f'''
         SELECT
             s.student_id,
@@ -239,6 +241,7 @@ def get_student_skills_and_proficiency(student_id):
 # Compare a student's skills to the requirements of a specific job.
 @nu_skillmatch.route('/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
 def compare_student_to_job_skills(job_id, student_id):
+    # SQL query to retrieve information
     query = f'''
         SELECT
             sk.skill_id,
@@ -261,6 +264,7 @@ def compare_student_to_job_skills(job_id, student_id):
 # Retrieve detailed profiles of all students assigned to a specific advisor
 @nu_skillmatch.route('/advisor/<int:advisor_id>/students', methods=['GET'])
 def get_students_by_advisor(advisor_id):
+    # SQL query to retrieve information
     query = f'''
         SELECT
             s.student_id,
@@ -287,6 +291,7 @@ def get_students_by_advisor(advisor_id):
 
 # Retrieve a list of students assigned to a specific advisor
 def list_students_by_advisor(advisor_id):
+    # SQL query to retrieve information
     query = f'''
         SELECT
             s.student_id,
@@ -306,3 +311,23 @@ def list_students_by_advisor(advisor_id):
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(student_list), 200)
 
+# Add or remove students from an advisor's list.
+   # - PUT: Add a student to the advisor's list.
+   # - DELETE: Remove a student from the advisor's list.
+@nu_skillmatch.route('/advisor/<int:advisor_id>/student/<int:student_id>', methods=['PUT', 'DELETE'])
+def modify_advisor_students(advisor_id, student_id):
+    # SQL query to retrieve information
+    if request.method == 'PUT':
+        query = f"""
+            UPDATE Student
+            SET advisor_id = {advisor_id}
+            WHERE student_id = {student_id}
+        """
+        action = "added to"
+    elif request.method == 'DELETE':
+        query = f"""
+            UPDATE Student
+            SET advisor_id = NULL
+            WHERE student_id = {student_id}
+        """
+        action = "removed from"
