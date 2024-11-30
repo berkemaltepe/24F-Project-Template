@@ -13,11 +13,11 @@ from backend.db_connection import db
 
 #------------------------------------------------------------
 # Blueprint for NUSkillMatch
-nu_skillmatch = Blueprint('nu_skillmatch', __name__)
+advisors = Blueprint('advisors', __name__)
 
 #------------------------------------------------------------
 # Get all students from the database
-@nu_skillmatch.route('/students/', methods=['GET'])
+@advisors.route('/students/', methods=['GET'])
 def get_students():
     # get all students
     query = '''
@@ -37,7 +37,7 @@ def get_students():
 
 #------------------------------------------------------------
 # Add new students to the database
-@nu_skillmatch.route('/students/', methods=['POST'])
+@advisors.route('/students/', methods=['POST'])
 def add_students():
     # get the request JSON data
     data = request.json
@@ -62,7 +62,7 @@ def add_students():
 
 #------------------------------------------------------------
 # Remove a student from the database
-@nu_skillmatch.route('/student/', methods=['DELETE'])
+@advisors.route('/student/', methods=['DELETE'])
 def delete_student():
     # get the request JSON data
     data = request.json
@@ -82,7 +82,7 @@ def delete_student():
 
 #------------------------------------------------------------
 # View student profile
-@nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
+@advisors.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
     # SQL query to fetch a student profile by ID
     query = f'''
@@ -99,7 +99,7 @@ def get_student_profile(student_id):
 
 #------------------------------------------------------------
 # View a student's skills
-@nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
+@advisors.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
     # SQL query to fetch skills for a specific student
     query = f'''
@@ -117,7 +117,7 @@ def get_student_skills(student_id):
 
 #------------------------------------------------------------
 # Get all employers
-@nu_skillmatch.route('/employer/', methods=['GET'])
+@advisors.route('/employer/', methods=['GET'])
 def get_employers():
     # SQL query to fetch all employers
     query = '''
@@ -133,7 +133,7 @@ def get_employers():
 
 #------------------------------------------------------------
 # View a job posting details
-@nu_skillmatch.route('/job/<int:job_id>', methods=['GET'])
+@advisors.route('/job/<int:job_id>', methods=['GET'])
 def get_job_posting(job_id):
     # SQL query to fetch a job record by ID
     query = f'''
@@ -158,7 +158,7 @@ def get_job_posting(job_id):
 
 #------------------------------------------------------------
 # Calculate match percentage
-@nu_skillmatch.route('/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
+@advisors.route('/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
 def calculate_match(job_id, student_id):
     # SQL query to calculate match percentage
     query = f'''
@@ -191,7 +191,7 @@ def calculate_match(job_id, student_id):
 
 #------------------------------------------------------------
 # Retrieve detailed information about a job, including required skills
-@nu_skillmatch.route('/job/<int:job_id>/details', methods=['GET'])
+@advisors.route('/job/<int:job_id>/details', methods=['GET'])
 def get_job_details_with_skills(job_id):
     # SQL query to retrieve information
     query = f'''
@@ -217,7 +217,7 @@ def get_job_details_with_skills(job_id):
     return make_response(jsonify(details), 200)
 
 # Retrieve a student's skills and their proficiency levels
-@nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
+@advisors.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills_and_proficiency(student_id):
     # SQL query to retrieve information
     query = f'''
@@ -239,7 +239,7 @@ def get_student_skills_and_proficiency(student_id):
     return make_response(jsonify(skills), 200)
 
 # Compare a student's skills to the requirements of a specific job.
-@nu_skillmatch.route('/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
+@advisors.route('/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
 def compare_student_to_job_skills(job_id, student_id):
     # SQL query to retrieve information
     query = f'''
@@ -262,7 +262,7 @@ def compare_student_to_job_skills(job_id, student_id):
     return make_response(jsonify(comparison), 200)
 
 # Retrieve detailed profiles of all students assigned to a specific advisor
-@nu_skillmatch.route('/advisor/<int:advisor_id>/students', methods=['GET'])
+@advisors.route('/advisor/<int:advisor_id>/students', methods=['GET'])
 def get_students_by_advisor(advisor_id):
     # SQL query to retrieve information
     query = f'''
@@ -290,6 +290,7 @@ def get_students_by_advisor(advisor_id):
     return make_response(jsonify(students), 200)
 
 # Retrieve a list of students assigned to a specific advisor
+@advisors.route('/advisor/<int:advisor_id>/student_list', methods=['GET'])
 def list_students_by_advisor(advisor_id):
     # SQL query to retrieve information
     query = f'''
@@ -314,7 +315,7 @@ def list_students_by_advisor(advisor_id):
 # Add or remove students from an advisor's list.
    # - PUT: Add a student to the advisor's list.
    # - DELETE: Remove a student from the advisor's list.
-@nu_skillmatch.route('/advisor/<int:advisor_id>/student/<int:student_id>', methods=['PUT', 'DELETE'])
+@advisors.route('/advisor/<int:advisor_id>/student/<int:student_id>', methods=['PUT', 'DELETE'])
 def modify_advisor_students(advisor_id, student_id):
     # SQL query to retrieve information
     if request.method == 'PUT':
