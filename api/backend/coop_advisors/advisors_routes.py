@@ -43,7 +43,10 @@ def add_students():
     data = request.json
     # extract student details from the JSON payload
     name = data.get('name')
-    age = data.get('age')
+    email = data.get('email')
+    location = data.get('location')
+    major = data.get('major')
+    gpa = data.get('gpa')
     # query to insert a new student record
     query = f'''
         INSERT INTO students (name, age) 
