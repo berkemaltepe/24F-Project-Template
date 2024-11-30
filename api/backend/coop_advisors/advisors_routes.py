@@ -137,11 +137,17 @@ def get_employers():
 def get_job_posting(job_id):
     # SQL query to fetch a job record by ID
     query = f'''
-        SELECT Job.title, Job.description, Job.location, Job.pay_range, Skill.skill_name, Job_Skill.min_proficiency
-        FROM Job
-        JOIN Job_Skill ON Job.job_id = Job_Skill.job_id
-        JOIN Skill ON Job_Skill.skill_id = Skill.skill_id
-        WHERE Job.job_id = {job_id}
+        SELECT
+            j.job_id,
+            j.title AS job_title,
+            e.name AS employer_name,
+            j.location,
+            j.pay_range,
+            j.status,
+            j.date_posted
+        FROM Job AS j
+        JOIN Employer AS e ON j.emp_id = e.emp_id
+        WHERE j.status = 'Open'
     '''
     # execute the query and fetch the result
     cursor = db.get_db().cursor()
