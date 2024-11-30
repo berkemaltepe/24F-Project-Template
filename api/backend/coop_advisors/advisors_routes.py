@@ -238,3 +238,16 @@ def get_student_skills_and_proficiency(student_id):
 
 # Compare a student's skills to the requirements of a specific job.
 @nu_skillmatch.route('/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
+def compare_student_to_job_skills(job_id, student_id):
+    query = f'''
+        SELECT
+            sk.skill_id,
+            sk.skill_name,
+            ss.proficiency AS student_proficiency,
+            js.weight AS job_requirement,
+            (ss.proficiency / js.min_proficiency) * js.weight AS level_of_fit
+        FROM Student_Skill AS ss
+        JOIN Skill AS sk ON ss.skill_id = sk.skill_id
+        LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
+        WHERE ss.student_id = {student_id} AND js.job_id = {job_id}
+    '''
