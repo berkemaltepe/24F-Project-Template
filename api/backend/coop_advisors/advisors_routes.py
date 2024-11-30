@@ -191,3 +191,24 @@ def calculate_match(job_id, student_id):
 
 #------------------------------------------------------------
 # Retrieve detailed information about a job, including required skills
+@nu_skillmatch.route('/job/<int:job_id>/details', methods=['GET'])
+def get_job_details_with_skills(job_id):
+    query = f'''
+        SELECT
+            j.job_id,
+            j.title AS job_title,
+            j.description,
+            j.location,
+            j.pay_range,
+            sk.skill_name,
+            js.min_proficiency AS required_proficiency,
+            js.weight AS skill_importance
+        FROM Job AS j
+        JOIN Job_Skill AS js ON j.job_id = js.job_id
+        JOIN Skill AS sk ON js.skill_id = sk.skill_id
+        WHERE j.job_id = {job_id}
+    '''
+    # Execute query and fetch the result
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    details = cursor.fetchall()
