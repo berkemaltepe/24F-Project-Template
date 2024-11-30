@@ -38,7 +38,7 @@ def get_students():
 #------------------------------------------------------------
 # Add new students to the database
 @nu_skillmatch.route('/students/', methods=['POST'])
-def get_students():
+def add_students():
     # get the request JSON data
     theData = request.json
     # extract student details from the JSON payload
