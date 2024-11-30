@@ -12,9 +12,8 @@ from flask import current_app
 from backend.db_connection import db
 
 #------------------------------------------------------------
-# Create a new Blueprint object, which is a collection of 
-# routes.
-advisors = Blueprint('advisors', __name__)
+# Blueprint for NUSkillMatch
+nu_skillmatch = Blueprint('nu_skillmatch', __name__)
 
 #------------------------------------------------------------
 # Get all students from the database
