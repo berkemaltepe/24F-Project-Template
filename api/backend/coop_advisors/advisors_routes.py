@@ -284,3 +284,18 @@ def get_students_by_advisor(advisor_id):
     students = cursor.fetchall()
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(students), 200)
+
+# Retrieve a list of students assigned to a specific advisor
+def list_students_by_advisor(advisor_id):
+    query = f'''
+        SELECT
+            s.student_id,
+            s.name,
+            s.email,
+            s.major,
+            s.gpa,
+            s.coop_status
+        FROM Student AS s
+        JOIN Advisor AS a ON s.advisor_id = a.advisor_id
+        WHERE a.advisor_id = {advisor_id}
+    '''
