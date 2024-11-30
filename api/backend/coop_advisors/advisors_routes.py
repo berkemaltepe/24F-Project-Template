@@ -182,11 +182,11 @@ def calculate_match(job_id, student_id):
             AND j.job_id = {job_id}
         GROUP BY j.job_id, s.student_id
     '''
-    # Execute query and fetch the result
+    # execute query and fetch the result
     cursor = db.get_db().cursor()
     cursor.execute(query)
     match = cursor.fetchone()
-    # Return the match percentage as JSON with a 200 HTTP status
+    # return the match percentage as JSON with a 200 HTTP status
     return make_response(jsonify(match), 200)
 
 #------------------------------------------------------------
@@ -208,7 +208,9 @@ def get_job_details_with_skills(job_id):
         JOIN Skill AS sk ON js.skill_id = sk.skill_id
         WHERE j.job_id = {job_id}
     '''
-    # Execute query and fetch the result
+    # execute query and fetch the result
     cursor = db.get_db().cursor()
     cursor.execute(query)
     details = cursor.fetchall()
+    # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(details), 200)
