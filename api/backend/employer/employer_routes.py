@@ -41,8 +41,6 @@ def update_employer_email(emp_id):
     db.get_db().commit()
     return 'email updated!'
 
-# Sample data: List of students
-
 @employer_routes.route('/students', methods=['GET'])
 def get_students():
     """
@@ -305,7 +303,7 @@ def delete_job_skill(job_id, skill_id):
 
 
 
-# Ensure to register this blueprint in your main application (e.g., backend_app.py)
+# Get SKILLMATCH
 @employer_routes.route('/job/<job_id>/<student_id>/student_matches', methods=['GET'])
 def get_matches(job_id, student_id):
     try:
