@@ -98,23 +98,6 @@ def get_student_profile(student_id):
     return make_response(jsonify(student), 200)
 
 #------------------------------------------------------------
-# View a student's profile
-@nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
-def get_student_profile(student_id):
-    # SQL query to fetch a student record by ID
-    query = f'''
-        SELECT * 
-        FROM students 
-        WHERE id = {student_id}
-    '''
-    # execute the query and commit the changes to the database
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    student = cursor.fetchone()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(student), 200)
-
-#------------------------------------------------------------
 # View a student's skills
 @nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
