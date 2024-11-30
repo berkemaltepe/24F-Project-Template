@@ -92,7 +92,8 @@ def get_student_profile(student_id):
     '''
     # Execute query and fetch the result
     cursor = db.get_db().cursor()
-
+    cursor.execute(query)
+    student = cursor.fetchone()
 
 #------------------------------------------------------------
 # View a student's profile
