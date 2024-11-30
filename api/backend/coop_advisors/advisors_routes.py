@@ -31,7 +31,7 @@ def get_students():
     # fetch all the data from the cursor
     students = cursor.fetchall()
     # create a HTTP Response object and add results of the query to it
-    response = make_response(jsonify(students))
+    response = make_response(jsonify(students), 200)
     # send the response back
     return response
 
