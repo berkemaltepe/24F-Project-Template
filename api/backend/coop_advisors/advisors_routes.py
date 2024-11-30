@@ -215,7 +215,7 @@ def get_job_details_with_skills(job_id):
     # return the result as JSON with a 200 HTTP status code
     return make_response(jsonify(details), 200)
 
-# Retrieve a student's skills and their proficiency levels.
+# Retrieve a student's skills and their proficiency levels
 @nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills_and_proficiency(student_id):
     query = f'''
@@ -234,3 +234,7 @@ def get_student_skills_and_proficiency(student_id):
     cursor.execute(query)
     skills = cursor.fetchall()
     # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(skills), 200)
+
+# Compare a student's skills to the requirements of a specific job.
+@nu_skillmatch.route('/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
