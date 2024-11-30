@@ -48,10 +48,10 @@ def add_students():
     major = data.get('major')
     gpa = data.get('gpa')
     # query to insert a new student record
-    query = f'''
-        INSERT INTO students (name, age) 
-        VALUES ('{name}', {age})
-    '''
+    query = f"""
+        INSERT INTO Student (name, email, location, major, gpa, linkedin_profile)
+        VALUES ('{name}', '{email}', '{location}', '{major}', {gpa}, '{linkedin_profile}')
+    """
     # execute the query and commit the changes to the database
     cursor = db.get_db().cursor()
     cursor.execute(query)
