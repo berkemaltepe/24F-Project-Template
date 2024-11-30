@@ -103,10 +103,10 @@ def get_student_profile(student_id):
 def get_student_skills(student_id):
     # SQL query to fetch skills for a specific student
     query = f'''
-        SELECT Skill.skill_name, Student_Skill.proficiency
-        FROM Student_Skill
-        JOIN Skill ON Student_Skill.skill_id = Skill.skill_id
-        WHERE Student_Skill.student_id = {student_id}
+        SELECT s.skill_name, ss.weight
+        FROM Student_Skill AS ss
+        JOIN Skill AS s ON ss.skill_id = s.skill_id
+        WHERE ss.student_id = {student_id}
     '''
     # execute the query and fetch the results
     cursor = db.get_db().cursor()
@@ -202,8 +202,7 @@ def get_job_details_with_skills(job_id):
             j.location,
             j.pay_range,
             sk.skill_name,
-            js.min_proficiency AS required_proficiency,
-            js.weight AS skill_importance
+            js.weight AS required_proficiency
         FROM Job AS j
         JOIN Job_Skill AS js ON j.job_id = js.job_id
         JOIN Skill AS sk ON js.skill_id = sk.skill_id
@@ -246,9 +245,20 @@ def compare_student_to_job_skills(job_id, student_id):
         SELECT
             sk.skill_id,
             sk.skill_name,
-            ss.proficiency AS student_proficiency,
+            ss.weight AS student_proficiency,
             js.weight AS job_requirement,
-            (ss.proficiency / js.min_proficiency) * js.weight AS level_of_fit
+            ROUND(
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS total_skill_gap
         FROM Student_Skill AS ss
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
