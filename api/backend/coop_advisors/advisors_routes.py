@@ -165,3 +165,5 @@ def calculate_match(job_id, student_id):
         LEFT JOIN Student_Skill ON Job_Skill.skill_id = Student_Skill.skill_id
         WHERE Job_Skill.job_id = {job_id} AND Student_Skill.student_id = {student_id}
     '''
+    # Execute query and fetch the result
+    cursor = db.get_db().cursor()
