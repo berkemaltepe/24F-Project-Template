@@ -229,4 +229,8 @@ def get_student_skills_and_proficiency(student_id):
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         WHERE s.student_id = {student_id}
     '''
-    
+    # execute query and fetch the result
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    skills = cursor.fetchall()
+    # return the result as JSON with a 200 HTTP status code
