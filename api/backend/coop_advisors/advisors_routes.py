@@ -282,3 +282,5 @@ def get_students_by_advisor(advisor_id):
     cursor = db.get_db().cursor()
     cursor.execute(query)
     students = cursor.fetchall()
+    # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(students), 200)
