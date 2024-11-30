@@ -23,7 +23,7 @@ def EmpProfileNav():
     st.sidebar.page_link("pages/emp_profile.py", label="Employer Profile", icon="📝")
 
 def EmpSkillMatchNav():
-    st.sidebar.page_link("pages/emp_skill_match.py", label="SkillMatch", icon="🧠")
+    st.sidebar.page_link("pages/emp_skill_match.py", label="SkillMatch", icon="📈")
 
 def EditJobsNav():
     st.sidebar.page_link("pages/emp_job_creation.py", label="Edit Jobs", icon="💼")
