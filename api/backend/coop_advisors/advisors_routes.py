@@ -84,7 +84,8 @@ def delete_student():
 # View student profile
 @nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
-    
+    # SQL query to fetch a student profile by ID
+    query = f"SELECT * FROM Student WHERE student_id = {student_id}"
 
 #------------------------------------------------------------
 # View a student's profile
