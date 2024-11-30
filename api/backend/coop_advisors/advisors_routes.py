@@ -188,3 +188,6 @@ def calculate_match(job_id, student_id):
     match = cursor.fetchone()
     # Return the match percentage as JSON with a 200 HTTP status
     return make_response(jsonify(match), 200)
+
+#------------------------------------------------------------
+# Retrieve detailed information about a job, including required skills
