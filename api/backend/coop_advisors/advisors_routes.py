@@ -318,16 +318,18 @@ def list_students_by_advisor(advisor_id):
 def modify_advisor_students(advisor_id, student_id):
     # SQL query to retrieve information
     if request.method == 'PUT':
-        query = f"""
+        query = f'''
             UPDATE Student
             SET advisor_id = {advisor_id}
             WHERE student_id = {student_id}
-        """
-        action = "added to"
+        '''
+        action = 'added to'
     elif request.method == 'DELETE':
-        query = f"""
+        query = f'''
             UPDATE Student
             SET advisor_id = NULL
             WHERE student_id = {student_id}
-        """
-        action = "removed from"
+        '''
+        action = 'removed from'
+        
+
