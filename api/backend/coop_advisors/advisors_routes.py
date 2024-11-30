@@ -16,6 +16,71 @@ from backend.db_connection import db
 nu_skillmatch = Blueprint('nu_skillmatch', __name__)
 
 #------------------------------------------------------------
+# Get all students from the database
+@nu_skillmatch.route('/students/', methods=['GET'])
+def get_students():
+    # get all students
+    query = '''
+        SELECT *
+        FROM Students
+       '''
+    # cursor object from the database
+    cursor = db.get_db().cursor()
+    # use cursor to exectute query
+    cursor.execute(query)
+    # fetch all the data from the cursor
+    students = cursor.fetchall()
+    # create a HTTP Response object and add results of the query to it
+    response = make_response(jsonify(students), 200)
+    # send the response back
+    return response
+
+#------------------------------------------------------------
+# Add new students to the database
+@nu_skillmatch.route('/students/', methods=['POST'])
+def add_students():
+    # get the request JSON data
+    data = request.json
+    # extract student details from the JSON payload
+    name = data.get('name')
+    email = data.get('email')
+    location = data.get('location')
+    major = data.get('major')
+    gpa = data.get('gpa')
+    linkedin_profile = data.get('linkedin_profile')
+    # query to insert a new student record
+    query = f"""
+        INSERT INTO Student (name, email, location, major, gpa, linkedin_profile)
+        VALUES ('{name}', '{email}', '{location}', '{major}', {gpa}, '{linkedin_profile}')
+    """
+    # execute the query and commit the changes to the database
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    # return a success message with a 201 HTTP status code
+    return make_response("Student added successfully.", 201)
+
+#------------------------------------------------------------
+# Remove a student from the database
+@nu_skillmatch.route('/student/', methods=['DELETE'])
+def delete_student():
+    # get the request JSON data
+    data = request.json
+    # extract the student ID from the JSON payload
+    student_id = data.get('student_id')
+    # SQL query to delete a student record by ID
+    query = f'''
+        DELETE FROM students 
+        WHERE id = {student_id}
+    '''
+    # execute the query and commit the changes to the database
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+    # return a success message with a 200 HTTP status code
+    return make_response("Student removed successfully.", 200)
+
+#------------------------------------------------------------
 # View student profile
 @nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
