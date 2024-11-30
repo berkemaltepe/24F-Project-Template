@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Student (
 CREATE TABLE IF NOT EXISTS Student_Skill (
     skill_id int,
     student_id int,
-    proficiency int,
+    weight int,
     PRIMARY KEY (skill_id, student_id),
     CONSTRAINT fk_6
         FOREIGN KEY (skill_id) REFERENCES Skill (skill_id)
@@ -111,7 +111,6 @@ CREATE TABLE IF NOT EXISTS Job_Skill (
     skill_id int,
     job_id int,
     weight int,
-    min_proficiency int,
     PRIMARY KEY (skill_id, job_id),
     CONSTRAINT fk_9
         FOREIGN KEY (skill_id) REFERENCES Skill (skill_id)
