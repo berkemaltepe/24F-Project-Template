@@ -331,5 +331,8 @@ def modify_advisor_students(advisor_id, student_id):
             WHERE student_id = {student_id}
         '''
         action = 'removed from'
-        
+    # execute query and fetch the result
+        cursor = db.get_db().cursor()
+        cursor.execute(query)
+        db.get_db().commit()
 
