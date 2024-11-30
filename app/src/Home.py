@@ -34,7 +34,14 @@ SideBarLinks(show_home=True)
 
 # set the title of the page and provide a simple prompt. 
 logger.info("Loading the Home page of the app")
-st.title('Welcome to NU SkillMatch')
+st.markdown(
+                    f"""
+                    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; margin-bottom: 20px;">
+                        <h2 style="text-align: center; color: #FFFFFF;"> <strong>Welcome to NU SkillMatch 👋</h2>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 st.write('\n\n')
 st.write('## Select a user: ')
 
