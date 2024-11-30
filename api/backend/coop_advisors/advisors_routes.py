@@ -40,10 +40,10 @@ def get_students():
 @nu_skillmatch.route('/students/', methods=['POST'])
 def add_students():
     # get the request JSON data
-    theData = request.json
+    data = request.json
     # extract student details from the JSON payload
-    name = theData.get('name')
-    age = theData.get('age')
+    name = data.get('name')
+    age = data.get('age')
     # query to insert a new student record
     query = f'''
         INSERT INTO students (name, age) 
