@@ -17,7 +17,7 @@ nu_skillmatch = Blueprint('nu_skillmatch', __name__)
 
 #------------------------------------------------------------
 # Get all students from the database
-@advisors.route('/students/', methods=['GET'])
+@nu_skillmatch.route('/students/', methods=['GET'])
 def get_students():
     # get all students
     query = '''
@@ -25,19 +25,19 @@ def get_students():
         FROM Students
        '''
     # cursor object from the database
-    cursor.get_db().cursor()
+    cursor = db.get_db().cursor()
     # use cursor to exectute query
     cursor.execute(query)
     # fetch all the data from the cursor
-    theData = cursor.fetchall()
+    students = cursor.fetchall()
     # create a HTTP Response object and add results of the query to it
-    response = make_response(jsonify(theData))
+    response = make_response(jsonify(students))
     # send the response back
     return response
 
 #------------------------------------------------------------
 # Add new students to the database
-@advisors.route('/students/', methods=['POST'])
+@nu_skillmatch.route('/students/', methods=['POST'])
 def get_students():
     # get the request JSON data
     theData = request.json
@@ -58,7 +58,7 @@ def get_students():
 
 #------------------------------------------------------------
 # Remove a student from the database
-@advisors.route('/student/', methods=['DELETE'])
+@nu_skillmatch.route('/student/', methods=['DELETE'])
 def delete_student():
     # get the request JSON data
     data = request.json
@@ -78,7 +78,7 @@ def delete_student():
 
 #------------------------------------------------------------
 # View a student's profile
-@advisors.route('/student/<int:student_id>', methods=['GET'])
+@nu_skillmatch.route('/student/<int:student_id>', methods=['GET'])
 def get_student_profile(student_id):
     # SQL query to fetch a student record by ID
     query = f'''
@@ -95,7 +95,7 @@ def get_student_profile(student_id):
 
 #------------------------------------------------------------
 # View a student's skills
-@advisors.route('/student/<int:student_id>/skills', methods=['GET'])
+@nu_skillmatch.route('/student/<int:student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
     # SQL query to fetch skills for a specific student
     query = f'''
@@ -113,7 +113,7 @@ def get_student_skills(student_id):
 
 #------------------------------------------------------------
 # Get all employers
-@advisors.route('/employer/', methods=['GET'])
+@nu_skillmatch.route('/employer/', methods=['GET'])
 def get_employers():
     # SQL query to fetch all employers
     query = '''
@@ -129,7 +129,7 @@ def get_employers():
 
 #------------------------------------------------------------
 # View a job posting
-@advisors.route('/job/<int:job_id>', methods=['GET'])
+@nu_skillmatch.route('/job/<int:job_id>', methods=['GET'])
 def get_job_posting(job_id):
     # SQL query to fetch a job record by ID
     query = f'''
