@@ -167,3 +167,4 @@ def calculate_match(job_id, student_id):
     '''
     # Execute query and fetch the result
     cursor = db.get_db().cursor()
+    cursor.execute(query)
