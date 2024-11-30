@@ -157,13 +157,24 @@ def calculate_match(job_id, student_id):
     # SQL query to calculate match percentage
     query = f'''
         SELECT
+            j.job_id,
+            j.title AS job_title,
+            s.student_id,
+            s.name AS student_name,
             ROUND(
-                (SUM(CASE WHEN Student_Skill.skill_id = Job_Skill.skill_id THEN 1 ELSE 0 END) 
-                / COUNT(Job_Skill.skill_id)) * 100, 2
+                (SUM(CASE
+                    WHEN ss.skill_id = js.skill_id THEN 1
+                    ELSE 0
+                END) / COUNT(js.skill_id)) * 100, 2
             ) AS match_percentage
-        FROM Job_Skill
-        LEFT JOIN Student_Skill ON Job_Skill.skill_id = Student_Skill.skill_id
-        WHERE Job_Skill.job_id = {job_id} AND Student_Skill.student_id = {student_id}
+        FROM Job AS j
+        JOIN Job_Skill AS js ON j.job_id = js.job_id
+        JOIN Student_Skill AS ss ON js.skill_id = ss.skill_id
+        JOIN Student s ON ss.student_id = s.student_id
+        WHERE
+            s.student_id = {student_id}
+            AND j.job_id = {job_id}
+        GROUP BY j.job_id, s.student_id
     '''
     # Execute query and fetch the result
     cursor = db.get_db().cursor()
