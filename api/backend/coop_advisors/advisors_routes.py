@@ -90,6 +90,9 @@ def get_student_profile(student_id):
         FROM Student 
         WHERE student_id = {student_id}
     '''
+    # Execute query and fetch the result
+    cursor = db.get_db().cursor()
+
 
 #------------------------------------------------------------
 # View a student's profile
