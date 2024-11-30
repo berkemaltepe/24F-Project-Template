@@ -153,3 +153,15 @@ def get_job_posting(job_id):
 #------------------------------------------------------------
 # Calculate match percentage
 @nu_skillmatch.route('/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
+def calculate_match(job_id, student_id):
+    # SQL query to calculate match percentage
+    query = f'''
+        SELECT
+            ROUND(
+                (SUM(CASE WHEN Student_Skill.skill_id = Job_Skill.skill_id THEN 1 ELSE 0 END) 
+                / COUNT(Job_Skill.skill_id)) * 100, 2
+            ) AS match_percentage
+        FROM Job_Skill
+        LEFT JOIN Student_Skill ON Job_Skill.skill_id = Student_Skill.skill_id
+        WHERE Job_Skill.job_id = {job_id} AND Student_Skill.student_id = {student_id}
+    '''
