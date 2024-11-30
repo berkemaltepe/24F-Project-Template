@@ -255,3 +255,5 @@ def compare_student_to_job_skills(job_id, student_id):
     cursor = db.get_db().cursor()
     cursor.execute(query)
     comparison = cursor.fetchall()
+    # return the result as JSON with a 200 HTTP status code
+    return make_response(jsonify(comparison), 200)
