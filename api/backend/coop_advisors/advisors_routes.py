@@ -47,6 +47,7 @@ def add_students():
     location = data.get('location')
     major = data.get('major')
     gpa = data.get('gpa')
+    linkedin_profile = data.get('linkedin_profile')
     # query to insert a new student record
     query = f"""
         INSERT INTO Student (name, email, location, major, gpa, linkedin_profile)
