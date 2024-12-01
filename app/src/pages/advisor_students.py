@@ -36,7 +36,7 @@ st.markdown(
 
 # Fetch the list of students assigned to the advisor
 advisor_id = st.session_state["advisor_id"]
-response = requests.get(f"{BASE_URL}/{advisor_id}/list-of-students")
+response = requests.get(f"{BASE_URL}/1/list-of-students")
 
 if response.status_code == 200:
     students = response.json()

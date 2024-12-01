@@ -71,7 +71,7 @@ def update_advisor_email(advisor_id):
 
 # ------------------------------------------------------------
 # Route: Get list of students assigned to a specific advisor
-@advisors.route('/advisor/<int:advisor_id>/list-of-students', methods=['GET'])
+@advisors.route('/advisor/<advisor_id>/list-of-students', methods=['GET'])
 def get_students_by_advisor(advisor_id):
     # SQL query to fetch students
     query = f'''
