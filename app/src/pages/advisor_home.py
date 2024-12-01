@@ -15,5 +15,8 @@ SideBarLinks()
 st.title('Co-op Advisor Home Page')
 
 # Buttons for navigation
-
+if st.button('Student List', use_container_width=True):
+    st.switch_page('student_list.py')  # Redirect to Student List page
+if st.button('Skill Match Analysis', use_container_width=True):
+    st.switch_page('skill_match.py')  # Redirect to Skill Match Analysis page
 
