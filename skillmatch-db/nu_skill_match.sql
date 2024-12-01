@@ -143,7 +143,7 @@ INSERT INTO Dpt_Faculty (faculty_id, admin_id, name, email, department) VALUES
 
 -- Advisor Table
 INSERT INTO Advisor (advisor_id, admin_id, name, email, department) VALUES
-(1, 1, 'Mark Brown', 'mark.brown@example.edu', 'Engineering'),
+(1, 1, 'Yuta Namba', 'yuta.namba@example.edu', 'Engineering'),
 (2, 2, 'Linda White', 'linda.white@example.edu', 'Business'),
 (3, 1, 'Nancy Green', 'nancy.green@example.edu', 'Science');
 

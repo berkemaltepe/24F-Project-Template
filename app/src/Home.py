@@ -92,7 +92,7 @@ if st.button('Act as Yuta, Co-Op Advisor',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'advisor'
     st.session_state['first_name'] = 'Yuta'
-    # CHANGE TO ADVISOR HOME PAGE (make a new page or something like that)
+    st.session_state['advisor_id'] = 1
     st.switch_page('pages/advisor_home.py')
 
 if st.button("Act as Lea, the Head of Khoury College of CS", 
