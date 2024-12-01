@@ -1,8 +1,70 @@
-from flask import Blueprint, request, jsonify, make_response, current_app
+from flask import Blueprint
+from flask import request
+from flask import jsonify
+from flask import make_response
+from flask import current_app
 from backend.db_connection import db
 
 # Blueprint for advisor routes
 advisors = Blueprint('advisors', __name__)
+
+# ------------------------------------------------------------
+# Route: Get advisor information
+@advisors.route('/advisor/<advisor_id>', methods=['GET'])
+def get_advisor_info(advisor_id):
+    """
+    Endpoint to get advisor information.
+    """
+    try:
+        # Get a database connection
+        cursor = db.get_db().cursor()
+
+        # Use a parameterized query to prevent SQL injection
+        query = '''
+            SELECT name, advisor_id, email, department
+            FROM Advisor
+            WHERE advisor_id = {0}
+        '''.format(advisor_id)
+        cursor.execute(query)  # Pass advisor_id as a parameter safely
+
+        # Fetch the results
+        advisor = cursor.fetchall()
+
+        # Return the results as JSON
+        return make_response(jsonify(advisor)), 200
+    except Exception as e:
+        current_app.logger.error(f"Error fetching advisor info: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# ------------------------------------------------------------
+# Route: Update advisor email
+@advisors.route('/advisor/<int:advisor_id>/email', methods=['PUT'])
+def update_advisor_email(advisor_id):
+    """
+    Endpoint to update advisor email.
+    """
+    try:
+        # Log the PUT request
+        current_app.logger.info('PUT /advisor/email route')
+
+        # Parse the request body for new email data
+        advisor_info = request.json
+        new_email = advisor_info.get('email')
+
+        if not new_email:
+            return jsonify({"error": "Email field is required."}), 400
+
+        # Update the advisor's email in the database
+        query = 'UPDATE Advisor SET email = %s WHERE advisor_id = %s'
+        data = (new_email, advisor_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        return jsonify({"message": "Advisor email updated successfully!"}), 200
+    except Exception as e:
+        current_app.logger.error(f"Error updating advisor email: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # ------------------------------------------------------------
 # Route: Get list of students assigned to a specific advisor

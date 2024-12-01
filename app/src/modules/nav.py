@@ -31,6 +31,29 @@ def EditJobsNav():
 def StudentListNav():
     st.sidebar.page_link("pages/emp_student_list.py", label="See List of Students", icon="🎓")
 
+# --------------------------------Advisor Navigation --------------------------------
+
+def AdvisorStudentListNav():
+    st.sidebar.page_link("pages/advisor_students.py", label="Student List", icon="🎓")
+
+
+def AdvisorSkillMatchNav():
+    st.sidebar.page_link(
+        "pages/advisor_skill_match.py", label="Skill Match Analysis", icon="📈"
+    )
+
+
+def AdvisorJobPostingsNav():
+    st.sidebar.page_link(
+        "pages/advisor_job_postings.py", label="Active Job Postings", icon="💼"
+    )
+
+
+def AdvisorManageStudentsNav():
+    st.sidebar.page_link(
+        "pages/advisor_manage_students.py", label="Manage Students", icon="🛠️"
+    )
+
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home Page", icon="🏠")
@@ -116,6 +139,13 @@ def SideBarLinks(show_home=True):
             EmpSkillMatchNav()
             EditJobsNav()
             StudentListNav()
+        
+        # If the user is an advisor, show the advisor links
+        if st.session_state["role"] == "advisor":
+            AdvisorStudentListNav()
+            AdvisorSkillMatchNav()
+            AdvisorJobPostingsNav()
+            AdvisorManageStudentsNav()
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":
@@ -142,3 +172,4 @@ def SideBarLinks(show_home=True):
             del st.session_state["role"]
             del st.session_state["authenticated"]
             st.switch_page("Home.py")
+
