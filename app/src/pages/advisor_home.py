@@ -24,3 +24,8 @@ if st.button('Active Job Postings', use_container_width=True):
 if st.button('Manage Students', use_container_width=True):
     st.switch_page('manage_students.py')  # Redirect to Manage Students page
 
+# Add sidebar navigation
+menu = st.sidebar.radio(
+    "Navigation",
+    ["Home", "Student List", "Skill Match Analysis", "Active Job Postings", "Manage Students"]
+)
