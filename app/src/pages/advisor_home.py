@@ -70,12 +70,19 @@ st.markdown(
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
     st.switch_page('pages/advisor_students.py')  # Redirect to Student List page
+st.markdown("</div><div style='width: 300px;'>", unsafe_allow_html=True)
+
 if st.button('Skill Match Analysis', use_container_width=True):
     st.switch_page('pages/advisor_skill_match.py')  # Redirect to Skill Match Analysis page
+st.markdown("</div><div style='width: 300px;'>", unsafe_allow_html=True)
+
 if st.button('Active Job Postings', use_container_width=True):
     st.switch_page('pages/advisor_job_postings.py')  # Redirect to Job Postings page
+st.markdown("</div><div style='width: 300px;'>", unsafe_allow_html=True)
+
 if st.button('Manage Students', use_container_width=True):
     st.switch_page('pages/advisor_manage_students.py')  # Redirect to Manage Students page
+st.markdown("</div><div style='width: 300px;'>", unsafe_allow_html=True)
 
 # Add sidebar navigation
 menu = st.sidebar.radio(
