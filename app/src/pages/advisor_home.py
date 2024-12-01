@@ -99,3 +99,13 @@ elif menu == "Active Job Postings":
 elif menu == "Manage Students":
     st.switch_page('pages/advisor_manage_students.py')
 
+# Add footer for branding or additional info
+st.markdown(
+    """
+    <hr>
+    <footer style="text-align: center; margin-top: 30px; color: #777;">
+        <p style="font-size: 14px;">Powered by SkillMatch Platform | © 2024 SkillMatch, Inc.</p>
+    </footer>
+    """,
+    unsafe_allow_html=True,
+)
