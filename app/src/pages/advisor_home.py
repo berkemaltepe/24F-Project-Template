@@ -5,13 +5,15 @@ import streamlit as st
 from modules.nav import SideBarLinks
 import requests
 
+# Set wide layout for the page
 st.set_page_config(layout = 'wide')
 
+# Sidebar navigation setup
 SideBarLinks()
 
+# Page title
 st.title('Co-op Advisor Home Page')
 
-if st.button('Update ML Models', 
-             type='primary',
-             use_container_width=True):
-  st.switch_page('pages/21_ML_Model_Mgmt.py')
+# Buttons for navigation
+
+
