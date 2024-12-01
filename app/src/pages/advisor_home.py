@@ -10,9 +10,14 @@ st.set_page_config(layout = 'wide')
 
 # Sidebar navigation setup
 SideBarLinks()
+BASE_URL = "http://web-api:4000/advisor"
 
-# Page title
-st.title('Co-op Advisor Home Page')
+# Fetch advisor data
+response = requests.get(f"{BASE_URL}/{st.session_state['advisor_id']}/students")
+if response.status_code == 200:
+    students = response.json()
+else:
+    st.error(f"Error {response.status_code}: {response.text}")
 
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
