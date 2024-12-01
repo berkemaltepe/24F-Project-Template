@@ -37,6 +37,29 @@ st.write("")
 st.write("")
 st.write("")
 
+# Buttons with borders and improved styling
+button_style = """
+    <style>
+        .stButton>button {
+            background-color: #000000;
+            color: white;
+            border: 2px solid #FF0000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .stButton>button:hover {
+            background-color: #FFFFFF;
+            border-color: #FF0000;
+        }
+    </style>
+"""
+st.markdown(button_style, unsafe_allow_html=True)
+
+
+
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
     st.switch_page('pages/advisor_students.py')  # Redirect to Student List page
