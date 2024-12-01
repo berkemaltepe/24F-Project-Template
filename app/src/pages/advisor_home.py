@@ -58,7 +58,14 @@ button_style = """
 """
 st.markdown(button_style, unsafe_allow_html=True)
 
-
+# Buttons grid
+st.markdown(
+    """
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <div style="width: 300px;">
+    """,
+    unsafe_allow_html=True,
+)
 
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
