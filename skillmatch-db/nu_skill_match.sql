@@ -288,6 +288,7 @@ INSERT INTO Student (student_id, name, email, location, major, coop_status, resu
 (49, 'Savannah Foster', 'savannah.foster@example.com', 'Boise', 'Public Policy', 'Seeking', 'Resume Link 49', 'Senior', 'linkedin.com/savannahfoster', 3.6, 1, 1),
 (50, 'Owen Brooks', 'owen.brooks@example.com', 'Anchorage', 'Linguistics', 'Co-op', 'Resume Link 50', 'Sophomore', 'linkedin.com/owenbrooks', 3.7, 2, 2);
 
+
 -- Student_Skill Table
 INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
 (1, 1, 5),

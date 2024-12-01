@@ -103,7 +103,7 @@ if st.button("Act as Lea, the Head of Khoury College of CS",
     st.session_state['first_name'] = 'Lea'
     logger.info("Logging in as Khoury Dept. Head")
     # CHANGE TO DEPT HEAD HOME PAGE (make a new page or something like that)
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    st.switch_page('pages/Dept_Head_Home.py')
 
 if st.button("Act as Colin, the System Admin", 
             type = 'primary', 
