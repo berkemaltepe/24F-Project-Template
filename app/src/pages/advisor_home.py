@@ -32,6 +32,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Add spacing
+st.write("")
+st.write("")
+st.write("")
+
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
     st.switch_page('pages/advisor_students.py')  # Redirect to Student List page
