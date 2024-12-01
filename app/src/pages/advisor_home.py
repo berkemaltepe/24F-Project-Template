@@ -21,4 +21,6 @@ if st.button('Skill Match Analysis', use_container_width=True):
     st.switch_page('skill_match.py')  # Redirect to Skill Match Analysis page
 if st.button('Active Job Postings', use_container_width=True):
     st.switch_page('job_postings.py')  # Redirect to Job Postings page
+if st.button('Manage Students', use_container_width=True):
+    st.switch_page('manage_students.py')  # Redirect to Manage Students page
 
