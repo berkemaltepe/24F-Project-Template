@@ -1,280 +1,14 @@
-
-############################################################
-# PERSONA: CO-OP ADVISOR
-# This file goes over the routes required for co-op advisors
-############################################################
-
-from flask import Blueprint
-from flask import request
-from flask import jsonify
-from flask import make_response
-from flask import current_app
+from flask import Blueprint, request, jsonify, make_response, current_app
 from backend.db_connection import db
 
-#------------------------------------------------------------
-# Blueprint for NUSkillMatch
+# Blueprint for advisor routes
 advisors = Blueprint('advisors', __name__)
 
-#------------------------------------------------------------
-# Get all students from the database
-@advisors.route('/advisor/students/', methods=['GET'])
-def get_students():
-    # get all students
-    query = '''
-        SELECT *
-        FROM Students
-       '''
-    # cursor object from the database
-    cursor = db.get_db().cursor()
-    # use cursor to exectute query
-    cursor.execute(query)
-    # fetch all the data from the cursor
-    students = cursor.fetchall()
-    # create a HTTP Response object and add results of the query to it
-    response = make_response(jsonify(students), 200)
-    # send the response back
-    return response
-
-#------------------------------------------------------------
-# Add new students to the database
-@advisors.route('/advisor/students/', methods=['POST'])
-def add_students():
-    # get the request JSON data
-    data = request.json
-    # extract student details from the JSON payload
-    name = data.get('name')
-    email = data.get('email')
-    location = data.get('location')
-    major = data.get('major')
-    gpa = data.get('gpa')
-    linkedin_profile = data.get('linkedin_profile')
-    # query to insert a new student record
-    query = f"""
-        INSERT INTO Student (name, email, location, major, gpa, linkedin_profile)
-        VALUES ('{name}', '{email}', '{location}', '{major}', {gpa}, '{linkedin_profile}')
-    """
-    # execute the query and commit the changes to the database
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-    # return a success message with a 201 HTTP status code
-    return make_response("Student added successfully.", 201)
-
-#------------------------------------------------------------
-# Remove a student from the database
-@advisors.route('/advisor/student/', methods=['DELETE'])
-def delete_student():
-    # get the request JSON data
-    data = request.json
-    # extract the student ID from the JSON payload
-    student_id = data.get('student_id')
-    # SQL query to delete a student record by ID
-    query = f'''
-        DELETE FROM students 
-        WHERE id = {student_id}
-    '''
-    # execute the query and commit the changes to the database
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-    # return a success message with a 200 HTTP status code
-    return make_response("Student removed successfully.", 200)
-
-#------------------------------------------------------------
-# View student profile
-@advisors.route('/advisor/student/<int:student_id>', methods=['GET'])
-def get_student_profile(student_id):
-    # SQL query to fetch a student profile by ID
-    query = f'''
-        SELECT * 
-        FROM Student 
-        WHERE student_id = {student_id}
-    '''
-    # Execute query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    student = cursor.fetchone()
-    # Return the student profile as JSON with a 200 HTTP status
-    return make_response(jsonify(student), 200)
-
-#------------------------------------------------------------
-# View a student's skills
-@advisors.route('/advisor/student/<int:student_id>/skills', methods=['GET'])
-def get_student_skills(student_id):
-    # SQL query to fetch skills for a specific student
-    query = f'''
-        SELECT s.skill_name, ss.weight
-        FROM Student_Skill AS ss
-        JOIN Skill AS s ON ss.skill_id = s.skill_id
-        WHERE ss.student_id = {student_id}
-    '''
-    # execute the query and fetch the results
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    skills = cursor.fetchall()
-    # return the results as JSON with a 200 HTTP status code
-    return make_response(jsonify(skills), 200)
-
-#------------------------------------------------------------
-# Get all employers
-@advisors.route('/advisor/employer/', methods=['GET'])
-def get_employers():
-    # SQL query to fetch all employers
-    query = '''
-        SELECT * 
-        FROM employers
-    '''
-    # execute the query and fetch the results
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    employers = cursor.fetchall()
-    # return the results as JSON with a 200 HTTP status code
-    return make_response(jsonify(employers), 200)
-
-#------------------------------------------------------------
-# View a job posting details
-@advisors.route('/advisor/job/<int:job_id>', methods=['GET'])
-def get_job_posting(job_id):
-    # SQL query to fetch a job record by ID
-    query = f'''
-        SELECT
-            j.job_id,
-            j.title AS job_title,
-            e.name AS employer_name,
-            j.location,
-            j.pay_range,
-            j.status,
-            j.date_posted
-        FROM Job AS j
-        JOIN Employer AS e ON j.emp_id = e.emp_id
-        WHERE j.status = 'Open'
-    '''
-    # execute the query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    job = cursor.fetchone()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(job), 200)
-
-#------------------------------------------------------------
-# Calculate match percentage
-@advisors.route('/advisor/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
-def calculate_match(job_id, student_id):
-    # SQL query to calculate match percentage
-    query = f'''
-        SELECT
-            j.job_id,
-            j.title AS job_title,
-            s.student_id,
-            s.name AS student_name,
-            ROUND(
-                (SUM(CASE
-                    WHEN ss.skill_id = js.skill_id THEN 1
-                    ELSE 0
-                END) / COUNT(js.skill_id)) * 100, 2
-            ) AS match_percentage
-        FROM Job AS j
-        JOIN Job_Skill AS js ON j.job_id = js.job_id
-        JOIN Student_Skill AS ss ON js.skill_id = ss.skill_id
-        JOIN Student s ON ss.student_id = s.student_id
-        WHERE
-            s.student_id = {student_id}
-            AND j.job_id = {job_id}
-        GROUP BY j.job_id, s.student_id
-    '''
-    # execute query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    match = cursor.fetchone()
-    # return the match percentage as JSON with a 200 HTTP status
-    return make_response(jsonify(match), 200)
-
-#------------------------------------------------------------
-# Retrieve detailed information about a job, including required skills
-@advisors.route('/advisor/job/<int:job_id>/details', methods=['GET'])
-def get_job_details_with_skills(job_id):
-    # SQL query to retrieve information
-    query = f'''
-        SELECT
-            j.job_id,
-            j.title AS job_title,
-            j.description,
-            j.location,
-            j.pay_range,
-            sk.skill_name,
-            js.weight AS required_proficiency
-        FROM Job AS j
-        JOIN Job_Skill AS js ON j.job_id = js.job_id
-        JOIN Skill AS sk ON js.skill_id = sk.skill_id
-        WHERE j.job_id = {job_id}
-    '''
-    # execute query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    details = cursor.fetchall()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(details), 200)
-
-# Retrieve a student's skills and their proficiency levels
-@advisors.route('/advisor/student/<int:student_id>/skills', methods=['GET'])
-def get_student_skills_and_proficiency(student_id):
-    # SQL query to retrieve information
-    query = f'''
-        SELECT
-            s.student_id,
-            s.name AS student_name,
-            sk.skill_name,
-            ss.proficiency
-        FROM Student AS s
-        JOIN Student_Skill AS ss ON s.student_id = ss.student_id
-        JOIN Skill AS sk ON ss.skill_id = sk.skill_id
-        WHERE s.student_id = {student_id}
-    '''
-    # execute query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    skills = cursor.fetchall()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(skills), 200)
-
-# Compare a student's skills to the requirements of a specific job.
-@advisors.route('/advisor/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
-def compare_student_to_job_skills(job_id, student_id):
-    # SQL query to retrieve information
-    query = f'''
-        SELECT
-            sk.skill_id,
-            sk.skill_name,
-            ss.weight AS student_proficiency,
-            js.weight AS job_requirement,
-            ROUND(
-            COALESCE(SUM(
-                CASE
-                    WHEN ss.weight IS NULL
-                        THEN js.weight
-                    WHEN ss.weight >= js.weight
-                        THEN 0
-                    ELSE
-                        js.weight - ss.weight
-                END
-            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
-        ) AS total_skill_gap
-        FROM Student_Skill AS ss
-        JOIN Skill AS sk ON ss.skill_id = sk.skill_id
-        LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
-        WHERE ss.student_id = {student_id} AND js.job_id = {job_id}
-    '''
-    # execute query and fetch the result
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    comparison = cursor.fetchall()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(comparison), 200)
-
-# Retrieve detailed profiles of all students assigned to a specific advisor
-@advisors.route('/advisor/<int:advisor_id>/students', methods=['GET'])
+# ------------------------------------------------------------
+# Route: Get list of students assigned to a specific advisor
+@advisors.route('/advisor/<int:advisor_id>/list-of-students', methods=['GET'])
 def get_students_by_advisor(advisor_id):
-    # SQL query to retrieve information
+    # SQL query to fetch students
     query = f'''
         SELECT
             s.student_id,
@@ -292,43 +26,94 @@ def get_students_by_advisor(advisor_id):
         JOIN Advisor AS a ON s.advisor_id = a.advisor_id
         WHERE a.advisor_id = {advisor_id}
     '''
-    # execute query and fetch the result
     cursor = db.get_db().cursor()
     cursor.execute(query)
     students = cursor.fetchall()
-    # return the result as JSON with a 200 HTTP status code
+    # Return as JSON response
     return make_response(jsonify(students), 200)
 
-# Retrieve a list of students assigned to a specific advisor
-@advisors.route('/advisor/<int:advisor_id>/student_list', methods=['GET'])
-def list_students_by_advisor(advisor_id):
-    # SQL query to retrieve information
-    query = f'''
-        SELECT
-            s.student_id,
-            s.name,
-            s.email,
-            s.major,
-            s.gpa,
-            s.coop_status
-        FROM Student AS s
-        JOIN Advisor AS a ON s.advisor_id = a.advisor_id
-        WHERE a.advisor_id = {advisor_id}
+# ------------------------------------------------------------
+# Route: Get all active job postings
+@advisors.route('/advisor/employer/', methods=['GET'])
+def get_all_job_postings():
+    # SQL query to fetch all active job postings
+    query = '''
+        SELECT 
+            j.job_id,
+            j.title AS job_title,
+            e.name AS employer_name,
+            j.location,
+            j.pay_range,
+            j.status,
+            j.date_posted
+        FROM Job AS j
+        JOIN Employer AS e ON j.emp_id = e.emp_id
+        WHERE j.status = 'Open'
     '''
-    # execute query and fetch the result
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    student_list = cursor.fetchall()
-    # return the result as JSON with a 200 HTTP status code
-    return make_response(jsonify(student_list), 200)
+    jobs = cursor.fetchall()
+    return make_response(jsonify(jobs), 200)
 
-# Add or remove students from an advisor's list.
-   # - PUT: Add a student to the advisor's list.
-   # - DELETE: Remove a student from the advisor's list.
+# ------------------------------------------------------------
+# Route: Compare a student's skills to a specific job's requirements
+@advisors.route('/advisor/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
+def compare_student_to_job_skills(job_id, student_id):
+    # SQL query to compare student skills with job requirements
+    query = f'''
+        SELECT
+            sk.skill_name,
+            ss.weight AS student_proficiency,
+            js.weight AS job_requirement,
+            ROUND(
+                COALESCE(SUM(
+                    CASE
+                        WHEN ss.weight IS NULL THEN js.weight
+                        WHEN ss.weight >= js.weight THEN 0
+                        ELSE js.weight - ss.weight
+                    END
+                ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+            ) AS total_skill_gap
+        FROM Student_Skill AS ss
+        JOIN Skill AS sk ON ss.skill_id = sk.skill_id
+        LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
+        WHERE ss.student_id = {student_id} AND js.job_id = {job_id}
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    comparison = cursor.fetchall()
+    return make_response(jsonify(comparison), 200)
+
+# ------------------------------------------------------------
+# Route: Fetch detailed job information including required skills
+@advisors.route('/advisor/job/<int:job_id>/details', methods=['GET'])
+def get_job_details_with_skills(job_id):
+    # SQL query to fetch job details and required skills
+    query = f'''
+        SELECT
+            j.job_id,
+            j.title AS job_title,
+            j.description,
+            j.location,
+            j.pay_range,
+            sk.skill_name,
+            js.weight AS required_proficiency
+        FROM Job AS j
+        JOIN Job_Skill AS js ON j.job_id = js.job_id
+        JOIN Skill AS sk ON js.skill_id = sk.skill_id
+        WHERE j.job_id = {job_id}
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    details = cursor.fetchall()
+    return make_response(jsonify(details), 200)
+
+# ------------------------------------------------------------
+# Route: Assign a student to an advisor (PUT) or remove a student (DELETE)
 @advisors.route('/advisor/<int:advisor_id>/student/<int:student_id>', methods=['PUT', 'DELETE'])
 def modify_advisor_students(advisor_id, student_id):
-    # SQL query to retrieve information
     if request.method == 'PUT':
+        # Assign student to advisor
         query = f'''
             UPDATE Student
             SET advisor_id = {advisor_id}
@@ -336,17 +121,45 @@ def modify_advisor_students(advisor_id, student_id):
         '''
         action = 'added to'
     elif request.method == 'DELETE':
+        # Remove student from advisor
         query = f'''
             UPDATE Student
             SET advisor_id = NULL
             WHERE student_id = {student_id}
         '''
         action = 'removed from'
-    # execute query and fetch the result
+
+    # Execute query
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
-    # return the result as JSON with a 200 HTTP status code
     return make_response(f"Student successfully {action} advisor's list.", 200)
 
-    
+# ------------------------------------------------------------
+# Route: Calculate match percentage between a student and a job
+@advisors.route('/advisor/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
+def calculate_match_percentage(job_id, student_id):
+    # SQL query to calculate match percentage
+    query = f'''
+        SELECT
+            j.job_id,
+            j.title AS job_title,
+            s.student_id,
+            s.name AS student_name,
+            ROUND(
+                (SUM(CASE
+                    WHEN ss.skill_id = js.skill_id THEN 1
+                    ELSE 0
+                END) / COUNT(js.skill_id)) * 100, 2
+            ) AS match_percentage
+        FROM Job AS j
+        JOIN Job_Skill AS js ON j.job_id = js.job_id
+        JOIN Student_Skill AS ss ON js.skill_id = ss.skill_id
+        JOIN Student AS s ON ss.student_id = s.student_id
+        WHERE s.student_id = {student_id} AND j.job_id = {job_id}
+        GROUP BY j.job_id, s.student_id
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    match = cursor.fetchone()
+    return make_response(jsonify(match), 200)
