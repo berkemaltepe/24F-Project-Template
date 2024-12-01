@@ -163,3 +163,13 @@ def calculate_match_percentage(job_id, student_id):
     cursor.execute(query)
     match = cursor.fetchone()
     return make_response(jsonify(match), 200)
+
+# SUMMARY
+# |Route|	                                       |Method|	 |Purpose|
+# /advisor/<advisor_id>/list-of-students	        GET	      Fetch students assigned to an advisor.
+# /advisor/employer/	                            GET	      Fetch all active job postings.
+# /advisor/job/<job_id>/skills/compare/<student_id>	GET	      Compare a student's skills to a job.
+# /advisor/job/<job_id>/details	                    GET	      Fetch detailed job and skill information.
+# /advisor/<advisor_id>/student/<student_id>	    PUT	      Assign a student to an advisor.
+# /advisor/<advisor_id>/student/<student_id>	    DELETE	  Remove a student from an advisor.
+# /advisor/job/<job_id>/match/<student_id>	        GET	      Calculate match percentage.
