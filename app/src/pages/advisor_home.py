@@ -19,6 +19,19 @@ if response.status_code == 200:
 else:
     st.error(f"Error {response.status_code}: {response.text}")
 
+advisor_id = st.session_state['advisor_id']
+
+# Hero banner with border
+st.markdown(
+    f"""
+    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; text-align: center; color: white;">
+        <h1 style="font-size: 40px; margin-bottom: 10px;">Welcome to the Co-op Advisor Dashboard</h1>
+        <p style="font-size: 20px;">Hello, {st.session_state['first_name']}! Here are your options:</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Buttons for navigation
 if st.button('Student List', use_container_width=True):
     st.switch_page('pages/advisor_students.py')  # Redirect to Student List page
