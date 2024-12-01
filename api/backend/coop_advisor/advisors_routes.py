@@ -10,7 +10,7 @@ advisors = Blueprint('advisors', __name__)
 
 # ------------------------------------------------------------
 # Route: Get advisor information
-@advisors.route('/advisor/<advisor_id>', methods=['GET'])
+@advisors.route('/advisor/<int:advisor_id>', methods=['GET'])  # Ensure advisor_id is an integer
 def get_advisor_info(advisor_id):
     """
     Endpoint to get advisor information.
@@ -18,20 +18,23 @@ def get_advisor_info(advisor_id):
     try:
         # Get a database connection
         cursor = db.get_db().cursor()
-
         # Use a parameterized query to prevent SQL injection
         query = '''
             SELECT name, advisor_id, email, department
             FROM Advisor
-            WHERE advisor_id = {0}
-        '''.format(advisor_id)
-        cursor.execute(query)  # Pass advisor_id as a parameter safely
+            WHERE advisor_id = %s
+        '''
+        cursor.execute(query, (advisor_id,))  # Pass advisor_id as a parameter safely
 
         # Fetch the results
-        advisor = cursor.fetchall()
+        advisor = cursor.fetchall()  # Use fetchone if only one record is expected
+
+        # Check if the advisor exists
+        if not advisor:
+            return jsonify({"error": "Advisor not found"}), 404
 
         # Return the results as JSON
-        return make_response(jsonify(advisor)), 200
+        return make_response(jsonify(advisor), 200)
     except Exception as e:
         current_app.logger.error(f"Error fetching advisor info: {e}")
         return jsonify({"error": str(e)}), 500

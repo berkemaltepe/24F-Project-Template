@@ -21,6 +21,8 @@ if "advisor_id" not in st.session_state:
     st.error("Advisor ID not found. Please log in as an advisor.")
     st.stop()
 
+st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
+
 # Title of the page
 st.markdown(
     """
