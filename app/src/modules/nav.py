@@ -31,6 +31,17 @@ def EditJobsNav():
 def StudentListNav():
     st.sidebar.page_link("pages/emp_student_list.py", label="See List of Students", icon="🎓")
 
+#### ------------------------ Department Head Navigation ---------------------------- ####
+
+def TopSkillsNav():
+    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Industry Skills and Tools", icon="💼")
+
+def MajorReportNav():
+    st.sidebar.page_link("pages/DH_Major_Pages.py", label="Major Program Reports", icon="🎓")
+
+def SearchBySkillNav():
+    st.sidebar.page_link("pages/DH_Search_By_Skill.py", label="Search Jobs and Students by Skill", icon="🔍")
+
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home Page", icon="🏠")
@@ -117,6 +128,12 @@ def SideBarLinks(show_home=True):
             EditJobsNav()
             StudentListNav()
 
+        # If the user is a department head, show the dept head links 
+        if st.session_state["role"] == "dept_head":
+            TopSkillsNav()
+            MajorReportNav()
+            SearchBySkillNav()
+            
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":
             PolStratAdvHomeNav()
