@@ -29,3 +29,20 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Select job ID
+st.write("### Select a Job to Compare")
+job_response = requests.get(f"{BASE_URL}/advisor/employer/")
+if job_response.status_code == 200:
+    jobs = job_response.json()
+    job_data = pd.DataFrame(jobs)
+    selected_job = st.selectbox(
+        "Available Jobs:",
+        options=["Select a job"] + job_data["job_title"].tolist(),
+    )
+else:
+    st.error("Failed to fetch jobs. Please try again later.")
+    st.stop()
+
+if selected_job != "Select a job":
+    job_id = job_data[job_data["job_title"] == selected_job]["job_id"].values[0]
