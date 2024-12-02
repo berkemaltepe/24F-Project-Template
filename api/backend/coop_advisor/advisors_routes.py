@@ -112,10 +112,11 @@ def get_all_job_postings():
             j.location,
             j.pay_range,
             j.status,
-            j.date_posted
+            j.date_posted,
+            j.description
         FROM Job AS j
         JOIN Employer AS e ON j.emp_id = e.emp_id
-        WHERE j.status = 'Open'
+        WHERE j.status = 'Open';
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
