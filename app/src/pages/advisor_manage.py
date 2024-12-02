@@ -46,3 +46,6 @@ with st.form("update_account_form"):
     name = st.text_input("Name", value=advisor_details["name"])
     email = st.text_input("Email", value=advisor_details["email"])
     department = st.text_input("Department", value=advisor_details["department"])
+
+    # Submit button
+    submitted = st.form_submit_button("Update Account")
