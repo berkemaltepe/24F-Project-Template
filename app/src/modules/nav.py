@@ -34,13 +34,13 @@ def StudentListNav():
 #### ------------------------ Department Head Navigation ---------------------------- ####
 
 def TopSkillsNav():
-    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Industry Skills and Tools", icon="💼")
+    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Industry Skills", icon="💼")
 
 def MajorReportNav():
     st.sidebar.page_link("pages/DH_Major_Pages.py", label="Major Program Reports", icon="🎓")
 
 def SearchBySkillNav():
-    st.sidebar.page_link("pages/DH_Search_By_Skill.py", label="Search Jobs and Students by Skill", icon="🔍")
+    st.sidebar.page_link("pages/DH_Search_By_Skill.py", label="Search by Skill", icon="🔍")
 
 #### ------------------------ General ------------------------
 def HomeNav():
