@@ -37,3 +37,12 @@ if response.status_code == 200:
 else:
     st.error(f"Failed to fetch advisor details. Error {response.status_code}: {response.text}")
     st.stop()
+
+# Display advisor details in a form
+with st.form("update_account_form"):
+    st.subheader("Account Information")
+
+    # Pre-fill the form with current details
+    name = st.text_input("Name", value=advisor_details["name"])
+    email = st.text_input("Email", value=advisor_details["email"])
+    department = st.text_input("Department", value=advisor_details["department"])
