@@ -8,11 +8,11 @@ from modules.nav import SideBarLinks
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Show sidebar links for the logged-in user
-SideBarLinks()
-
 # Set up the page layout
 st.set_page_config(layout="wide")
+
+# Show sidebar links for the logged-in user
+SideBarLinks()
 
 # Ensure session state contains the necessary data
 if "advisor_id" not in st.session_state:

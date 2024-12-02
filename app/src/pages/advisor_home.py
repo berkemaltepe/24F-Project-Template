@@ -20,12 +20,12 @@ if "advisor_id" not in st.session_state:
 
 st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
 
-# # Fetch advisor details using the stored advisor_id
-# response = requests.get(f"{BASE_URL}/{st.session_state['advisor_id']}")
-# if response.status_code == 200:
-#     advisor_data = response.json()[0]
-# else:
-#     st.error(f"Error {response.status_code}: {response.text}")
+# Fetch advisor details using the stored advisor_id
+response = requests.get(f"{BASE_URL}/{st.session_state['advisor_id']}")
+if response.status_code == 200:
+    advisor_data = response.json()[0]
+else:
+    st.error(f"Error {response.status_code}: {response.text}")
 
 advisor_id = st.session_state["advisor_id"]
 advisor_name = st.session_state.get("first_name", "Advisor")
