@@ -30,6 +30,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.write('')
+st.write('')
+
 # Fetch advisor details
 response = requests.get(f"{BASE_URL}/advisor/{advisor_id}/")
 if response.status_code == 200:

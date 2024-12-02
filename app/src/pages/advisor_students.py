@@ -26,7 +26,7 @@ if "advisor_id" not in st.session_state:
 st.markdown(
     f"""
     <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; color: white; text-align: center;">
-        <h1>Advisor Dashboard</h1>
+        <h1>My Students</h1>
         <p>Manage and assign students to your list.</p>
     </div>
     """,

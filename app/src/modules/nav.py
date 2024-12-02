@@ -34,7 +34,7 @@ def StudentListNav():
 # --------------------------------Advisor Navigation --------------------------------
 
 def AdvisorStudentListNav():
-    st.sidebar.page_link("pages/advisor_students.py", label="Student List", icon="🎓")
+    st.sidebar.page_link("pages/advisor_students.py", label="My Students", icon="🎓")
 
 
 def AdvisorSkillMatchNav():
@@ -143,8 +143,8 @@ def SideBarLinks(show_home=True):
         # If the user is an advisor, show the advisor links
         if st.session_state["role"] == "advisor":
             AdvisorStudentListNav()
-            AdvisorSkillMatchNav()
             AdvisorJobPostingsNav()
+            AdvisorSkillMatchNav()
             AdvisorManageNav()
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
