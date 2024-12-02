@@ -66,3 +66,9 @@ try:
                                    "pay_range", 
                                    "status", 
                                    "date_posted"]], use_container_width=True)
+            
+            # Select a job for more details
+            selected_job_title = st.selectbox(
+                "Select a job to view more details:",
+                options=["None"] + job_data["job_title"].tolist()
+            )
