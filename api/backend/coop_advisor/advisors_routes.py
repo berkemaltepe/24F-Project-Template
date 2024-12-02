@@ -130,8 +130,8 @@ def compare_student_to_job_skills(job_id, student_id):
     query = f'''
         SELECT
             sk.skill_name,
-            ss.weight AS student_proficiency,
-            js.weight AS job_requirement,
+            COALESCE(ss.weight, 0) AS student_proficiency,
+            COALESCE(js.weight, 0) AS job_requirement,
             ROUND(
                 COALESCE(SUM(
                     CASE
@@ -141,10 +141,11 @@ def compare_student_to_job_skills(job_id, student_id):
                     END
                 ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
             ) AS total_skill_gap
-        FROM Student_Skill AS ss
-        RIGHT JOIN Skill AS sk ON ss.skill_id = sk.skill_id
-        LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
-        WHERE ss.student_id = {student_id} AND js.job_id = {job_id}
+        FROM Skill AS sk
+        LEFT JOIN Student_Skill AS ss 
+            ON sk.skill_id = ss.skill_id AND ss.student_id = {student_id}
+        LEFT JOIN Job_Skill AS js 
+            ON sk.skill_id = js.skill_id AND js.job_id = {job_id}
         GROUP BY sk.skill_name, ss.weight, js.weight
     '''
     cursor = db.get_db().cursor()
