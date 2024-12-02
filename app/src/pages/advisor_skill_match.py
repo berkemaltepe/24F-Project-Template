@@ -44,7 +44,7 @@ if "student_id" not in st.session_state:
                 student_id = student_data[student_data["name"] == selected_student]["student_id"].values[0]
                 st.session_state["student_id"] = student_id
                 st.success(f"Student {selected_student} selected.")
-                st.experimental_rerun()
+                st.rerun()
     else:
         st.error(f"Failed to fetch students. Error {response.status_code}: {response.text}")
         st.stop()

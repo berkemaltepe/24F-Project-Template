@@ -144,7 +144,7 @@ def compare_student_to_job_skills(job_id, student_id):
         FROM Student_Skill AS ss
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
-        WHERE ss.student_id = {student_id} AND js.job_id = {job_id}
+        WHERE ss.student_id = {student_id} AND js.job_id = {job_id};
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
