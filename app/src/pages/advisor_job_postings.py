@@ -60,4 +60,9 @@ try:
 
             # Display job postings in a table
             st.write("### Job Postings")
-            st.dataframe(job_data[["job_title", "employer_name", "location", "pay_range", "status", "date_posted"]], use_container_width=True)
+            st.dataframe(job_data[["job_title", 
+                                   "employer_name", 
+                                   "location", 
+                                   "pay_range", 
+                                   "status", 
+                                   "date_posted"]], use_container_width=True)
