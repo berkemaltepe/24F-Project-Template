@@ -16,19 +16,18 @@ SideBarLinks()
 # Define the base API URL for advisors
 BASE_URL = "http://web-api:4000/a"
 
+st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
+
 # Ensure session state contains the necessary data
 if "advisor_id" not in st.session_state:
     st.error("Advisor ID not found. Please log in as an advisor.")
     st.stop()
 
-st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
-
-# Title of the page
 st.markdown(
-    """
+    f"""
     <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; color: white; text-align: center;">
-        <h1 style="font-size: 40px;">Advisor - Student List</h1>
-        <p style="font-size: 18px;">View and manage the students assigned to you</p>
+        <h1>Advisor Dashboard</h1>
+        <p>Manage and assign students to your list.</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -43,6 +42,10 @@ if response.status_code == 200:
     if not students:
         st.warning("No students are currently assigned to you.")
     else:
+        st.markdown("""<div style="margin: 20px 0 0px 0;"> <h6>Assigned Students</h4></div>""",
+    unsafe_allow_html=True,
+)
+
         # Convert the student data into a Pandas DataFrame
         student_data = pd.DataFrame([
             {
@@ -55,30 +58,43 @@ if response.status_code == 200:
             }
             for student in students
         ])
-        
-        st.write("")
+
+        # Display student list
         st.dataframe(student_data, use_container_width=True)
 
-        # Add functionality to view more details or remove a student
+        # Add a dropdown to select a student
         selected_student = st.selectbox(
             "Select a student to view details or manage:",
             options=["None"] + list(student_data["Name"]),
         )
 
         if selected_student != "None":
-            # Retrieve the selected student's details
             student = next(s for s in students if s["name"] == selected_student)
-            st.markdown(f"### Details for {student['name']}")
-            st.json(student)
+            st.markdown(
+                f"""
+                <div style="margin-top: 10px; border: 1px solid #FF0000; padding: 20px; border-radius: 10px; background-color: #FFFFFF;">
+                    <h4 style="color: #FF0000;">Details for {student['name']}</h2>
+                    <p><b>Email:</b> {student['email']}</p>
+                    <p><b>Major:</b> {student['major']}</p>
+                    <p><b>GPA:</b> {student['gpa']}</p>
+                    <p><b>Co-op Status:</b> {student['coop_status']}</p>
+                    <p><b>Location:</b> {student['location']}</p>
+                    <p><b>LinkedIn:</b> <a href="https://{student['linkedin_profile']}" target="_blank">{student['linkedin_profile']}</a></p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-            # Action buttons for the selected student
+            st.write('')
+
+            # Action buttons in a grid layout
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("View Skills"):
+                if st.button("View Skills", key="view_skills"):
                     st.session_state["student_id"] = student["student_id"]
                     st.switch_page("pages/advisor_skill_match.py")
             with col2:
-                if st.button("Remove Student"):
+                if st.button("Remove Student", key="remove_student"):
                     delete_response = requests.delete(
                         f"{BASE_URL}/advisor/{advisor_id}/student/{student['student_id']}/"
                     )
@@ -87,20 +103,20 @@ if response.status_code == 200:
                         st.experimental_rerun()
                     else:
                         st.error(f"Failed to remove student: {delete_response.text}")
+
 else:
     st.error(f"Failed to fetch students. Error {response.status_code}: {response.text}")
 
-# Add functionality to assign a student by student ID
-st.markdown("### Add a Student by Student ID")
+# Add a section to add a new student
 student_id_to_add = st.number_input("Enter Student ID to Add", min_value=1, step=1)
-if st.button("Add Student"):
+if st.button("Add Student", key="add_student"):
     try:
         response = requests.put(
             f"{BASE_URL}/advisor/{advisor_id}/student/{student_id_to_add}/"
         )
         if response.status_code == 200:
             st.success(f"Student with ID {student_id_to_add} successfully assigned to Advisor {advisor_id}.")
-            st.experimental_rerun()  # Refresh the page to show the updated student list
+            st.experimental_rerun()
         else:
             st.error(f"Failed to add student: {response.status_code} - {response.text}")
     except requests.exceptions.RequestException as e:
