@@ -19,3 +19,13 @@ st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
 BASE_URL = "http://web-api:4000/a"
 advisor_id = st.session_state["advisor_id"]
 
+# Page title
+st.markdown(
+    """
+    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; color: white; text-align: center;">
+        <h1 style="font-size: 40px;">Manage Your Account</h1>
+        <p style="font-size: 18px;">Update your account details</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
