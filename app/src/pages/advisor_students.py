@@ -14,7 +14,7 @@ st.set_page_config(layout="wide")
 SideBarLinks()
 
 # Define the base API URL for advisors
-BASE_URL = "http://web-api:4000/advisor"
+BASE_URL = "http://web-api:4000/a"
 
 # Ensure session state contains the necessary data
 if "advisor_id" not in st.session_state:
@@ -36,7 +36,7 @@ st.markdown(
 
 # Fetch the list of students assigned to the advisor
 advisor_id = st.session_state["advisor_id"]
-response = requests.get(f"{BASE_URL}/1/list-of-students")
+response = requests.get(f"{BASE_URL}/advisor/{advisor_id}/list-of-students/")
 
 if response.status_code == 200:
     students = response.json()
@@ -56,16 +56,6 @@ if response.status_code == 200:
             for student in students
         ])
         
-        # Display the DataFrame as a table
-        st.markdown(
-            """
-            <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; color: white; text-align: center;">
-                <h1>Student List</h1>
-                <p>View and manage students assigned to you.</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
         st.write("")
         st.dataframe(student_data, use_container_width=True)
 
@@ -86,11 +76,11 @@ if response.status_code == 200:
             with col1:
                 if st.button("View Skills"):
                     st.session_state["student_id"] = student["student_id"]
-                    st.switch_page("advisor_skill_match.py")
+                    st.switch_page("pages/advisor_skill_match.py")
             with col2:
                 if st.button("Remove Student"):
                     delete_response = requests.delete(
-                        f"{BASE_URL}/{advisor_id}/student/{student['student_id']}"
+                        f"{BASE_URL}/advisor/{advisor_id}/student/{student['student_id']}/"
                     )
                     if delete_response.status_code == 200:
                         st.success(f"Student {student['name']} removed successfully.")
@@ -99,6 +89,23 @@ if response.status_code == 200:
                         st.error(f"Failed to remove student: {delete_response.text}")
 else:
     st.error(f"Failed to fetch students. Error {response.status_code}: {response.text}")
+
+# Add functionality to assign a student by student ID
+st.markdown("### Add a Student by Student ID")
+student_id_to_add = st.number_input("Enter Student ID to Add", min_value=1, step=1)
+if st.button("Add Student"):
+    try:
+        response = requests.put(
+            f"{BASE_URL}/advisor/{advisor_id}/student/{student_id_to_add}/"
+        )
+        if response.status_code == 200:
+            st.success(f"Student with ID {student_id_to_add} successfully assigned to Advisor {advisor_id}.")
+            st.experimental_rerun()  # Refresh the page to show the updated student list
+        else:
+            st.error(f"Failed to add student: {response.status_code} - {response.text}")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error adding student: {e}")
+        st.error("An error occurred while adding the student.")
 
 # Footer
 st.markdown(

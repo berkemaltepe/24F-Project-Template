@@ -10,7 +10,7 @@ advisors = Blueprint('advisors', __name__)
 
 # ------------------------------------------------------------
 # Route: Get advisor information
-@advisors.route('/advisor/<int:advisor_id>', methods=['GET'])  # Ensure advisor_id is an integer
+@advisors.route('/advisor/<int:advisor_id>/', methods=['GET'])  # Ensure advisor_id is an integer
 def get_advisor_info(advisor_id):
     """
     Endpoint to get advisor information.
@@ -41,7 +41,7 @@ def get_advisor_info(advisor_id):
 
 # ------------------------------------------------------------
 # Route: Update advisor email
-@advisors.route('/advisor/<int:advisor_id>/email', methods=['PUT'])
+@advisors.route('/advisor/<int:advisor_id>/email/', methods=['PUT'])
 def update_advisor_email(advisor_id):
     """
     Endpoint to update advisor email.
@@ -71,31 +71,33 @@ def update_advisor_email(advisor_id):
 
 # ------------------------------------------------------------
 # Route: Get list of students assigned to a specific advisor
-@advisors.route('/advisor/<advisor_id>/list-of-students', methods=['GET'])
+@advisors.route('/advisor/<advisor_id>/list-of-students/', methods=['GET'])
 def get_students_by_advisor(advisor_id):
-    # SQL query to fetch students
-    query = f'''
-        SELECT
-            s.student_id,
-            s.name,
-            s.email,
-            s.location,
-            s.major,
-            s.coop_status,
-            s.resume,
-            s.level,
-            s.linkedin_profile,
-            s.gpa,
-            a.name AS advisor_name
-        FROM Student AS s
-        JOIN Advisor AS a ON s.advisor_id = a.advisor_id
-        WHERE a.advisor_id = {advisor_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    students = cursor.fetchall()
-    # Return as JSON response
-    return make_response(jsonify(students), 200)
+    try:
+        # SQL query to fetch students
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT
+                s.student_id,
+                s.name,
+                s.email,
+                s.location,
+                s.major,
+                s.coop_status,
+                s.resume,
+                s.level,
+                s.linkedin_profile,
+                s.gpa
+            FROM Student AS s
+            WHERE s.advisor_id = {0};
+        '''.format(advisor_id)
+        cursor.execute(query)
+        students = cursor.fetchall()
+        # Return as JSON response
+        return make_response(jsonify(students)), 200
+    except Exception as e:
+        current_app.logger.error(f"Error fetching students: {e}")
+        return jsonify({"error": str(e)}), 500
 
 # ------------------------------------------------------------
 # Route: Get all active job postings
@@ -122,7 +124,7 @@ def get_all_job_postings():
 
 # ------------------------------------------------------------
 # Route: Compare a student's skills to a specific job's requirements
-@advisors.route('/advisor/job/<int:job_id>/skills/compare/<int:student_id>', methods=['GET'])
+@advisors.route('/advisor/job/<int:job_id>/skills/compare/<int:student_id>/', methods=['GET'])
 def compare_student_to_job_skills(job_id, student_id):
     # SQL query to compare student skills with job requirements
     query = f'''
@@ -151,7 +153,7 @@ def compare_student_to_job_skills(job_id, student_id):
 
 # ------------------------------------------------------------
 # Route: Fetch detailed job information including required skills
-@advisors.route('/advisor/job/<int:job_id>/details', methods=['GET'])
+@advisors.route('/advisor/job/<int:job_id>/details/', methods=['GET'])
 def get_job_details_with_skills(job_id):
     # SQL query to fetch job details and required skills
     query = f'''
@@ -175,7 +177,7 @@ def get_job_details_with_skills(job_id):
 
 # ------------------------------------------------------------
 # Route: Assign a student to an advisor (PUT) or remove a student (DELETE)
-@advisors.route('/advisor/<int:advisor_id>/student/<int:student_id>', methods=['PUT', 'DELETE'])
+@advisors.route('/advisor/<int:advisor_id>/student/<int:student_id>/', methods=['PUT', 'DELETE'])
 def modify_advisor_students(advisor_id, student_id):
     if request.method == 'PUT':
         # Assign student to advisor
@@ -202,7 +204,7 @@ def modify_advisor_students(advisor_id, student_id):
 
 # ------------------------------------------------------------
 # Route: Calculate match percentage between a student and a job
-@advisors.route('/advisor/job/<int:job_id>/match/<int:student_id>', methods=['GET'])
+@advisors.route('/advisor/job/<int:job_id>/match/<int:student_id>/', methods=['GET'])
 def calculate_match_percentage(job_id, student_id):
     # SQL query to calculate match percentage
     query = f'''
@@ -230,11 +232,11 @@ def calculate_match_percentage(job_id, student_id):
     return make_response(jsonify(match), 200)
 
 # SUMMARY
-# |Route|	                                       |Method|	 |Purpose|
-# /advisor/<advisor_id>/list-of-students	        GET	      Fetch students assigned to an advisor.
-# /advisor/employer/	                            GET	      Fetch all active job postings.
-# /advisor/job/<job_id>/skills/compare/<student_id>	GET	      Compare a student's skills to a job.
-# /advisor/job/<job_id>/details	                    GET	      Fetch detailed job and skill information.
-# /advisor/<advisor_id>/student/<student_id>	    PUT	      Assign a student to an advisor.
-# /advisor/<advisor_id>/student/<student_id>	    DELETE	  Remove a student from an advisor.
-# /advisor/job/<job_id>/match/<student_id>	        GET	      Calculate match percentage.
+# |Route|	                                        |Method|	 |Purpose|
+# /advisor/<advisor_id>/list-of-students/	         GET	      Fetch students assigned to an advisor.
+# /advisor/employer/	                             GET	      Fetch all active job postings.
+# /advisor/job/<job_id>/skills/compare/<student_id>/ GET	      Compare a student's skills to a job.
+# /advisor/job/<job_id>/details	                     GET	      Fetch detailed job and skill information.
+# /advisor/<advisor_id>/student/<student_id>/	     PUT	      Assign a student to an advisor.
+# /advisor/<advisor_id>/student/<student_id>/	     DELETE	      Remove a student from an advisor.
+# /advisor/job/<job_id>/match/<student_id>/	         GET	      Calculate match percentage.

@@ -157,7 +157,7 @@ INSERT INTO Employer (emp_id, admin_id, name, email, industry, num_applications)
 INSERT INTO Student (student_id, name, email, location, major, coop_status, resume, level, linkedin_profile, gpa, advisor_id, admin_id) VALUES
 (1, 'Jane Doe', 'jane.doe@example.com', 'New York', 'Computer Science', 'Seeking', 'Resume Link 1', 'Junior', 'linkedin.com/janedoe', 3.8, 1, 1),
 (2, 'John Smith', 'john.smith@example.com', 'Los Angeles', 'Information Systems', 'Co-op', 'Resume Link 2', 'Senior', 'linkedin.com/johnsmith', 3.6, 1, 1),
-(3, 'Sara Connor', 'sara.connor@example.com', 'Chicago', 'Engineering', 'Seeking', 'Resume Link 3', 'Sophomore', 'linkedin.com/saraconnor', 3.7, 1, 2);
+(3, 'Sara Connor', 'sara.connor@example.com', 'Chicago', 'Engineering', 'Seeking', 'Resume Link 3', 'Sophomore', 'linkedin.com/saraconnor', 3.7, 2, 2);
 
 -- Student_Skill Table
 INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
