@@ -2,7 +2,7 @@ import logging
 import requests
 import pandas as pd
 import streamlit as st
-import matplotlib.pyplot as plt
+import plotly.graph_objs as go
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -96,19 +96,42 @@ if "student_id" in st.session_state:
                 st.write("### Skill Comparison Table")
                 st.dataframe(comparison_df)
 
-                # Create a bar chart for visualization
-                st.write("### Skill Gap Visualization")
-                plt.figure(figsize=(10, 6))
-                plt.bar(
-                    comparison_df["skill_name"],
-                    comparison_df["job_requirement"] - comparison_df["student_proficiency"],
-                    color="red",
-                    alpha=0.7,
+                # Create Radar Chart using Plotly
+                st.write("### Radar Chart: Skills Comparison")
+                all_skills = comparison_df["skill_name"].tolist()
+                student_skills = comparison_df["student_proficiency"].tolist()
+                job_skills = comparison_df["job_requirement"].tolist()
+
+                fig = go.Figure()
+
+                # Add job requirements
+                fig.add_trace(go.Scatterpolar(
+                    r=job_skills,
+                    theta=all_skills,
+                    fill='toself',
+                    name="Employer's Required Skills",
+                    line=dict(color='black', width=3),
+                    marker=dict(symbol='circle', size=8)
+                ))
+
+                # Add student proficiency
+                fig.add_trace(go.Scatterpolar(
+                    r=student_skills,
+                    theta=all_skills,
+                    fill='toself',
+                    name="Student's Skills",
+                    line=dict(color='red', width=3),
+                    marker=dict(symbol='star', size=8)
+                ))
+
+                # Update layout
+                fig.update_layout(
+                    polar=dict(
+                        radialaxis=dict(visible=True, range=[0, max(max(job_skills), max(student_skills))])
+                    ),
+                    showlegend=True
                 )
-                plt.xlabel("Skills")
-                plt.ylabel("Skill Gap")
-                plt.title("Skill Gaps Between Student Proficiency and Job Requirements")
-                plt.xticks(rotation=45, ha="right")
-                st.pyplot(plt)
+
+                st.plotly_chart(fig)
         else:
             st.error("Failed to fetch skill comparison data.")
