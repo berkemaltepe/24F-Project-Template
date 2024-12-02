@@ -85,7 +85,7 @@ if st.button("Active Job Postings", use_container_width=True):
     st.switch_page("pages/advisor_job_postings.py")
 st.markdown("</div></div>", unsafe_allow_html=True)
 if st.button("Manage Students", use_container_width=True):
-    st.switch_page("pages/advisor_manage_students.py")
+    st.switch_page("pages/advisor_manage.py")
 st.markdown("</div></div>", unsafe_allow_html=True)
 
 # Footer

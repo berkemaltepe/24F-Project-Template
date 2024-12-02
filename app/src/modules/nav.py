@@ -49,9 +49,9 @@ def AdvisorJobPostingsNav():
     )
 
 
-def AdvisorManageStudentsNav():
+def AdvisorManageNav():
     st.sidebar.page_link(
-        "pages/advisor_manage_students.py", label="Manage Students", icon="🛠️"
+        "pages/advisor_manage.py", label="Manage Account", icon="🛠️"
     )
 
 #### ------------------------ General ------------------------
@@ -145,7 +145,7 @@ def SideBarLinks(show_home=True):
             AdvisorStudentListNav()
             AdvisorSkillMatchNav()
             AdvisorJobPostingsNav()
-            AdvisorManageStudentsNav()
+            AdvisorManageNav()
 
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
         if st.session_state["role"] == "pol_strat_advisor":
