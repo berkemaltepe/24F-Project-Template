@@ -54,3 +54,8 @@ with st.form("update_account_form"):
         # Update advisor details
         update_data = {"name": name, "email": email, "department": department}
         update_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/email/", json=update_data)
+
+        if update_response.status_code == 200:
+            st.success("Account details updated successfully!")
+        else:
+            st.error(f"Failed to update account details. Error {update_response.status_code}: {update_response.text}")
