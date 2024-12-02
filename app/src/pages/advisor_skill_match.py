@@ -46,3 +46,34 @@ else:
 
 if selected_job != "Select a job":
     job_id = job_data[job_data["job_title"] == selected_job]["job_id"].values[0]
+
+    # Fetch skill comparison data
+    comparison_response = requests.get(f"{BASE_URL}/advisor/job/{job_id}/skills/compare/{student_id}/")
+    if comparison_response.status_code == 200:
+        skill_comparison = comparison_response.json()
+        if not skill_comparison:
+            st.warning("No skill comparison data available for this job.")
+        else:
+            # Convert skill comparison data into a DataFrame
+            comparison_df = pd.DataFrame(skill_comparison)
+            
+            # Display a DataFrame of skill gaps
+            st.write("### Skill Comparison Table")
+            st.dataframe(comparison_df)
+
+            # Create a bar chart for visualization
+            st.write("### Skill Gap Visualization")
+            plt.figure(figsize=(10, 6))
+            plt.bar(
+                comparison_df["skill_name"], 
+                comparison_df["job_requirement"] - comparison_df["student_proficiency"], 
+                color="red", 
+                alpha=0.7,
+            )
+            plt.xlabel("Skills")
+            plt.ylabel("Skill Gap")
+            plt.title("Skill Gaps Between Student Proficiency and Job Requirements")
+            plt.xticks(rotation=45, ha="right")
+            st.pyplot(plt)
+    else:
+        st.error("Failed to fetch skill comparison data.")
