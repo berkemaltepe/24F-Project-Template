@@ -14,3 +14,8 @@ if "advisor_id" not in st.session_state:
     st.stop()
 
 st.write(f"Advisor ID: {st.session_state.get('advisor_id', 'Not set')}")
+
+# Base API URL for advisor-related actions
+BASE_URL = "http://web-api:4000/a"
+advisor_id = st.session_state["advisor_id"]
+
