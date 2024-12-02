@@ -47,11 +47,12 @@ def create_app():
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
     app.register_blueprint(employer_routes, url_prefix="/employer")
     app.register_blueprint(depthead_routes, url_prefix="/depthead")
+    app.register_blueprint(students,    url_prefix='/s')
+
 
     app.register_blueprint(simple_routes)
     app.register_blueprint(customers,   url_prefix='/c')
     app.register_blueprint(products,    url_prefix='/p')
-    app.register_blueprint(students,    url_prefix='/s')
 
     # Don't forget to return the app object
     return app

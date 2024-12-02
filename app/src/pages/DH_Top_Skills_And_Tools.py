@@ -76,7 +76,7 @@ def display_top_skills():
                 ranking2 += 1
     
 
-# Assuming get_top_skills() is working fine and returns data like [{'skill_name': 'Skill1', 'skill_type': 'Programming', 'frequency': 5}, ...]
+st.write("## Top Skills")
 
 display_top_skills()
 
