@@ -27,3 +27,14 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Fetch job postings
+try:
+    job_response = requests.get(f"{BASE_URL}/advisor/employer/")
+    if job_response.status_code == 200:
+        jobs = job_response.json()
+        if not jobs:
+            st.warning("No job postings available.")
+        else:
+            # Convert job data into a DataFrame
+            job_data = pd.DataFrame(jobs)
