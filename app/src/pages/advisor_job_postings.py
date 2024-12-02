@@ -13,3 +13,6 @@ st.set_page_config(layout="wide")
 if "advisor_id" not in st.session_state:
     st.error("Advisor ID not found. Please log in as an advisor.")
     st.stop()
+
+BASE_URL = "http://web-api:4000/a"  # Base URL for API endpoints
+advisor_id = st.session_state["advisor_id"]
