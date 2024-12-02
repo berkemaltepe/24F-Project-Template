@@ -72,3 +72,26 @@ try:
                 "Select a job to view more details:",
                 options=["None"] + job_data["job_title"].tolist()
             )
+
+            if selected_job_title != "None":
+                job_details = job_data[job_data["job_title"] == selected_job_title].iloc[0]
+                st.markdown("### Job Details")
+                st.write(f"**Title:** {job_details['job_title']}")
+                st.write(f"**Employer:** {job_details['employer_name']}")
+                st.write(f"**Location:** {job_details['location']}")
+                st.write(f"**Pay Range:** {job_details['pay_range']}")
+                st.write(f"**Date Posted:** {job_details['date_posted']}")
+                st.write(f"**Status:** {job_details['status']}")
+                st.write(f"**Description:** {job_details['description']}")
+
+                # Additional actions for the selected job
+                st.markdown("### Actions")
+                if st.button("Match a Student to this Job"):
+                    st.session_state["job_id"] = job_details["job_id"]
+                    st.success(f"Job '{job_details['job_title']}' selected for matching.")
+                    st.switch_page("advisor_skill_match")  # Redirect to skill match page
+    else:
+        st.error("Failed to fetch job postings. Please try again later.")
+
+except Exception as e:
+    st.error(f"An error occurred while fetching job postings: {e}")
