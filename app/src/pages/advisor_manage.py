@@ -29,3 +29,11 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+# Fetch advisor details
+response = requests.get(f"{BASE_URL}/advisor/{advisor_id}/")
+if response.status_code == 200:
+    advisor_details = response.json()[0]
+else:
+    st.error(f"Failed to fetch advisor details. Error {response.status_code}: {response.text}")
+    st.stop()
