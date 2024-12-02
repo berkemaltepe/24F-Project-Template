@@ -49,3 +49,8 @@ with st.form("update_account_form"):
 
     # Submit button
     submitted = st.form_submit_button("Update Account")
+
+    if submitted:
+        # Update advisor details
+        update_data = {"name": name, "email": email, "department": department}
+        update_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/email/", json=update_data)
