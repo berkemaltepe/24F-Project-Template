@@ -18,3 +18,14 @@ if "student_id" not in st.session_state or "advisor_id" not in st.session_state:
 BASE_URL = "http://web-api:4000/a"  # Base URL for API endpoints
 student_id = st.session_state["student_id"]
 advisor_id = st.session_state["advisor_id"]
+
+# Page title
+st.markdown(
+    """
+    <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; color: white; text-align: center;">
+        <h1 style="font-size: 40px;">Skill Match Analysis</h1>
+        <p style="font-size: 18px;">View the skill gap between your student and job requirements</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
