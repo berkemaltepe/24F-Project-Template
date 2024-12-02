@@ -38,3 +38,11 @@ try:
         else:
             # Convert job data into a DataFrame
             job_data = pd.DataFrame(jobs)
+
+            # Search and Filter
+            search_term = st.text_input("Search for job postings by title or location:", "").strip().lower()
+            if search_term:
+                job_data = job_data[
+                    job_data["job_title"].str.lower().str.contains(search_term) |
+                    job_data["location"].str.lower().str.contains(search_term)
+                ]
