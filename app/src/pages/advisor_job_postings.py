@@ -46,3 +46,18 @@ try:
                     job_data["job_title"].str.lower().str.contains(search_term) |
                     job_data["location"].str.lower().str.contains(search_term)
                 ]
+
+            # Sorting options
+            sort_by = st.selectbox("Sort by:", ["Job Title", "Location", "Pay Range", "Date Posted"])
+            if sort_by == "Job Title":
+                job_data = job_data.sort_values("job_title")
+            elif sort_by == "Location":
+                job_data = job_data.sort_values("location")
+            elif sort_by == "Pay Range":
+                job_data = job_data.sort_values("pay_range")
+            elif sort_by == "Date Posted":
+                job_data = job_data.sort_values("date_posted", ascending=False)
+
+            # Display job postings in a table
+            st.write("### Job Postings")
+            st.dataframe(job_data[["job_title", "employer_name", "location", "pay_range", "status", "date_posted"]], use_container_width=True)
