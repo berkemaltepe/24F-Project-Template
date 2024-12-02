@@ -204,35 +204,6 @@ def modify_advisor_students(advisor_id, student_id):
     db.get_db().commit()
     return make_response(f"Student successfully {action} advisor's list.", 200)
 
-# ------------------------------------------------------------
-# Route: Calculate match percentage between a student and a job
-@advisors.route('/advisor/job/<int:job_id>/match/<int:student_id>/', methods=['GET'])
-def calculate_match_percentage(job_id, student_id):
-    # SQL query to calculate match percentage
-    query = f'''
-        SELECT
-            j.job_id,
-            j.title AS job_title,
-            s.student_id,
-            s.name AS student_name,
-            ROUND(
-                (SUM(CASE
-                    WHEN ss.skill_id = js.skill_id THEN 1
-                    ELSE 0
-                END) / COUNT(js.skill_id)) * 100, 2
-            ) AS match_percentage
-        FROM Job AS j
-        JOIN Job_Skill AS js ON j.job_id = js.job_id
-        JOIN Student_Skill AS ss ON js.skill_id = ss.skill_id
-        JOIN Student AS s ON ss.student_id = s.student_id
-        WHERE s.student_id = {student_id} AND j.job_id = {job_id}
-        GROUP BY j.job_id, s.student_id
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    match = cursor.fetchone()
-    return make_response(jsonify(match), 200)
-
 # SUMMARY
 # |Route|	                                        |Method|	 |Purpose|
 # /advisor/<advisor_id>/list-of-students/	         GET	      Fetch students assigned to an advisor.
@@ -241,4 +212,4 @@ def calculate_match_percentage(job_id, student_id):
 # /advisor/job/<job_id>/details	                     GET	      Fetch detailed job and skill information.
 # /advisor/<advisor_id>/student/<student_id>/	     PUT	      Assign a student to an advisor.
 # /advisor/<advisor_id>/student/<student_id>/	     DELETE	      Remove a student from an advisor.
-# /advisor/job/<job_id>/match/<student_id>/	         GET	      Calculate match percentage.
+
