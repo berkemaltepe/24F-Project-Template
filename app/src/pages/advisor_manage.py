@@ -59,11 +59,3 @@ with st.form("update_account_form"):
             st.success("Account details updated successfully!")
         else:
             st.error(f"Failed to update account details. Error {update_response.status_code}: {update_response.text}")
-
-# Add a "Logout" button
-if st.button("Logout"):
-    # Clear session state
-    for key in st.session_state.keys():
-        del st.session_state[key]
-    st.success("You have been logged out.")
-    st.rerun()
