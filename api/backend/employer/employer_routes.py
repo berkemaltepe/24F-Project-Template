@@ -11,25 +11,23 @@ employer_routes = Blueprint('employer_routes', __name__)
 @employer_routes.route('/employer/<emp_id>', methods=['GET'])
 def get_emp_info(emp_id):
     """
-    Endpoint to get a list of students.
+    Endpoint to get employer info
     """
     try:
         # Get a database connection
         cursor = db.get_db().cursor()
-        # Query the database for students
+        # Query the database for emp info
         cursor.execute("SELECT name, emp_id, industry, email FROM Employer WHERE emp_id = {0}".format(emp_id))
         emp = cursor.fetchall()
-
-        # Convert the result to a list of dictionaries
         
         return make_response(jsonify(emp)), 200
     except Exception as e:
         current_app.logger.error(f"Error fetching emp info: {e}")
         return jsonify({"error": str(e)}), 500
 
-@employer_routes.route('/employers/<emp_id>/email', methods=['PUT'])
+@employer_routes.route('/employer/<emp_id>/email', methods=['PUT'])
 def update_employer_email(emp_id):
-    current_app.logger.info('PUT /employers route')
+    current_app.logger.info('PUT /employer route')
     emp_info = request.json
     emp_id = emp_info['id']
     email = emp_info['email']
@@ -63,7 +61,7 @@ def get_students():
 @employer_routes.route('/students/<student_id>', methods=['GET'])
 def get_student(student_id):
     """
-    Endpoint to get a list of students.
+    Endpoint to get a speicfic student's general info.
     """
     try:
         # Get a database connection

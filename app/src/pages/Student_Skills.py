@@ -25,11 +25,11 @@ def get_student_skills(student_id):
         return None
 
 # Function to add student skill
-def add_student_skill(student_id, skill_id, proficiency):
+def add_student_skill(student_id, skill_id, weight):
     try:
         response = requests.post(f'http://api:4000/s/student/{student_id}/skill/', json={
             'skill_id': skill_id,
-            'proficiency': proficiency
+            'weight': weight
         })
         response.raise_for_status()
         st.success("Successfully added student skill")

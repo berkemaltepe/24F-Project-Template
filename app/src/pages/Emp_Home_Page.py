@@ -21,7 +21,7 @@ else:
 
 employer_id = st.session_state['emp_id']
 
-# Hero banner with border
+# The banner with border!!!!
 st.markdown(
     f"""
     <div style="padding: 20px; border-radius: 10px; border: 3px solid #FF0000; background-color: #000000; text-align: center; color: white;">

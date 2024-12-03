@@ -53,6 +53,42 @@ def AdvisorManageNav():
     st.sidebar.page_link(
         "pages/advisor_manage.py", label="Manage Account", icon="🛠️"
     )
+#### ------------------------ Department Head Navigation ---------------------------- ####
+
+def TopSkillsNav():
+    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Skills", icon="💼")
+
+def MajorReportNav():
+    st.sidebar.page_link("pages/DH_Major_Pages.py", label="Major Program Reports", icon="🎓")
+
+def SearchBySkillNav():
+    st.sidebar.page_link("pages/DH_Search_By_Skill.py", label="Search by Skill", icon="🔍")
+
+#### ------------------------ Admin Navigation ------------------------
+
+def AdminHomeNav():
+    st.sidebar.page_link("pages/Admin_Home.py", label="Admin Home", icon="🖥️")
+
+def AdminProfileNav():
+    st.sidebar.page_link("pages/Admin_Profile.py", label="Admin Profile", icon="📝")
+
+def AdminJobsNav():
+    st.sidebar.page_link("pages/Admin_All_Jobs.py", label="Jobs", icon="💼")
+
+def AdminSkillsNav():
+    st.sidebar.page_link("pages/Admin_All_Skills.py", label="Skills", icon="📚")
+
+def AdminEmployersNav():
+    st.sidebar.page_link("pages/Admin_All_Employers.py", label="Employers", icon="🏢")
+
+def AdminFacultiesNav():
+    st.sidebar.page_link("pages/Admin_All_Faculties.py", label="Faculties", icon="🏫")
+
+def AdminAdvisorsNav():
+    st.sidebar.page_link("pages/Admin_All_Advisors.py", label="Advisors", icon="💬")
+
+def AdminStudentsNav():
+    st.sidebar.page_link("pages/Admin_All_Students.py", label="Students", icon="🎓")
 
 #### ------------------------ General ------------------------
 def HomeNav():
@@ -96,15 +132,6 @@ def ClassificationNav():
         "pages/13_Classification.py", label="Classification Demo", icon="🌺"
     )
 
-
-#### ------------------------ System Admin Role ------------------------
-def AdminPageNav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-    st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
-    )
-
-
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=True):
     """
@@ -147,21 +174,28 @@ def SideBarLinks(show_home=True):
             AdvisorSkillMatchNav()
             AdvisorManageNav()
 
+        # If the user is a department head, show the dept head links 
+        if st.session_state["role"] == "dept_head":
+            TopSkillsNav()
+            MajorReportNav()
+            SearchBySkillNav()
+            
         # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
+        if st.session_state["role"] == "sysadmin":
+            AdminHomeNav()
+            AdminProfileNav()
+            AdminJobsNav()
+            AdminSkillsNav()
+            AdminEmployersNav()
+            AdminFacultiesNav()
+            AdminAdvisorsNav()
+            AdminStudentsNav()
 
         # If the user role is usaid worker, show the Api Testing page
         if st.session_state["role"] == "usaid_worker":
             PredictionNav()
             ApiTestNav()
             ClassificationNav()
-
-        # If the user is an administrator, give them access to the administrator pages
-        if st.session_state["role"] == "administrator":
-            AdminPageNav()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()

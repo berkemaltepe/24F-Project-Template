@@ -7,6 +7,7 @@
 from backend.rest_entry import create_app
 from backend.employer.employer_routes import employer_routes
 
+
 # create the app object
 app = create_app()
 
