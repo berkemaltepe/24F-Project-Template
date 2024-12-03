@@ -6,6 +6,7 @@ from backend.products.products_routes import products
 
 from backend.employer.employer_routes import employer_routes
 from backend.depthead.dept_head_routes import depthead_routes
+from backend.system_admin.system_admin_routes import system_admin_routes
 
 from backend.simple.simple_routes import simple_routes
 from backend.students.students_routes import students
@@ -47,6 +48,7 @@ def create_app():
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
     app.register_blueprint(employer_routes, url_prefix="/employer")
     app.register_blueprint(depthead_routes, url_prefix="/depthead")
+    app.register_blueprint(system_admin_routes, url_prefix='/system_admin')
     app.register_blueprint(students,    url_prefix='/s')
 
 
