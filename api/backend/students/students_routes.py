@@ -62,10 +62,9 @@ def get_job_skill_comparison(student_id, job_id):
         SELECT
             sk.skill_id,
             sk.skill_name,
-            ss.proficiency AS student_proficiency,
+            ss.weight AS student_proficiency,
             js.weight AS job_requirement,
-            js.min_proficiency AS job_min_proficiency,
-            (ss.proficiency / js.min_proficiency) * js.weight AS level_of_fit
+            (ss.weight / js.weight) * js.weight AS level_of_fit
         FROM Student_Skill AS ss
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
@@ -205,7 +204,7 @@ def get_best_jobs(student_id):
 def get_student_skills(student_id):
     query = f'''
         SELECT ss.skill_id,
-            ss.proficiency,
+            ss.weight AS proficiency,
             s.skill_name,
             s.skill_type
 
@@ -234,7 +233,7 @@ def add_student_skill(student_id):
     current_app.logger.info(the_data)
 
     skill_id = the_data['skill_id']
-    proficiency = the_data['proficiency']
+    proficiency = the_data['weight']
 
     query = f'''
         INSERT INTO Student_Skill
@@ -259,7 +258,7 @@ def update_student_skill(student_id):
     current_app.logger.info(the_data)
 
     skill_id = the_data['skill_id']
-    proficiency = the_data['proficiency']
+    proficiency = the_data['weight']
 
     query = f'''
         UPDATE Student_Skill

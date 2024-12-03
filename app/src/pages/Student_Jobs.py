@@ -67,7 +67,7 @@ if st.session_state.student_id:
                 if job_skill_match:
                     st.write("### Job Skill Match Details")
                     for skill in job_skill_match:
-                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Job Min Proficiency:** {skill['job_min_proficiency']} - **Level of Fit:** {skill['level_of_fit']}")
+                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Level of Fit:** {skill['level_of_fit']}")
                 else:
                     st.write("No job skill match details available.")
     else:
@@ -92,7 +92,7 @@ if st.session_state.student_id:
                 if job_skill_match:
                     st.write("### Job Skill Match Details")
                     for skill in job_skill_match:
-                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Job Min Proficiency:** {skill['job_min_proficiency']} - **Level of Fit:** {skill['level_of_fit']}")
+                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Level of Fit:** {skill['level_of_fit']}")
                 else:
                     st.write("No job skill match details available.")
     else:
