@@ -31,6 +31,28 @@ def EditJobsNav():
 def StudentListNav():
     st.sidebar.page_link("pages/emp_student_list.py", label="See List of Students", icon="🎓")
 
+# --------------------------------Advisor Navigation --------------------------------
+
+def AdvisorStudentListNav():
+    st.sidebar.page_link("pages/advisor_students.py", label="My Students", icon="🎓")
+
+
+def AdvisorSkillMatchNav():
+    st.sidebar.page_link(
+        "pages/advisor_skill_match.py", label="Skill Match Analysis", icon="📈"
+    )
+
+
+def AdvisorJobPostingsNav():
+    st.sidebar.page_link(
+        "pages/advisor_job_postings.py", label="Active Job Postings", icon="💼"
+    )
+
+
+def AdvisorManageNav():
+    st.sidebar.page_link(
+        "pages/advisor_manage.py", label="Manage Account", icon="🛠️"
+    )
 #### ------------------------ Department Head Navigation ---------------------------- ####
 
 def TopSkillsNav():
@@ -144,6 +166,13 @@ def SideBarLinks(show_home=True):
             EmpSkillMatchNav()
             EditJobsNav()
             StudentListNav()
+        
+        # If the user is an advisor, show the advisor links
+        if st.session_state["role"] == "advisor":
+            AdvisorStudentListNav()
+            AdvisorJobPostingsNav()
+            AdvisorSkillMatchNav()
+            AdvisorManageNav()
 
         # If the user is a department head, show the dept head links 
         if st.session_state["role"] == "dept_head":
@@ -177,3 +206,4 @@ def SideBarLinks(show_home=True):
             del st.session_state["role"]
             del st.session_state["authenticated"]
             st.switch_page("Home.py")
+

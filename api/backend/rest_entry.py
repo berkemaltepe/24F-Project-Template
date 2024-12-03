@@ -10,6 +10,7 @@ from backend.system_admin.system_admin_routes import system_admin_routes
 
 from backend.simple.simple_routes import simple_routes
 from backend.students.students_routes import students
+from backend.coop_advisor.advisors_routes import advisors
 import os
 from dotenv import load_dotenv
 
@@ -52,6 +53,7 @@ def create_app():
     app.register_blueprint(students,    url_prefix='/s')
 
 
+    app.register_blueprint(advisors, url_prefix="/a")
     app.register_blueprint(simple_routes)
     app.register_blueprint(customers,   url_prefix='/c')
     app.register_blueprint(products,    url_prefix='/p')

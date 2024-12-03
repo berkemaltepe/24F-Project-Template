@@ -46,24 +46,7 @@ def add_job():
     response = make_response("Successfully added job")
     response.status_code = 200
     return response
-
-#------------------------------------------------------------
-# Gets the info of a given job from its job_id
-@system_admin_routes.route('/job/<job_id>', methods=['GET'])
-def get_job_info(job_id):
-    query = f'''
-        SELECT job_id, title, emp_id, description, location, pay_range, status
-        FROM Job
-        WHERE job_id = {job_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    job_data = cursor.fetchall()
-    response = make_response(jsonify(job_data))
-    response.status_code = 200
-    return response
-
+    
 #------------------------------------------------------------
 # Removes a job from the system
 @system_admin_routes.route('/job/<job_id>', methods=['DELETE'])

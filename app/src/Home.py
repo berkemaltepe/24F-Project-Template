@@ -49,7 +49,7 @@ st.write('## Select a user: ')
 # functionality, we put a button on the screen that the user 
 # can click to MIMIC logging in as that mock user. 
 
-if st.button("Act as Berke, a Student", 
+if st.button("Act as Jane, a Student", 
             type = 'primary', 
             use_container_width=True):
     # when user clicks the button, they are now considered authenticated
@@ -58,9 +58,26 @@ if st.button("Act as Berke, a Student",
     st.session_state['role'] = 'student'
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
-    st.session_state['first_name'] = 'Berke'
+    st.session_state['first_name'] = 'Jane'
     # add student id to session state
     st.session_state['student_id'] = 1
+    # finally, we ask streamlit to switch to another page, in this case, the 
+    # landing page for this particular user type
+    logger.info("Logging in as Student Persona")
+    st.switch_page('pages/Student_Home_Page.py')
+
+if st.button("Act as John, a Student", 
+            type = 'primary', 
+            use_container_width=True):
+    # when user clicks the button, they are now considered authenticated
+    st.session_state['authenticated'] = True
+    # we set the role of the current user
+    st.session_state['role'] = 'student'
+    # we add the first name of the user (so it can be displayed on 
+    # subsequent pages). 
+    st.session_state['first_name'] = 'John'
+    # add student id to session state
+    st.session_state['student_id'] = 2
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
     logger.info("Logging in as Student Persona")
@@ -92,8 +109,8 @@ if st.button('Act as Yuta, Co-Op Advisor',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'advisor'
     st.session_state['first_name'] = 'Yuta'
-    # CHANGE TO ADVISOR HOME PAGE (make a new page or something like that)
-    st.switch_page('pages/20_Admin_Home.py')
+    st.session_state['advisor_id'] = 1
+    st.switch_page('pages/advisor_home.py')
 
 if st.button("Act as Lea, the Head of Khoury College of CS", 
             type = 'primary', 
