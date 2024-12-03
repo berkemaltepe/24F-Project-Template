@@ -97,6 +97,7 @@ def get_top_student_skills(major):
     SELECT 
         sk.skill_name,
         sk.skill_type,
+        sk.skill_id,
         COUNT(ss.skill_id) AS frequency,
         AVG(ss.weight) AS avg_student_proficiency
     FROM 
@@ -108,7 +109,7 @@ def get_top_student_skills(major):
     WHERE 
     s.major = (%s)
     GROUP BY 
-    sk.skill_name, sk.skill_type
+    sk.skill_name, sk.skill_type, sk.skill_id
     ORDER BY 
         frequency DESC, avg_student_proficiency DESC;
                 '''
@@ -143,6 +144,7 @@ def get_top_skills():
 SELECT
     sk.skill_name,
     sk.skill_type,
+    sk.skill_id,
     COUNT(js.skill_id) AS frequency,
     AVG(ss.weight) AS avg_student_proficiency,
     AVG(js.weight) AS avg_skill_weightage
@@ -155,7 +157,7 @@ LEFT JOIN
 LEFT JOIN
     Student AS s ON ss.student_id = s.student_id      -- Join to get student data for proficiency
 GROUP BY
-    sk.skill_name, sk.skill_type
+    sk.skill_name, sk.skill_type, sk.skill_id
 ORDER BY
     frequency DESC, avg_skill_weightage DESC;
     '''
@@ -441,6 +443,7 @@ def get_top_tools(skill_type):
 SELECT
     sk.skill_name,
     sk.skill_type,
+    sk.skill_id,
     COUNT(js.skill_id) AS frequency,
     AVG(js.weight) AS avg_importance,
     AVG(ss.weight) AS avg_student_proficiency,
@@ -456,7 +459,7 @@ LEFT JOIN
 WHERE 
     sk.skill_type = (%s)
 GROUP BY
-    sk.skill_name, sk.skill_type
+    sk.skill_name, sk.skill_type, sk.skill_id
 ORDER BY
     frequency DESC, avg_importance DESC;
     '''
@@ -666,4 +669,117 @@ def get_avg_req_weight(skill_name):
         # Log and return an error if something goes wrong
         current_app.logger.error(f"Error fetching information: {e}")
         return jsonify({"error": str(e)}), 500
+
+@depthead_routes.route('skill_note/<skill_id>/<faculty_id>', methods=['GET'])
+def get_skill_notes(skill_id, faculty_id):
+    """
+    Endpoint to get all skill notes associated with a certain skill and department head 
+    """
+
+    query = '''
+    SELECT 
+        sk.skill_name,
+        note.note_id,
+        note.description
+    FROM 
+        Skill_Note note
+    JOIN 
+        Skill sk ON sk.skill_id = note.skill_id
+    WHERE 
+        note.skill_id = %s AND
+        note.faculty_id = %s
+    '''
+
+    try:
+        # Get a database connection
+        cursor = db.get_db().cursor()
+        
+        # Execute the query with the skill_id and faculty_id parameters
+        cursor.execute(query, (skill_id, faculty_id))
+        data = cursor.fetchall()
+
+        # Return the results as a JSON response
+        response = make_response(jsonify(data))
+        response.status_code = 200
+        return response
+    
+    except Exception as e:
+        # Log and return an error if something goes wrong
+        current_app.logger.error(f"Error fetching information: {e}")
+        return jsonify({"error": str(e)}), 500
+
+#Add note
+@depthead_routes.route('/skill_note/<faculty_id>/<skill_id>/<description>', methods=['POST'])
+def add_skill_note(faculty_id, skill_id, description):
+    try:
+        # Log input parameters for debugging
+        current_app.logger.debug(f"Adding skill note for faculty_id={faculty_id}, skill_id={skill_id}, description={description}")
+        
+        # Construct query
+        query = '''
+            INSERT INTO Skill_Note (faculty_id, skill_id, description)
+            VALUES (%s, %s, %s);
+        '''
+        
+        # Execute query
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (faculty_id, skill_id, description))
+        db.get_db().commit()
+        
+        # Verify insert by selecting the note
+        cursor.execute("SELECT * FROM Skill_Note WHERE faculty_id=%s AND skill_id=%s AND description=%s", (faculty_id, skill_id, description))
+        result = cursor.fetchall()
+        if result:
+            current_app.logger.debug(f"Skill note inserted: {result}")
+        
+        return jsonify({"message": "Skill note added successfully"}), 201
+    
+    except Exception as e:
+        current_app.logger.error(f"Error adding note: {e}")
+        return jsonify({"error": str(e)}), 400
+
+
+#Update note
+@depthead_routes.route('skill_note/<note_id>/<description>', methods=['PUT'])
+def update_skill_note(note_id, description):
+    try:
+        # Construct query
+        query = '''
+            UPDATE Skill_Note
+            SET description = (%s)
+            WHERE note_id = (%s);
+        '''
+        
+        # Execute query
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (description, note_id))
+        db.get_db().commit()
+        
+        return jsonify({"message": "Skill note added successfully"}), 201
+    
+    except Exception as e:
+        current_app.logger.error(f"Error adding note: {e}")
+        return jsonify({"error": str(e)}), 400
+
+#Delete note
+@depthead_routes.route('skill_note/<note_id>', methods=['DELETE'])
+def delete_note(note_id):
+    try:
+        # Construct query
+        query = '''
+            DELETE FROM Skill_Note
+            WHERE note_id = (%s)
+        '''
+        
+        # Execute query
+        cursor = db.get_db().cursor()
+        cursor.execute(query, (note_id,))
+        db.get_db().commit()
+        
+        return jsonify({"message": "Skill note deleted successfully"}), 201
+    
+    except Exception as e:
+        current_app.logger.error(f"Error deleting note: {e}")
+        return jsonify({"error": str(e)}), 400
+
 

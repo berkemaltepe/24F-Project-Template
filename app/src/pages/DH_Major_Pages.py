@@ -151,7 +151,7 @@ def display_radar_chart():
             st.error(f"An error occurred: {e}")
 
 
-left, center, right, = st.columns(3)
+left, center, right, = st.columns([1, 1, 1.5])
 
 with left:
     display_top_student_skills()

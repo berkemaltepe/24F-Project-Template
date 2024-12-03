@@ -110,10 +110,9 @@ def display_jobs():
                     st.markdown(f"Date posted: {job['date_posted']}")
                     st.markdown(f"Status: {job['status']}")
 
-                    st.write("### Required skills:")
+                    st.write("##### Required skills:")
                     for skill in job_skills:
-                        st.markdown(f"{skill['skill_name']}")
-                        st.markdown(f"{skill['weight']}")
+                        st.markdown(f"{skill['skill_name']}, {skill['weight']}")
             else:
                 st.warning(f"No skills found for job {job['job_title']}")
     else:
@@ -128,10 +127,10 @@ def display_jobs():
                     st.markdown(f"Date posted: {job['date_posted']}")
                     st.markdown(f"Status: {job['status']}")
 
-                    st.write("### Required skills:")
+                    st.write("##### Required skills:")
                     for skill in job_skills:
-                        st.markdown(f"{skill['skill_name']}")
-                        st.markdown(f"{skill['weight']}")
+                        st.markdown(f"{skill['skill_name']}, {skill['weight']}")
+
             else:
                 st.warning(f"No skills found for job {job['job_title']}")
 
@@ -146,9 +145,9 @@ def display_students():
                     st.markdown(f"GPA: {student['gpa']}")
                     st.markdown(f"Co-op Status: {student['coop_status']}")
 
-                    st.write("### Skills:")
+                    st.write("##### Skills:")
                     for skill in student_skills:
-                        st.markdown(f"{skill['skill_name'], skill['weight']}")
+                        st.markdown(f"{skill['skill_name']}, {skill['weight']}")
 
     else:
         students = get_filtered_students(option)
@@ -159,7 +158,7 @@ def display_students():
                     st.markdown(f"GPA: {student['gpa']}")
                     st.markdown(f"Co-op Status: {student['coop_status']}")
 
-                    st.write("### Skills:")
+                    st.write("##### Skills:")
                     for skill in student_skills:
                         st.markdown(f"{skill['skill_name']}, {skill['weight']}")
 

@@ -30,6 +30,21 @@ CREATE TABLE IF NOT EXISTS Dpt_Faculty (
             ON DELETE restrict
 );
 
+CREATE TABLE IF NOT EXISTS Skill_Note (
+    note_id int PRIMARY KEY AUTO_INCREMENT,
+    faculty_id int,
+    skill_id int,
+    description VARCHAR(100),
+    CONSTRAINT fk_faculty
+        FOREIGN KEY (faculty_id) REFERENCES Dpt_Faculty (faculty_id)
+            ON UPDATE cascade
+            ON DELETE restrict, 
+    CONSTRAINT fk_skill
+        FOREIGN KEY (skill_id) REFERENCES Skill (skill_id)
+            ON UPDATE cascade 
+            ON DELETE restrict 
+);
+
 CREATE TABLE IF NOT EXISTS Advisor (
     advisor_id int PRIMARY KEY,
     admin_id int,
@@ -187,6 +202,19 @@ INSERT INTO Dpt_Faculty (faculty_id, admin_id, name, email, department) VALUES
 (2, 1, 'Dr. John Lee', 'john.lee@example.edu', 'Information Systems'),
 (3, 2, 'Dr. Clara Oswald', 'clara.oswald@example.edu', 'Mathematics');
 
+-- Skill note table
+INSERT INTO Skill_Note (note_id, faculty_id, skill_id, description) VALUES
+(1, 1, 1, 'Python workshop for advanced programming techniques.'),
+(2, 2, 15, 'Discussing the latest trends in cybersecurity.'),
+(3, 3, 9, 'Developing strategies to improve problem-solving skills.'),
+(4, 1, 38, 'AI seminar focusing on real-world applications.'),
+(5, 2, 24, 'Go language training for cloud-based systems.'),
+(6, 3, 44, 'Database administration best practices.'),
+(7, 1, 45, 'Big data analytics certification course.'),
+(8, 2, 20, 'Leadership training for cross-department collaboration.'),
+(9, 3, 37, 'Exploring blockchain technology in modern systems.'),
+(10, 1, 28, 'Hands-on workshop for Docker containerization.');
+
 -- Advisor Table
 INSERT INTO Advisor (advisor_id, admin_id, name, email, department) VALUES
 (1, 1, 'Mark Brown', 'mark.brown@example.edu', 'Engineering'),
@@ -287,13 +315,12 @@ INSERT INTO Student (student_id, name, email, location, major, coop_status, resu
 (47, 'Layla Foster', 'layla.foster@example.com', 'Corpus Christi', 'Agricultural Science', 'Co-op', 'Resume Link 47', 'Senior', 'linkedin.com/laylafoster', 3.9, 3, 1),
 (48, 'Dylan Long', 'dylan.long@example.com', 'Reno', 'Film Production', 'Seeking', 'Resume Link 48', 'Junior', 'linkedin.com/dylanlong', 3.5, 2, 2),
 (49, 'Savannah Foster', 'savannah.foster@example.com', 'Boise', 'Public Policy', 'Seeking', 'Resume Link 49', 'Senior', 'linkedin.com/savannahfoster', 3.6, 1, 1),
-(50, 'Owen Brooks', 'owen.brooks@example.com', 'Anchorage', 'Linguistics', 'Co-op', 'Resume Link 50', 'Sophomore', 'linkedin.com/owenbrooks', 3.7, 2, 2);
-
+(50, 'Owen Brooks', 'owen.brooks@example.com', 'Anchorage', 'Linguistics', 'Co-op', 'Resume Link 50', 'Sophomore', 'linkedin.com/owenbrooks', 3.7, 2, 2),
+(51, 'Hannah Kotler', 'hannah.kotler@example.com', 'Seattle', 'Computer Science', 'Co-op', 'Resume Link 51', 'Sophomore', 'linkedin.com/berkemaltepe', 3.8, 3, 1);
 
 -- Student_Skill Table
 INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
-(1, 1, 5),
-(2, 1, 4),
+(1, 1, 5), (2, 1, 2), (6, 1, 5), (7, 1, 3), (8, 1, 4),
 (3, 2, 3),
 (4, 2, 4),
 (5, 3, 5),
@@ -333,7 +360,8 @@ INSERT INTO Student_Skill (skill_id, student_id, weight) VALUES
 (39, 37, 3),
 (40, 38, 5),
 (41, 39, 4),
-(42, 40, 5);
+(42, 40, 5),
+(1, 51, 4), (15, 51, 3), (9, 51, 4), (6, 51, 4.5), (24, 51, 2), (26, 51, 4), (42, 51, 3);
 
 -- Job Table with Updated Industries
 INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, industry, date_posted, status) VALUES

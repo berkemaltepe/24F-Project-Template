@@ -34,7 +34,7 @@ def StudentListNav():
 #### ------------------------ Department Head Navigation ---------------------------- ####
 
 def TopSkillsNav():
-    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Industry Skills", icon="💼")
+    st.sidebar.page_link("pages/DH_Top_Skills_And_Tools.py", label="Top Skills", icon="💼")
 
 def MajorReportNav():
     st.sidebar.page_link("pages/DH_Major_Pages.py", label="Major Program Reports", icon="🎓")
