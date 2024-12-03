@@ -114,8 +114,7 @@ if st.button("Act as Colin, the System Admin",
     st.session_state['role'] = 'sysadmin'
     st.session_state['first_name'] = 'Colin'
     logger.info("Logging in as System Admin")
-    # CHANGE TO SYS ADMIN HOME PAGE (make a new page or something like that)
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    st.switch_page('pages/Admin_Home.py')
 
 
 

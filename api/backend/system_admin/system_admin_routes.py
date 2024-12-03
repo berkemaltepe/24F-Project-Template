@@ -9,6 +9,92 @@ from backend.db_connection import db
 system_admin_routes = Blueprint('system_admin_routes', __name__)
 
 #------------------------------------------------------------
+# Gets the info of all jobs in the system
+@system_admin_routes.route('/job', methods=['GET'])
+def get_all_jobs():
+    query = '''
+        SELECT *
+        FROM Job
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    job_data = cursor.fetchall()
+    return make_response(jsonify(job_data)), 200
+    
+#------------------------------------------------------------
+# Adds a new job to the system
+@system_admin_routes.route('/job', methods=['POST'])
+def add_job():
+    job_data = request.json
+    id = job_data['job_id']
+    title = job_data['title']
+    emp_id = job_data['emp_id']
+    desc = job_data['description']
+    loc = job_data['location']
+    pay = job_data['pay_range']
+    status = job_data['status']
+
+    query = f'''
+        INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, status)
+        VALUES ({id}, '{title}', {emp_id}, '{desc}', '{loc}', '{pay}', '{status}')
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response("Successfully added job")
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Gets the info of a given job from its job_id
+@system_admin_routes.route('/job/<job_id>', methods=['GET'])
+def get_job_info(job_id):
+    query = f'''
+        SELECT job_id, title, emp_id, description, location, pay_range, status
+        FROM Job
+        WHERE job_id = {job_id}
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    job_data = cursor.fetchall()
+    response = make_response(jsonify(job_data))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Removes a job from the system
+@system_admin_routes.route('/job/<job_id>', methods=['DELETE'])
+def delete_job(job_id):
+    query = f'''
+    DELETE FROM Job
+    WHERE job_id = {job_id};    
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response("Successfully deleted job")
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Gets the info of all skills in the system
+@system_admin_routes.route('/skill', methods=['GET'])
+def get_all_skills():
+    query = '''
+        SELECT *
+        FROM Skill
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    skill_data = cursor.fetchall()
+    return make_response(jsonify(skill_data)), 200
+
+#------------------------------------------------------------
 # Adds a new skill to the system
 @system_admin_routes.route('/skill', methods=['POST'])
 def add_skill():
@@ -63,65 +149,20 @@ def delete_skill(skill_id):
     response = make_response("Successfully deleted skill")
     response.status_code = 200
     return response
-    
-#------------------------------------------------------------
-# Adds a new job to the system
-@system_admin_routes.route('/job', methods=['POST'])
-def add_job():
-    job_data = request.json
-
-    id = job_data['job_id']
-    title = job_data['title']
-    emp_id = job_data['emp_id']
-    desc = job_data['description']
-    loc = job_data['location']
-    pay = job_data['pay_range']
-    status = job_data['status']
-
-    query = f'''
-        INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, status)
-        VALUES ({id}, '{title}', {emp_id}, '{desc}', '{loc}', '{pay}', '{status}')
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-
-    response = make_response("Successfully added job")
-    response.status_code = 200
-    return response
 
 #------------------------------------------------------------
-# Gets the info of a given job from its job_id
-@system_admin_routes.route('/job/<job_id>', methods=['GET'])
-def get_job_info(job_id):
-    query = f'''
-        SELECT job_id, title, emp_id, description, location, pay_range, status
-        FROM Job
-        WHERE job_id = {job_id}
+# Gets the info of all employers in the system
+@system_admin_routes.route('/employer', methods=['GET'])
+def get_all_employers():
+    query = '''
+        SELECT *
+        FROM Employer
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
 
-    job_data = cursor.fetchall()
-    response = make_response(jsonify(job_data))
-    response.status_code = 200
-    return response
-
-#------------------------------------------------------------
-# Removes a job from the system
-@system_admin_routes.route('/job/<job_id>', methods=['DELETE'])
-def delete_job(job_id):
-    query = f'''
-    DELETE FROM Job
-    WHERE job_id = {job_id};    
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-    db.get_db().commit()
-
-    response = make_response("Successfully deleted job")
-    response.status_code = 200
-    return response
+    emp_data = cursor.fetchall()
+    return make_response(jsonify(emp_data)), 200
 
 #------------------------------------------------------------
 # Adds a new employer to the system
@@ -182,6 +223,20 @@ def delete_employer(emp_id):
     return response
 
 #------------------------------------------------------------
+# Gets the info of all advisors in the system
+@system_admin_routes.route('/advisor', methods=['GET'])
+def get_all_advisors():
+    query = '''
+        SELECT *
+        FROM Advisor
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    advisor_data = cursor.fetchall()
+    return make_response(jsonify(advisor_data)), 200
+
+#------------------------------------------------------------
 # Adds a new advisor to the system
 @system_admin_routes.route('/advisor', methods=['POST'])
 def add_advisor():
@@ -239,11 +294,25 @@ def delete_advisor(advisor_id):
     return response
 
 #------------------------------------------------------------
+# Gets the info of all students in the system
+@system_admin_routes.route('/student', methods=['GET'])
+def get_all_students():
+    query = '''
+        SELECT student_id, name, email, location, major, coop_status, resume, level,
+                    linkedin_profile, gpa, advisor_id, admin_id
+        FROM Student
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    students_data = cursor.fetchall()
+    return make_response(jsonify(students_data)), 200
+
+#------------------------------------------------------------
 # Adds a new student to the system
 @system_admin_routes.route('/student', methods=['POST'])
 def add_student():
     student_data = request.json
-
     id = student_data['student_id']
     name = student_data['name']
     email = student_data['email']
@@ -307,8 +376,22 @@ def delete_student(student_id):
     return response
 
 #------------------------------------------------------------
+# Gets the info of all faculties in the system
+@system_admin_routes.route('/faculty', methods=['GET'])
+def get_all_faculties():
+    query = '''
+        SELECT *
+        FROM Dpt_Faculty
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    faculty_data = cursor.fetchall()
+    return make_response(jsonify(faculty_data)), 200
+
+#------------------------------------------------------------
 # Adds a new faculty to the system
-@system_admin_routes.route('/dpt_faculty', methods=['POST'])
+@system_admin_routes.route('/faculty', methods=['POST'])
 def add_faculty():
     faculty_data = request.json
 
@@ -332,7 +415,7 @@ def add_faculty():
 
 #------------------------------------------------------------
 # Gets the info of a given faculty from its faculty_id
-@system_admin_routes.route('/dpt_faculty/<faculty_id>', methods=['GET'])
+@system_admin_routes.route('/faculty/<faculty_id>', methods=['GET'])
 def get_faculty_info(faculty_id):
     query = f'''
         SELECT faculty_id, admin_id, name, email, department
@@ -349,7 +432,7 @@ def get_faculty_info(faculty_id):
 
 #------------------------------------------------------------
 # Removes a faculty from the system
-@system_admin_routes.route('/dpt_faculty/<faculty_id>', methods=['DELETE'])
+@system_admin_routes.route('/faculty/<faculty_id>', methods=['DELETE'])
 def delete_faculty(faculty_id):
     query = f'''
     DELETE FROM Dpt_Faculty
@@ -364,25 +447,59 @@ def delete_faculty(faculty_id):
     return response
 
 #------------------------------------------------------------
-# Adds a new system admin profile to the system
-@system_admin_routes.route('/system_admin', methods=['POST'])
-def add_admin():
+# Gets the info of all admins in the system
+@system_admin_routes.route('/', methods=['GET'])
+def get_all_admins():
+    query = '''
+        SELECT *
+        FROM System_Admin
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    admin_data = cursor.fetchall()
+    return make_response(jsonify(admin_data)), 200
+
+#------------------------------------------------------------
+# Gets the info of a system admin from its admin_id
+@system_admin_routes.route('/<admin_id>', methods=['GET'])
+def get_admin_info(admin_id):
+    query = f'''
+        SELECT admin_id, name, email, industry, num_applications
+        FROM System_Admin
+        WHERE admin_id = {admin_id}
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+
+    admin_data = cursor.fetchall()
+    response = make_response(jsonify(admin_data))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Updates the info of an admin given its admin_id
+@system_admin_routes.route('/<admin_id>', methods=['PUT'])
+def update_admin(admin_id):
     admin_data = request.json
 
-    id = admin_data['admin_id']
     name = admin_data['name']
     email = admin_data['email']
-    department = admin_data['department']
+    industry = admin_data['industry']
     num_apps = admin_data['num_applications']
-    
+
     query = f'''
-        INSERT INTO System_Admin (admin_id, name, email, department, num_applications)
-        VALUES ({id}, '{name}', '{email}', '{department}', {num_apps})
+    UPDATE System_Admin
+    SET name = '{name}',
+        email = '{email}',
+        industry = '{industry}',
+        num_applications = {num_apps}
+    WHERE admin_id = {admin_id};    
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
     db.get_db().commit()
 
-    response = make_response("Successfully added new admin")
+    response = make_response("Successfully updated admin")
     response.status_code = 200
     return response
