@@ -277,36 +277,6 @@ def update_student_skill(student_id):
     response.status_code = 200
     return response
 
-# #------------------------------------------------------------
-# # Get all jobs
-# @students.route('/jobs/', methods=['GET'])
-# def get_all_jobs():
-#     query = '''
-#         SELECT
-#             j.job_id,
-#             j.title AS job_title,
-#             j.description,
-#             j.location,
-#             j.pay_range,
-#             j.date_posted,
-#             j.status,
-#             e.name AS company
-#         FROM Job AS j
-#         JOIN Employer AS e
-#             ON j.emp_id = e.emp_id;
-#     '''
-
-#     current_app.logger.info(f'GET /jobs/ query={query}')
-
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     theData = cursor.fetchall()
-    
-#     current_app.logger.info(f'GET /jobs/ Result of query = {theData}')
-    
-#     response = make_response(jsonify(theData))
-#     response.status_code = 200
-#     return response
 
 #------------------------------------------------------------
 # Get all jobs with skill match details
