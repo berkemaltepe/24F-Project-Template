@@ -58,6 +58,25 @@ services:
 ## External Libraries Used
 Within venv folder:
 - plotly library used for creating radar charts
+
+## Student Persona
+### Pages:
+- **Student Jobs**
+  - View jobs by best match as well as all jobs
+  - Gives job match percentage for the jobs
+  - Lets you navigate to skill match details for specific job
+- **Student Skill Match Chart**
+  - View match between student and job
+  - Visualization with radar chart
+  - Numerical gap % between student's skills and employer's required skills
+- **Student Profile**
+  - View Student Profile Information
+  - Student profile
+  - Naviagte to Student Skills Page
+- **Student Skills Page**
+  - View Student Skills
+  - Add a skill to profile
+
 ## 🧳 Employer Persona 🧳
 ### Pages:
 - **View Company Info**
