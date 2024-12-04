@@ -63,13 +63,13 @@ if st.session_state.student_id:
                 st.markdown(f"**Status:** {job['status']}")
                 st.markdown(f"**Match Percentage:** {job['match_percentage']}%")
 
-                job_skill_match = get_job_skill_match(st.session_state.student_id, job['job_id'])
-                if job_skill_match:
-                    st.write("### Job Skill Match Details")
-                    for skill in job_skill_match:
-                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Level of Fit:** {skill['level_of_fit']}")
-                else:
-                    st.write("No job skill match details available.")
+                if st.button("Compare Skills",
+                             type='primary',
+                             use_container_width=True,
+                             key=f"compare_skills_{job['job_id']}"):
+                    st.session_state.job_id = job['job_id']
+                    logger.info(f"Viewing job skill match for job ID: {job['job_id']}")
+                    st.switch_page('pages/Student_Skill_Match.py')
     else:
         st.write("No job matches available.")
 
@@ -88,12 +88,12 @@ if st.session_state.student_id:
                 st.markdown(f"**Status:** {job['status']}")
                 st.markdown(f"**Match Percentage:** {job['match_percentage']}%")
 
-                job_skill_match = get_job_skill_match(st.session_state.student_id, job['job_id'])
-                if job_skill_match:
-                    st.write("### Job Skill Match Details")
-                    for skill in job_skill_match:
-                        st.markdown(f"**Skill Name:** {skill['skill_name']} - **Skill ID:** {skill['skill_id']} - **Student Proficiency:** {skill['student_proficiency']} - **Job Requirement:** {skill['job_requirement']} - **Level of Fit:** {skill['level_of_fit']}")
-                else:
-                    st.write("No job skill match details available.")
+                if st.button("Compare Skills",
+                             type='primary',
+                             use_container_width=True,
+                             key=f"all_compare_skills_{job['job_id']}"):
+                    st.session_state.job_id = job['job_id']
+                    logger.info(f"Viewing job skill match for job ID: {job['job_id']}")
+                    st.switch_page('pages/Student_Skill_Match.py')
     else:
         st.write("No job matches available.")
