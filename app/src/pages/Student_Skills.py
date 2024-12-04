@@ -37,6 +37,16 @@ def add_student_skill(student_id, skill_id, weight):
         logger.error(f"Error adding student skill: {e}")
         st.error("Failed to add student skill")
 
+def get_all_skills():
+    try:
+        response = requests.get(f'http://api:4000/s/skills/')
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching all skills: {e}")
+        st.error("Failed to fetch all skills")
+        return None
+
 # Fetch and display student skills
 if st.session_state.student_id:
     student_skills = get_student_skills(st.session_state.student_id)
@@ -45,12 +55,21 @@ if st.session_state.student_id:
         # Display student skills as text
         for skill in student_skills:
             st.markdown(f"**Skill ID:** {skill['skill_id']} - **Skill Name:** {skill['skill_name']} - **Skill Type:** {skill['skill_type']} - **Proficiency:** {skill['proficiency']}")
-
     # Add new skill
     st.write("### Add New Skill")
-    skill_id = st.number_input("Skill ID", min_value=1, step=1)
-    proficiency = st.number_input("Proficiency", min_value=1, max_value=10, step=1)
-    if st.button("Add Skill"):
-        add_student_skill(st.session_state.student_id, skill_id, proficiency)
+
+    skills = get_all_skills()
+    if skills:
+        skill_options = {skill['skill_name']: skill['skill_id'] for skill in skills}
+        st.write("### Add New Skill")
+        skill_id = st.selectbox("Skill Name", options=list(skill_options.keys()))
+        proficiency = st.number_input("Proficiency", min_value=1, max_value=10, step=1)
+        if st.button("Add Skill"):
+            add_student_skill(st.session_state.student_id, skill_options[skill_id], proficiency)
+
+    # skill_id = st.number_input("Skill ID", min_value=1, step=1)
+    # proficiency = st.number_input("Proficiency", min_value=1, max_value=10, step=1)
+    # if st.button("Add Skill"):
+    #     add_student_skill(st.session_state.student_id, skill_id, proficiency)
 else:
     st.write("Please enter a student ID.")
