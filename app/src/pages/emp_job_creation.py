@@ -138,6 +138,17 @@ try:
                                     # Save all changes together
                                     if st.button(f"Save Changes for Job ID {job_id}", key=f"save_all_{job_id}"):
                                         try:
+                                            # Update job details
+                                            job_update_payload = {
+                                                "title": new_title,
+                                                "description": new_description,
+                                                "location": new_location,
+                                                "pay_range": new_pay_range,
+                                                "status": new_status,
+                                            }
+                                            job_update_response = requests.put(f"{BASE_URL}/jobs/{job_id}", json=job_update_payload)
+                                            if job_update_response.status_code != 200:
+                                                st.error(f"Failed to update job details for Job ID {job_id}: {job_update_response.text}")
                                             # Update existing skills
                                             for skill_update in skill_updates:
                                                 skill_update_response = requests.put(
@@ -194,6 +205,7 @@ try:
                 pay_range = st.text_input("Pay Range")
                 status = st.selectbox("Status", options=["Open", "Closed"])
                 submit_button = st.form_submit_button(label="Add Job")
+                industry = emp['industry']
 
                 if submit_button:
                     try:
@@ -204,6 +216,7 @@ try:
                             "pay_range": pay_range,
                             "status": status,
                             "emp_id": employer_id,
+                            "industry": industry
                         }
                         add_response = requests.post(f"{BASE_URL}/jobs", json=add_job_payload)
                         if add_response.status_code == 200:
