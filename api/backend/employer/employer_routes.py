@@ -21,7 +21,6 @@ def get_emp_info(emp_id):
         # Query the database for emp info
         cursor.execute("SELECT name, emp_id, industry, email FROM Employer WHERE emp_id = {0}".format(emp_id))
         emp = cursor.fetchall()
-        
         return make_response(jsonify(emp)), 200
     except Exception as e:
         current_app.logger.error(f"Error fetching emp info: {e}")
@@ -54,9 +53,6 @@ def get_student(student_id):
         # Query the database for students
         cursor.execute("SELECT student_id, name, major FROM Student WHERE student_id = {0};".format(student_id))
         student = cursor.fetchall()
-
-        # Convert the result to a list of dictionaries
-        
         return make_response(jsonify(student)), 200
     except Exception as e:
         current_app.logger.error(f"Error fetching students: {e}")
@@ -72,7 +68,6 @@ def get_all_skills():
         query = "SELECT skill_id, skill_name FROM Skill;"
         cursor.execute(query)
         skills = cursor.fetchall()
-
         return make_response(jsonify(skills)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -87,16 +82,13 @@ def get_student_skills(student_id):
     try:
         # Database query to fetch the student's skills
         cursor = db.get_db().cursor()
-
         query = """
         SELECT sk.skill_name, ss.weight
         FROM Student_Skill AS ss
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         WHERE ss.student_id = {0};
         """.format(student_id)
-
         cursor.execute(query)
-        # Transform query results into JSON response
         data = cursor.fetchall()
         return jsonify(data), 200
     except Exception as e:
@@ -195,7 +187,6 @@ def get_matches(job_id, student_id):
         WHERE j.job_id = %s AND s.student_id = %s
         GROUP BY s.student_id, j.job_id;
         """
-        
         cursor.execute(query, (job_id, student_id))
         gap = cursor.fetchall()
         return make_response(jsonify(gap)), 200
