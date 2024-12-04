@@ -25,20 +25,6 @@ def get_emp_info(emp_id):
         current_app.logger.error(f"Error fetching emp info: {e}")
         return jsonify({"error": str(e)}), 500
 
-@employer_routes.route('/employer/<emp_id>/email', methods=['PUT'])
-def update_employer_email(emp_id):
-    current_app.logger.info('PUT /employer route')
-    emp_info = request.json
-    emp_id = emp_info['id']
-    email = emp_info['email']
-
-    query = 'UPDATE Employer SET email = %s WHERE emp_id = %s'
-    data = (email, emp_id)
-    cursor = db.get_db().cursor()
-    r = cursor.execute(query, data)
-    db.get_db().commit()
-    return 'email updated!'
-
 @employer_routes.route('/students', methods=['GET'])
 def get_students():
     """
@@ -180,6 +166,45 @@ def get_job_details(job_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Get SKILLMATCH
+@employer_routes.route('/job/<job_id>/<student_id>/student_matches', methods=['GET'])
+def get_matches(job_id, student_id):
+    try:
+        cursor = db.get_db().cursor()
+        query = """
+        SELECT
+        s.student_id,
+        s.name AS student_name,
+        j.job_id,
+        j.title AS job_title,
+        ROUND(
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS total_skill_gap
+        FROM Student AS s
+        CROSS JOIN Job AS j
+        JOIN Job_Skill AS js ON js.job_id = j.job_id
+        LEFT JOIN Student_Skill AS ss ON s.student_id = ss.student_id AND ss.skill_id = js.skill_id
+        WHERE j.job_id = %s AND s.student_id = %s
+        GROUP BY s.student_id, j.job_id;
+        """
+        
+        cursor.execute(query, (job_id, student_id))
+        gap = cursor.fetchall()
+        return make_response(jsonify(gap)), 200
+
+    except Exception as e:
+        current_app.logger.error(f"Error fetching gap: {e}")
+        return jsonify({"error": str(e)}), 500
+
 @employer_routes.route('/jobs/<job_id>', methods=['PUT'])
 def update_job_details(job_id):
     """
@@ -226,6 +251,20 @@ def update_job_skill(job_id, skill_id):
         return jsonify({"message": "Job skill updated successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@employer_routes.route('/employer/<emp_id>/email', methods=['PUT'])
+def update_employer_email(emp_id):
+    current_app.logger.info('PUT /employer route')
+    emp_info = request.json
+    emp_id = emp_info['id']
+    email = emp_info['email']
+
+    query = 'UPDATE Employer SET email = %s WHERE emp_id = %s'
+    data = (email, emp_id)
+    cursor = db.get_db().cursor()
+    r = cursor.execute(query, data)
+    db.get_db().commit()
+    return 'email updated!'
     
 @employer_routes.route('/jobs', methods=['POST'])
 def add_job():
@@ -235,8 +274,8 @@ def add_job():
     try:
         job_data = request.json
         query = """
-        INSERT INTO Job (title, description, location, pay_range, status, emp_id, date_posted)
-        VALUES (%s, %s, %s, %s, %s, %s, NOW());
+        INSERT INTO Job (title, description, location, pay_range, status, emp_id, industry, date_posted)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, NOW());
         """
         data = (
             job_data['title'],
@@ -244,27 +283,13 @@ def add_job():
             job_data['location'],
             job_data['pay_range'],
             job_data['status'],
-            job_data['emp_id']
+            job_data['emp_id'],
+            job_data['industry']
         )
         cursor = db.get_db().cursor()
         cursor.execute(query, data)
         db.get_db().commit()
         return jsonify({"message": "Job added successfully!"}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    
-@employer_routes.route('/jobs/<job_id>', methods=['DELETE'])
-def delete_job(job_id):
-    """
-    Endpoint to delete a job.
-    """
-    try:
-        query = "DELETE FROM Job WHERE job_id = %s;"
-        cursor = db.get_db().cursor()
-        cursor.execute(query, (job_id,))
-        db.get_db().commit()
-
-        return jsonify({"message": f"Job ID {job_id} deleted successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -286,6 +311,7 @@ def add_job_skill(job_id):
 
 @employer_routes.route('/jobs/<job_id>/skills/<skill_id>', methods=['DELETE'])
 def delete_job_skill(job_id, skill_id):
+    
     try:
         query = """
         DELETE FROM Job_Skill
@@ -299,43 +325,21 @@ def delete_job_skill(job_id, skill_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-# Get SKILLMATCH
-@employer_routes.route('/job/<job_id>/<student_id>/student_matches', methods=['GET'])
-def get_matches(job_id, student_id):
+@employer_routes.route('/jobs/<job_id>', methods=['DELETE'])
+def delete_job(job_id):
+    """
+    Endpoint to delete a job.
+    """
     try:
+        query = "DELETE FROM Job WHERE job_id = %s;"
         cursor = db.get_db().cursor()
-        query = """
-        SELECT
-        s.student_id,
-        s.name AS student_name,
-        j.job_id,
-        j.title AS job_title,
-        ROUND(
-            COALESCE(SUM(
-                CASE
-                    WHEN ss.weight IS NULL
-                        THEN js.weight
-                    WHEN ss.weight >= js.weight
-                        THEN 0
-                    ELSE
-                        js.weight - ss.weight
-                END
-            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
-        ) AS total_skill_gap
-        FROM Student AS s
-        CROSS JOIN Job AS j
-        JOIN Job_Skill AS js ON js.job_id = j.job_id
-        LEFT JOIN Student_Skill AS ss ON s.student_id = ss.student_id AND ss.skill_id = js.skill_id
-        WHERE j.job_id = %s AND s.student_id = %s
-        GROUP BY s.student_id, j.job_id;
-        """
-        
-        cursor.execute(query, (job_id, student_id))
-        gap = cursor.fetchall()
-        return make_response(jsonify(gap)), 200
+        cursor.execute(query, (job_id,))
+        db.get_db().commit()
 
+        return jsonify({"message": f"Job ID {job_id} deleted successfully!"}), 200
     except Exception as e:
-        current_app.logger.error(f"Error fetching gap: {e}")
         return jsonify({"error": str(e)}), 500
+
+
+
+
