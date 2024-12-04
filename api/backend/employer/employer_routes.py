@@ -8,6 +8,7 @@ from backend.db_connection import db
 # Create a blueprint for employer routes
 employer_routes = Blueprint('employer_routes', __name__)
 
+############################ GET ROUTES ##############################################
 @employer_routes.route('/employer/<emp_id>', methods=['GET'])
 def get_emp_info(emp_id):
     """
@@ -205,6 +206,8 @@ def get_matches(job_id, student_id):
         current_app.logger.error(f"Error fetching gap: {e}")
         return jsonify({"error": str(e)}), 500
 
+############################ PUT ROUTES ##############################################
+
 @employer_routes.route('/jobs/<job_id>', methods=['PUT'])
 def update_job_details(job_id):
     """
@@ -265,6 +268,8 @@ def update_employer_email(emp_id):
     r = cursor.execute(query, data)
     db.get_db().commit()
     return 'email updated!'
+
+############################ POST ROUTES ##############################################
     
 @employer_routes.route('/jobs', methods=['POST'])
 def add_job():
@@ -311,6 +316,8 @@ def add_job_skill(job_id):
         return jsonify({"message": "Skill added successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+############################ DELETE ROUTES ###################################
 
 @employer_routes.route('/jobs/<job_id>/skills/<skill_id>', methods=['DELETE'])
 def delete_job_skill(job_id, skill_id):
