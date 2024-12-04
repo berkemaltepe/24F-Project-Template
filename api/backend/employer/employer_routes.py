@@ -9,6 +9,7 @@ from backend.db_connection import db
 employer_routes = Blueprint('employer_routes', __name__)
 
 ############################ GET ROUTES ##############################################
+
 @employer_routes.route('/employer/<emp_id>', methods=['GET'])
 def get_emp_info(emp_id):
     """
@@ -37,9 +38,6 @@ def get_students():
         # Query the database for students
         cursor.execute("SELECT student_id, name, major FROM Student;")
         students = cursor.fetchall()
-
-        # Convert the result to a list of dictionaries
-        
         return make_response(jsonify(students)), 200
     except Exception as e:
         current_app.logger.error(f"Error fetching students: {e}")
