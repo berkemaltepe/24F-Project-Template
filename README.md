@@ -59,7 +59,7 @@ services:
 Within venv folder:
 - plotly library used for creating radar charts
 
-## Student Persona
+## 💼 Student Persona 💼
 ### Pages:
 - **Student Jobs**
   - View jobs by best match as well as all jobs
