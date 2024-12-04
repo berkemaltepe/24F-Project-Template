@@ -170,11 +170,17 @@ def get_all_jobs(student_id):
             j.status,
             e.name AS company,
             ROUND(
-                (SUM(CASE
-                WHEN ss.skill_id = js.skill_id THEN 1
-                ELSE 0
-                 END) / COUNT(js.skill_id)) * 100, 2
-            ) AS match_percentage
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS match_percentage
         FROM Job AS j
         JOIN Employer AS e
             ON j.emp_id = e.emp_id
@@ -185,7 +191,7 @@ def get_all_jobs(student_id):
             AND ss.student_id = {student_id}
         GROUP BY
             j.job_id, e.name
-        ORDER BY match_percentage DESC;
+        ORDER BY job_title ASC;
     '''
 
     current_app.logger.info(f'GET /jobs/<student_id>/ query={query}')
@@ -214,27 +220,28 @@ def get_best_jobs(student_id):
             j.date_posted,
             j.status,
             e.name AS company,
-            s.student_id,
-            s.name AS student_name,
             ROUND(
-                (SUM(CASE
-                WHEN ss.skill_id = js.skill_id THEN 1
-                ELSE 0
-                 END) / COUNT(js.skill_id)) * 100, 2
-            ) AS match_percentage
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS match_percentage
         FROM Job AS j
-        JOIN Job_Skill AS js
-            ON j.job_id = js.job_id
-        JOIN Student_Skill AS ss
-            ON js.skill_id = ss.skill_id
-        JOIN Student s
-            ON ss.student_id = s.student_id
-        JOIN Employer e
+        JOIN Employer AS e
             ON j.emp_id = e.emp_id
-        WHERE
-            s.student_id = {student_id}
+        LEFT JOIN Job_Skill AS js
+            ON j.job_id = js.job_id
+        LEFT JOIN Student_Skill AS ss
+            ON js.skill_id = ss.skill_id
+            AND ss.student_id = {student_id}
         GROUP BY
-            j.job_id, e.name, s.student_id
+            j.job_id, e.name
         ORDER BY match_percentage DESC;
     '''
 
@@ -261,11 +268,17 @@ def get_skill_gap(student_id, job_id):
             s.student_id,
             s.name AS student_name,
             ROUND(
-                (SUM(CASE
-                WHEN ss.skill_id = js.skill_id THEN 1
-                ELSE 0
-             END) / COUNT(js.skill_id)) * 100, 2
-            ) AS match_percentage
+            COALESCE(SUM(
+                CASE
+                    WHEN ss.weight IS NULL
+                        THEN js.weight
+                    WHEN ss.weight >= js.weight
+                        THEN 0
+                    ELSE
+                        js.weight - ss.weight
+                END
+            ), 0) / COALESCE(SUM(js.weight), 1) * 100, 2
+        ) AS match_percentage
         FROM Job AS j
         JOIN Job_Skill AS js
             ON j.job_id = js.job_id
@@ -302,7 +315,7 @@ def get_job_skill_comparison(student_id, job_id):
             sk.skill_name,
             ss.weight AS student_proficiency,
             js.weight AS job_requirement,
-            (ss.weight / js.weight) * js.weight AS level_of_fit
+            (ss.weight / js.weight) * 100 AS level_of_fit
         FROM Student_Skill AS ss
         JOIN Skill AS sk ON ss.skill_id = sk.skill_id
         LEFT JOIN Job_Skill AS js ON sk.skill_id = js.skill_id
