@@ -26,7 +26,7 @@ def get_admin():
 admin = get_admin()
 
 def display_info():
-    st.title("Employer Profile")
+    st.title(f"{admin['name']}'s Employer Profile")
     st.markdown(
         f'''
         <small>
@@ -73,7 +73,6 @@ if "edit" not in st.session_state:
 
 if st.session_state["edit"]:
     st.title("Edit Employer Profile")
-    old_name = admin['name']
     name = st.text_input("Name", value=f"{admin['name']}")
     email = st.text_input("Email", value=f"{admin['email']}")
     industry = st.text_input("Industry", value=f"{admin['industry']}")
@@ -84,7 +83,7 @@ if st.session_state["edit"]:
         try:
             response = requests.put(f"{URL}", json=admin_data)
             if response.status_code == 200:
-                st.session_state["update_success"] = f"Successfully updated admin {old_name}."
+                st.session_state["update_success"] = f"Successfully updated admin {name}."
                 st.session_state["edit"] = False
                 st.rerun()
             else:

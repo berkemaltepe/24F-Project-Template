@@ -93,7 +93,7 @@ def add_student():
     resume = st.text_input("Resume Link")
     level = st.selectbox("Level", ["Select a Level", "Sophomore", "Junior", "Senior"])
     linkedin_profile = st.text_input("LinkedIn Profile")
-    gpa = st.number_input("GPA", min_value=0, max_value=4)
+    gpa = st.number_input("GPA", min_value=0.00, max_value=4.00, step=0.01)
 
     advisors = get_advisor_names_ids()
     selected_advisor = st.selectbox("Advisor", options=["Select an Advisor"] + list(advisors.keys()))

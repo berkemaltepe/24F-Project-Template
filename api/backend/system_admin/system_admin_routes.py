@@ -33,11 +33,12 @@ def add_job():
     desc = job_data['description']
     loc = job_data['location']
     pay = job_data['pay_range']
+    industry = job_data['industry']
     status = job_data['status']
 
     query = f'''
-        INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, status)
-        VALUES ({id}, '{title}', {emp_id}, '{desc}', '{loc}', '{pay}', '{status}')
+        INSERT INTO Job (job_id, title, emp_id, description, location, pay_range, date_posted, industry, status)
+        VALUES ({id}, '{title}', {emp_id}, '{desc}', '{loc}', '{pay}', CURDATE(), '{industry}', '{status}')
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -99,24 +100,6 @@ def add_skill():
     response = make_response("Successfully added skill")
     response.status_code = 200
     return response
-
-#------------------------------------------------------------
-# Gets the info of a given skill from its skill_id
-@system_admin_routes.route('/skill/<skill_id>', methods=['GET'])
-def get_skill_info(skill_id):
-    query = f'''
-        SELECT skill_id, skill_name, skill_type, weight
-        FROM Skill
-        WHERE skill_id = {skill_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    skill_data = cursor.fetchall()
-    response = make_response(jsonify(skill_data))
-    response.status_code = 200
-    return response
-
 #------------------------------------------------------------
 # Removes a skill from the system
 @system_admin_routes.route('/skill/<skill_id>', methods=['DELETE'])
@@ -173,23 +156,6 @@ def add_employer():
     return response
 
 #------------------------------------------------------------
-# Gets the info of a given employer from its emp_id
-@system_admin_routes.route('/employer/<emp_id>', methods=['GET'])
-def get_employer_info(emp_id):
-    query = f'''
-        SELECT emp_id, admin_id, name, email, industry, num_applications
-        FROM Employer
-        WHERE emp_id = {emp_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    employer_data = cursor.fetchall()
-    response = make_response(jsonify(employer_data))
-    response.status_code = 200
-    return response
-
-#------------------------------------------------------------
 # Removes a employer from the system
 @system_admin_routes.route('/employer/<emp_id>', methods=['DELETE'])
 def delete_employer(emp_id):
@@ -240,23 +206,6 @@ def add_advisor():
     db.get_db().commit()
 
     response = make_response("Successfully added advisor")
-    response.status_code = 200
-    return response
-
-#------------------------------------------------------------
-# Gets the info of a given advisor from its advisor_id
-@system_admin_routes.route('/advisor/<advisor_id>', methods=['GET'])
-def get_advisor_info(advisor_id):
-    query = f'''
-        SELECT advisor_id, admin_id, name, email, department
-        FROM Advisor
-        WHERE advisor_id = {advisor_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    advisor_data = cursor.fetchall()
-    response = make_response(jsonify(advisor_data))
     response.status_code = 200
     return response
 
@@ -323,25 +272,6 @@ def add_student():
     response = make_response("Successfully added student")
     response.status_code = 200
     return response
-
-#------------------------------------------------------------
-# Gets the info of a given student from its student_id
-@system_admin_routes.route('/student/<student_id>', methods=['GET'])
-def get_student_info(student_id):
-    query = f'''
-        SELECT student_id, name, email, location, major, coop_status, resume, level,
-                    linkedin_profile, gpa, advisor_id, admin_id
-        FROM Student
-        WHERE student_id = {student_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    student_data = cursor.fetchall()
-    response = make_response(jsonify(student_data))
-    response.status_code = 200
-    return response
-
 #------------------------------------------------------------
 # Removes a student from the system
 @system_admin_routes.route('/student/<student_id>', methods=['DELETE'])
@@ -393,23 +323,6 @@ def add_faculty():
     db.get_db().commit()
 
     response = make_response("Successfully added faculty")
-    response.status_code = 200
-    return response
-
-#------------------------------------------------------------
-# Gets the info of a given faculty from its faculty_id
-@system_admin_routes.route('/faculty/<faculty_id>', methods=['GET'])
-def get_faculty_info(faculty_id):
-    query = f'''
-        SELECT faculty_id, admin_id, name, email, department
-        FROM Dpt_Faculty
-        WHERE faculty_id = {faculty_id}
-    '''
-    cursor = db.get_db().cursor()
-    cursor.execute(query)
-
-    faculty_data = cursor.fetchall()
-    response = make_response(jsonify(faculty_data))
     response.status_code = 200
     return response
 
