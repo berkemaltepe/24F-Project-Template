@@ -336,7 +336,6 @@ def delete_job(job_id):
         cursor = db.get_db().cursor()
         cursor.execute(query, (job_id,))
         db.get_db().commit()
-
         return jsonify({"message": f"Job ID {job_id} deleted successfully!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
