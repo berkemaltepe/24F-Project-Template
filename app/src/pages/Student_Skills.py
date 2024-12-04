@@ -55,9 +55,8 @@ if st.session_state.student_id:
         # Display student skills as text
         for skill in student_skills:
             st.markdown(f"**Skill ID:** {skill['skill_id']} - **Skill Name:** {skill['skill_name']} - **Skill Type:** {skill['skill_type']} - **Proficiency:** {skill['proficiency']}")
+    
     # Add new skill
-    st.write("### Add New Skill")
-
     skills = get_all_skills()
     if skills:
         skill_options = {skill['skill_name']: skill['skill_id'] for skill in skills}
