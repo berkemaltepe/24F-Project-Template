@@ -48,7 +48,7 @@ def display_all_jobs():
             emp_name = next((k for k, v in emps.items() if v == job["emp_id"]), "Unknown")
             job['emp_id'] = emp_name
 
-        columns = ["job_id", "title", "emp_id", "description", "location", "pay_range", "status"]
+        columns = ["job_id", "title", "emp_id", "description", "location", "pay_range", "date_posted", "industry", "status"]
         df = pd.DataFrame(jobs, columns=columns)
         df.rename(columns={
             "job_id": "ID",
@@ -57,6 +57,8 @@ def display_all_jobs():
             "description": "Description",
             "location": "Location",
             "pay_range": "Pay Range",
+            "date_posted": "Date Posted",
+            "industry": "Industry",
             "status": "Status"}, inplace=True)
         df.rename(columns={"job_id": "id"}, inplace=True)
         st.dataframe(df, hide_index=True)
@@ -70,6 +72,7 @@ def add_job():
     selected_emp = st.selectbox("Employer", options=["Select an Employer"] + list(emps.keys()))
     description = st.text_input("Description")
     location = st.text_input("Location")
+    industry = st.text_input("Industry")
     pay_range = st.text_input("Pay Range")
     status = st.selectbox("Status", ["Open", "Not Open"])
 
@@ -83,7 +86,7 @@ def add_job():
             st.warning(f"Job ID {id} already exists. Enter a unique job ID.")
         else:
             job_data = {"job_id": id, "title": title, "emp_id": emps[selected_emp], "description": description, 
-            "location": location, "pay_range": pay_range, "status": status}
+            "location": location, "pay_range": pay_range, "industry": industry, "status": status}
             
             try:
                 response = requests.post(f"{URL}/job", json=job_data)

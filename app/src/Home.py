@@ -5,6 +5,7 @@
 
 # Set up basic logging infrastructure
 import logging
+import requests
 logging.basicConfig(format='%(filename)s:%(lineno)s:%(levelname)s -- %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -124,12 +125,26 @@ if st.button("Act as Lea, the Head of Khoury College of CS",
     # CHANGE TO DEPT HEAD HOME PAGE (make a new page or something like that)
     st.switch_page('pages/Dept_Head_Home.py')
 
-if st.button("Act as Colin, the System Admin", 
+def get_admin():
+    try:
+        response = requests.get("http://web-api:4000/system_admin/1")
+        if response.status_code == 200:
+            return response.json()[0]
+        else:
+            st.error(f"Failed to fetch admins: {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"An error occurred while fetching admins: {e}")
+        return None
+
+admin = get_admin()
+
+if st.button(f"Act as {admin['name']}, the System Admin", 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'sysadmin'
-    st.session_state['first_name'] = 'Colin'
+    st.session_state['first_name'] = admin['name']
     logger.info("Logging in as System Admin")
     st.switch_page('pages/Admin_Home.py')
 

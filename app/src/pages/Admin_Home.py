@@ -1,4 +1,5 @@
 import logging
+import requests
 logger = logging.getLogger(__name__)
 
 import streamlit as st
@@ -9,7 +10,21 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
-st.title(f"Welcome to the Admin Home Page, {st.session_state['first_name']}.")
+def get_admin():
+    try:
+        response = requests.get("http://web-api:4000/system_admin/1")
+        if response.status_code == 200:
+            return response.json()[0]
+        else:
+            st.error(f"Failed to fetch admins: {response.text}")
+            return None
+    except Exception as e:
+        st.error(f"An error occurred while fetching admins: {e}")
+        return None
+
+admin = get_admin()
+
+st.title(f"Welcome to the Admin Home Page, {admin['name']}.")
 st.write('')
 st.write('')
 st.write('### What would you like to do today?')
