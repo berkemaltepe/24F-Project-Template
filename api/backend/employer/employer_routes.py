@@ -118,10 +118,7 @@ def get_job_skills(job_id):
         WHERE js.job_id = %s;
         """
         cursor.execute(query, (job_id,))
-        # Transform query results into JSON response
         results = cursor.fetchall()
-
-        # Ensure proper keys in the response
         return make_response(jsonify(results)), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -142,7 +139,6 @@ def get_jobs(emp_id):
         WHERE e.emp_id = {0};
         """.format(emp_id)
         cursor.execute(query)
-        # Transform query results into JSON response
         results = cursor.fetchall()
         return make_response(jsonify(results)), 200
     except Exception as e:
@@ -169,6 +165,10 @@ def get_job_details(job_id):
 # Get SKILLMATCH
 @employer_routes.route('/job/<job_id>/<student_id>/student_matches', methods=['GET'])
 def get_matches(job_id, student_id):
+    """
+    Endpoint to get the skillmatch 
+    info between a student and employer
+    """
     try:
         cursor = db.get_db().cursor()
         query = """
@@ -295,6 +295,9 @@ def add_job():
 
 @employer_routes.route('/jobs/<job_id>/skills', methods=['POST'])
 def add_job_skill(job_id):
+    """
+    Endpoint to add skills to a job
+    """
     try:
         skill_data = request.json
         query = """
@@ -311,7 +314,9 @@ def add_job_skill(job_id):
 
 @employer_routes.route('/jobs/<job_id>/skills/<skill_id>', methods=['DELETE'])
 def delete_job_skill(job_id, skill_id):
-    
+    """
+    Endpoint to delete skills from a job
+    """
     try:
         query = """
         DELETE FROM Job_Skill
