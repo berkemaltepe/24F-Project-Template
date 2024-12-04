@@ -124,12 +124,12 @@ if st.button("Act as Lea, the Head of Khoury College of CS",
     # CHANGE TO DEPT HEAD HOME PAGE (make a new page or something like that)
     st.switch_page('pages/Dept_Head_Home.py')
 
-if st.button("Act as Colin, the System Admin", 
+if st.button("Act as Alice, the System Admin", 
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'sysadmin'
-    st.session_state['first_name'] = 'Colin'
+    st.session_state['first_name'] = 'Alice'
     logger.info("Logging in as System Admin")
     st.switch_page('pages/Admin_Home.py')
 
