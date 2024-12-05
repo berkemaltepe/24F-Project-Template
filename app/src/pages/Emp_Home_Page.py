@@ -87,7 +87,7 @@ if st.button("View the List of Students in the System", use_container_width=True
 
 st.markdown("</div></div>", unsafe_allow_html=True)
 
-# Add footer for branding or additional info
+# le footer
 st.markdown(
     """
     <hr>

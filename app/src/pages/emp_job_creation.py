@@ -42,7 +42,7 @@ try:
                         # Fetch job details
                         job_details_response = requests.get(f"{BASE_URL}/jobs/{job_id}")
                         if job_details_response.status_code == 200:
-                            job_details = job_details_response.json()[0]  # Assuming single object in list
+                            job_details = job_details_response.json()[0]
 
                             # Editable fields for job details
                             new_title = st.text_input("Job Title", value=job_details['title'], key=f"title_{job_id}")
@@ -118,7 +118,7 @@ try:
                                             key=f"add_new_skill_weight_{job_id}"
                                         )
 
-                                    # Ensure button triggers correct POST request WHY ISN'T THIS WORKING (EDIT: i fixed it >:))
+                                    # Adding skills section
                                     if st.button(f"Add New Skill to Job ID {job_id}", key=f"add_skill_btn_{job_id}"):
                                         try:
                                             # Ensure payload matches route expectations

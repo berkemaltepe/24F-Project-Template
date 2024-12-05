@@ -16,12 +16,11 @@ st.markdown(
 
 SideBarLinks()
 
-# Define base URLs
+# Define base URL
 BASE_URL = "http://web-api:4000/employer"
 
 # Input student_id and job_id
 student_id = st.number_input("Enter Student ID:", min_value=1, step=1)
-#job_id = st.number_input("Enter Job ID:", min_value=1, step=1)
 
 employer_id = st.session_state['emp_id']
 
@@ -66,7 +65,7 @@ if st.button("Generate Radar Chart", type='primary', use_container_width=True):
             st.header("Required Skillset")
             for skill in employer_skills:
                 st.write(f"Skill: {skill['skill_name']} | Weight: {skill['weight']}")    
-            # Ensure skills are aligned
+            # Get skills for students and employers in a dict
             all_skills = {skill['skill_name'] for skill in employer_skills} | {skill['skill_name'] for skill in student_skills}
             
             all_skills = list(all_skills)  # Convert to list for ordering
