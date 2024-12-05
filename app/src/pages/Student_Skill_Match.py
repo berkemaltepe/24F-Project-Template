@@ -95,7 +95,7 @@ if job_id and student_id:
                 skill_gap_data = skill_gap_response.json()
                 for gap in skill_gap_data:
                     if gap['student_id'] == student_id:
-                        st.header(f"**Total Skill Gap:** {gap['total_skill_gap']}%")
+                        st.header(f"**Total Skill Match:** {gap['total_skill_gap']}%")
                         break
                 else:
                     st.warning("No skill gap data found for the selected student and job.")
