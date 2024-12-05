@@ -72,7 +72,7 @@ Within venv folder:
 - **Student Profile**
   - View Student Profile Information
   - Student profile
-  - Naviagte to Student Skills Page
+  - Navigate to Student Skills Page
 - **Student Skills Page**
   - View Student Skills
   - Add a skill to profile
@@ -95,3 +95,23 @@ Within venv folder:
 - **View List of Students in System**
 	- Complete list of students in the system
 		- ID, Name, Major (other information hidden for student privacy)
+
+
+## 🏫 Department Head Persona 🏫
+### Pages:
+- **Top Skills**
+  - View top skills among all job postings, ranked by frequency
+  - View skill information and analytics (skill type, frequency, average employer weight, average student proficiency)
+  - Filter through skills by skill type
+  - Add, edit, and remove skill notes (Skill notes are associated by department head, so 
+  only the user who wrote them can see them)
+- **Major Program Reports**
+  - View top student skills according to major, ranked by frequency 
+  - View top job skills according to industry, ranked by frequency
+  - View skill information and analytics 
+  - Compare top student skills in chosen major to top industry skills with a radar chart 
+- **Search by Skill**
+  - View all job listings and job details (name, company, description, industry, pay range, date posted, status, required skills)
+  - View all students and student details (name, major, level email, GPA, co-op status, skills)
+  - Filter job postings and students by skill name 
+
