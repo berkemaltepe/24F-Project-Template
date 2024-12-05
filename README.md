@@ -4,6 +4,8 @@ NU SkillMatch is an application that assesses students' current skills against i
 
 Current solutions such as NUWorks make it difficult to know whether applicants are qualified for job postings with their current skill sets, and leads to many unqualified applicants. A data-driven approach to this problem can streamline the job application process and make it clearer to applicants what skills they need to work on, as well as give employers, co-op advisors and school administrators an idea of what skills students have.
 
+**YouTube Video Link:** https://youtu.be/5SegDjA5NTo
+
 ## Project Components
 
 Currently, there are three major components which will each run in their own Docker Containers:
