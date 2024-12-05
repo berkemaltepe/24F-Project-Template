@@ -10,6 +10,9 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
+st.write("### Top Skills 💼")
+st.write("See all the top skills among job postings, and filter by skill type!")
+
 def get_all_skills():
     try:
         response = requests.get(f'http://api:4000/depthead/skill/skill_type')
@@ -123,8 +126,6 @@ def display_notes(notes):
                 delete_note(note['note_id'])
                 st.rerun()
 
-        
-
 def display_add_notes(skill_id):
                 add_key = f"add_mode_{skill_id}"
                 if st.session_state.get(add_key, False):
@@ -144,7 +145,6 @@ def display_add_notes(skill_id):
                     if st.button("Add note ➕", key=f"add_note_btn_{skill_id}", use_container_width=True):
                         st.session_state[add_key] = True
                         st.rerun() 
-
 
 def display_top_skills():
     top_skills = get_top_skills()

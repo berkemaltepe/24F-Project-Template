@@ -11,6 +11,9 @@ st.set_page_config(layout = 'wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks() 
 
+st.write("### Major Program Reports 🎓")
+st.write("See major-specific skills and compare them to industry skills!")
+
 def get_top_student_skills(major):
     try:
         response = requests.get(f'http://api:4000/depthead/top-student-skills/{major}')
