@@ -40,6 +40,7 @@ def get_advisor_info(advisor_id):
         return jsonify({"error": str(e)}), 500
 
 # ------------------------------------------------------------
+# Routes: Update advisor information
 # Route: Update advisor email
 @advisors.route('/advisor/<int:advisor_id>/email/', methods=['PUT'])
 def update_advisor_email(advisor_id):
@@ -67,6 +68,60 @@ def update_advisor_email(advisor_id):
         return jsonify({"message": "Advisor email updated successfully!"}), 200
     except Exception as e:
         current_app.logger.error(f"Error updating advisor email: {e}")
+        return jsonify({"error": str(e)}), 500
+    
+# ------------------------------------------------------------
+# Route: Update advisor name
+@advisors.route('/advisor/<int:advisor_id>/name/', methods=['PUT'])
+def update_advisor_name(advisor_id):
+    """
+    Endpoint to update advisor name.
+    """
+    try:
+        # Parse the request body for new name data
+        advisor_info = request.json
+        new_name = advisor_info.get('name')
+
+        if not new_name:
+            return jsonify({"error": "Name field is required."}), 400
+
+        # Update the advisor's name in the database
+        query = 'UPDATE Advisor SET name = %s WHERE advisor_id = %s'
+        data = (new_name, advisor_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        return jsonify({"message": "Advisor name updated successfully!"}), 200
+    except Exception as e:
+        current_app.logger.error(f"Error updating advisor name: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# ------------------------------------------------------------
+# Route: Update advisor department
+@advisors.route('/advisor/<int:advisor_id>/department/', methods=['PUT'])
+def update_advisor_department(advisor_id):
+    """
+    Endpoint to update advisor department.
+    """
+    try:
+        # Parse the request body for new department data
+        advisor_info = request.json
+        new_department = advisor_info.get('department')
+
+        if not new_department:
+            return jsonify({"error": "Department field is required."}), 400
+
+        # Update the advisor's department in the database
+        query = 'UPDATE Advisor SET department = %s WHERE advisor_id = %s'
+        data = (new_department, advisor_id)
+        cursor = db.get_db().cursor()
+        cursor.execute(query, data)
+        db.get_db().commit()
+
+        return jsonify({"message": "Advisor department updated successfully!"}), 200
+    except Exception as e:
+        current_app.logger.error(f"Error updating advisor department: {e}")
         return jsonify({"error": str(e)}), 500
 
 # ------------------------------------------------------------
@@ -204,13 +259,4 @@ def modify_advisor_students(advisor_id, student_id):
     cursor.execute(query)
     db.get_db().commit()
     return make_response(f"Student successfully {action} advisor's list.", 200)
-
-# SUMMARY
-# |Route|	                                        |Method|	 |Purpose|
-# /advisor/<advisor_id>/list-of-students/	         GET	      Fetch students assigned to an advisor.
-# /advisor/employer/	                             GET	      Fetch all active job postings.
-# /advisor/job/<job_id>/skills/compare/<student_id>/ GET	      Compare a student's skills to a job.
-# /advisor/job/<job_id>/details	                     GET	      Fetch detailed job and skill information.
-# /advisor/<advisor_id>/student/<student_id>/	     PUT	      Assign a student to an advisor.
-# /advisor/<advisor_id>/student/<student_id>/	     DELETE	      Remove a student from an advisor.
 
