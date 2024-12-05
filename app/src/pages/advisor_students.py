@@ -100,7 +100,7 @@ if response.status_code == 200:
                     )
                     if delete_response.status_code == 200:
                         st.success(f"Student {student['name']} removed successfully.")
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.error(f"Failed to remove student: {delete_response.text}")
 
@@ -116,7 +116,7 @@ if st.button("Add Student", key="add_student"):
         )
         if response.status_code == 200:
             st.success(f"Student with ID {student_id_to_add} successfully assigned to Advisor {advisor_id}.")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error(f"Failed to add student: {response.status_code} - {response.text}")
     except requests.exceptions.RequestException as e:
