@@ -72,8 +72,6 @@ def get_all_skills():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
 @employer_routes.route('/students/<student_id>/skills', methods=['GET'])
 def get_student_skills(student_id):
     """
@@ -244,7 +242,7 @@ def update_job_skill(job_id, skill_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@employer_routes.route('/employer/<emp_id>/email', methods=['PUT'])
+@employer_routes.route('/employers/<emp_id>/email', methods=['PUT'])
 def update_employer_email(emp_id):
     current_app.logger.info('PUT /employer route')
     emp_info = request.json
