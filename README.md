@@ -1,5 +1,8 @@
 # NU SkillMatch Repository
 
+Created By: The Matchmakers
+Members: Nick Ashizawa, Berke Maltepe, Lea Lang, Colin Chu, Yuta Namba
+
 NU SkillMatch is an application that assesses students' current skills against industry requirements for their desired career paths. By analyzing data from job postings, co-op descriptions, students' academic records, the app identifies skill gaps and recommends specific courses, workshops, or extracurricular activities to bridge those gaps as well as gives a visual and numerical representation of how well their skills align with the employer’s requirements. 
 
 Current solutions such as NUWorks make it difficult to know whether applicants are qualified for job postings with their current skill sets, and leads to many unqualified applicants. A data-driven approach to this problem can streamline the job application process and make it clearer to applicants what skills they need to work on, as well as give employers, co-op advisors and school administrators an idea of what skills students have.
