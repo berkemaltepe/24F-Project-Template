@@ -12,6 +12,9 @@ st.set_page_config(layout='wide')
 # Show appropriate sidebar links
 SideBarLinks()
 
+st.write("### Search by skill 🔍")
+st.write("See all job postings and students with a specific skill!")
+
 def get_all_skills():
     try:
         response = requests.get(f'http://api:4000/depthead/skill/skill_name')

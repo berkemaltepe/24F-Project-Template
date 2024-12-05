@@ -104,6 +104,27 @@ def get_student_skills(student_id):
     return response
 
 #------------------------------------------------------------
+# Get all skills
+@students.route('/skills/', methods=['GET'])
+def get_all_skills():
+    query = f'''
+        SELECT *
+        FROM Skill;
+    '''
+
+    current_app.logger.info(f'GET /skills/ query={query}')
+
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    current_app.logger.info(f'GET /skills/ Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
+
+#------------------------------------------------------------
 # Add student skill
 @students.route('/student/<student_id>/skill/', methods=['POST'])
 def add_student_skill(student_id):
