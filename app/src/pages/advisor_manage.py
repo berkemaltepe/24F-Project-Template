@@ -54,11 +54,23 @@ with st.form("update_account_form"):
     submitted = st.form_submit_button("Update Account")
 
     if submitted:
-        # Update advisor details
-        update_data = {"name": name, "email": email, "department": department}
-        update_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/email/", json=update_data)
-
-        if update_response.status_code == 200:
-            st.success("Account details updated successfully!")
+        # Update advisor name
+        name_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/name/", json={"name": name})
+        if name_response.status_code == 200:
+            st.success("Name updated successfully!")
         else:
-            st.error(f"Failed to update account details. Error {update_response.status_code}: {update_response.text}")
+            st.error(f"Failed to update name. Error {name_response.status_code}: {name_response.text}")
+
+        # Update advisor email
+        email_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/email/", json={"email": email})
+        if email_response.status_code == 200:
+            st.success("Email updated successfully!")
+        else:
+            st.error(f"Failed to update email. Error {email_response.status_code}: {email_response.text}")
+
+        # Update advisor department
+        department_response = requests.put(f"{BASE_URL}/advisor/{advisor_id}/department/", json={"department": department})
+        if department_response.status_code == 200:
+            st.success("Department updated successfully!")
+        else:
+            st.error(f"Failed to update department. Error {department_response.status_code}: {department_response.text}")

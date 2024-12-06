@@ -48,7 +48,7 @@ try:
                 unsafe_allow_html=True,
             )
 
-            # If pencil clicked, open email input for editing
+            # If edit clicked, open email input for editing
             if st.session_state.get('edit_mode', False):
                 new_email = st.text_input("Update Email Address", value=emp['email'], key="email_input")
                 save_col, cancel_col = st.columns([2, 2])
@@ -101,7 +101,7 @@ try:
                     for job in jobs:
                         job_id = job['job_id']
                         
-                        # card time
+                        # Card format
                         st.markdown(
                             f"""
                             <div style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #ffffff; 
@@ -113,7 +113,7 @@ try:
                             unsafe_allow_html=True,
                         )
 
-                        # need the required skills
+                        # Need the required skills
                         skills_response = requests.get(f"{BASE_URL}/jobs/{job_id}/skills")
                         if skills_response.status_code == 200:
                             skills = skills_response.json()

@@ -1,8 +1,13 @@
 # NU SkillMatch Repository
 
+Created By: The Matchmakers
+Members: Nick Ashizawa, Berke Maltepe, Lea Lang, Colin Chu, Yuta Namba
+
 NU SkillMatch is an application that assesses students' current skills against industry requirements for their desired career paths. By analyzing data from job postings, co-op descriptions, students' academic records, the app identifies skill gaps and recommends specific courses, workshops, or extracurricular activities to bridge those gaps as well as gives a visual and numerical representation of how well their skills align with the employer’s requirements. 
 
 Current solutions such as NUWorks make it difficult to know whether applicants are qualified for job postings with their current skill sets, and leads to many unqualified applicants. A data-driven approach to this problem can streamline the job application process and make it clearer to applicants what skills they need to work on, as well as give employers, co-op advisors and school administrators an idea of what skills students have.
+
+**YouTube Video Link:** https://youtu.be/5SegDjA5NTo
 
 ## Project Components
 
@@ -97,7 +102,29 @@ Within venv folder:
 		- ID, Name, Major (other information hidden for student privacy)
 
 
-## 🏫 Department Head Persona 🏫
+## 🧑‍🏫 Co-op Advisor Persona 🧑‍🏫
+## Pages:
+- **Advisor Skill Match**
+  - Select a student from the advisor’s assigned list to evaluate their skills.
+  - Compare a student's skills to the required skills for a specific job.
+    - Visualization with Radar Chart: Compare the student’s proficiency with the employer’s required skills.
+    - Skill Gap Analysis: Numerical representation of the total skill gap percentage between the student’s skills and job requirements.
+- **Advisor Job Postings**
+  - View all active job postings available in the system.
+  - Includes job title, company name, location, salary range, and job status.
+  - Search and filter job postings based on relevance to the advisor’s students or specific skill requirements.
+  - Navigate to job details for in-depth skill analysis.
+- **Students List**
+  - View the list of students assigned to the advisor.
+  - Includes detailed student information: Name, ID, Major, GPA, Co-op Status, and Contact Information.
+  - Assign or reassign students to/from the advisor.
+  - Add or remove students from the advisor’s list.
+- **Advisor Profile**
+  - View and update the advisor's profile, including name, email, and department.
+  - Manage account settings, such as updating contact information.
+
+
+  ## 🏫 Department Head Persona 🏫
 ### Pages:
 - **Top Skills**
   - View top skills among all job postings, ranked by frequency
@@ -114,4 +141,3 @@ Within venv folder:
   - View all job listings and job details (name, company, description, industry, pay range, date posted, status, required skills)
   - View all students and student details (name, major, level email, GPA, co-op status, skills)
   - Filter job postings and students by skill name 
-

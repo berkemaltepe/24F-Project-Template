@@ -45,7 +45,7 @@ try:
             for student in students:
                 student_id = student['student_id']
                 
-                # Initialize visibility state for each student
+                # Init visibility state for each student
                 if student_id not in st.session_state["student_visibility"]:
                     st.session_state["student_visibility"][student_id] = False
 

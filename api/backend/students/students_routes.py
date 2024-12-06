@@ -190,7 +190,7 @@ def get_all_jobs(student_id):
             j.date_posted,
             j.status,
             e.name AS company,
-            ROUND(
+            100.00 - ROUND(
             COALESCE(SUM(
                 CASE
                     WHEN ss.weight IS NULL
@@ -241,7 +241,7 @@ def get_best_jobs(student_id):
             j.date_posted,
             j.status,
             e.name AS company,
-            ROUND(
+            100.00 - ROUND(
             COALESCE(SUM(
                 CASE
                     WHEN ss.weight IS NULL
@@ -288,7 +288,7 @@ def get_skill_gap(student_id, job_id):
             j.title AS job_title,
             s.student_id,
             s.name AS student_name,
-            ROUND(
+            100.00 - ROUND(
             COALESCE(SUM(
                 CASE
                     WHEN ss.weight IS NULL
