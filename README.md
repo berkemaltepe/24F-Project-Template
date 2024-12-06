@@ -124,7 +124,7 @@ Within venv folder:
   - Manage account settings, such as updating contact information.
 
 
-  ## 🏫 Department Head Persona 🏫
+## 🏫 Department Head Persona 🏫
 ### Pages:
 - **Top Skills**
   - View top skills among all job postings, ranked by frequency
