@@ -29,8 +29,8 @@ skill_names = [skill['skill_type'] for skill in all_skills]
 
 # Display drop-down menu of all skills
 option = st.selectbox(
-    "Filter by skill type",  # Label for the dropdown
-    ["Choose an option"] + skill_names  # Concatenate the default option with the skill_names list
+    "Filter by skill type",  
+    ["Choose an option"] + skill_names  
 )
 
 def get_top_skills():
@@ -45,7 +45,7 @@ def get_top_skills():
     
 def get_top_filtered_skills(skill_type):
     try:
-        response = requests.get(f'http://api:4000/depthead/top-tools/{skill_type}')
+        response = requests.get(f'http://api:4000/depthead/top-skills/{skill_type}')
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -102,7 +102,7 @@ def display_notes(notes):
 
         with edit_col:
             edit_key = f"edit_mode_{note['note_id']}"
-            if st.session_state.get(edit_key, False):  # Check edit mode for this note
+            if st.session_state.get(edit_key, False):  
                 new_desc = st.text_input("Update note", value=note['description'], key=f"desc_input_{note['note_id']}")
 
                 save_col, cancel_col = st.columns([2, 2])
@@ -116,7 +116,6 @@ def display_notes(notes):
                         st.session_state[edit_key] = False
                         st.rerun()
             else:
-                # Ensure the Edit note button has a unique key for each note
                 if st.button(f"Edit note ✏️", key=f"edit_note_{note['note_id']}", use_container_width=True):
                     st.session_state[edit_key] = True
                     st.rerun()
@@ -145,37 +144,36 @@ def display_add_notes(skill_id):
                     if st.button("Add note ➕", key=f"add_note_btn_{skill_id}", use_container_width=True):
                         st.session_state[add_key] = True
                         st.rerun() 
+                        
+def display_skill_details(skill, ranking, notes):
+    """
+    Helper function to display details of a single skill 
+    """
+    with st.expander(f"{ranking} {skill['skill_name']}"):
+        st.markdown(f"Skill type: {skill['skill_type']}")
+        st.markdown(f"Frequency: {skill['frequency']}")
+        st.markdown(f"Average Employer Weight: {skill['avg_skill_weightage']}")
+        st.markdown(f"Average Student Proficiency: {skill['avg_student_proficiency']}")
+        st.write("### Notes:")
+        display_notes(notes)
+        display_add_notes(skill['skill_id'])
+
 
 def display_top_skills():
-    top_skills = get_top_skills()
+    """
+    Displays the top skills based on the selected option
+    """
     if option == "Choose an option":
+        top_skills = get_top_skills()
         for ranking, skill in enumerate(top_skills, start=1):
             notes = get_notes(st.session_state.faculty_id, skill['skill_id'])
-
-            with st.expander(f"{ranking} {skill['skill_name']}"):
-                st.markdown(f"Skill type: {skill['skill_type']}")
-                st.markdown(f"Frequency: {skill['frequency']}")
-                st.markdown(f"Average Employer Weight: {skill['avg_skill_weightage']}")
-                st.markdown(f"Average Student Proficiency: {skill['avg_student_proficiency']}")
-                st.write("### Notes:")
-                display_notes(notes)
-                display_add_notes(skill['skill_id'])
-                ranking += 1
-
+            display_skill_details(skill, ranking, notes)
     else:
         filtered_skills = get_top_filtered_skills(option)
-        ranking2 = 1
-        for skill in filtered_skills:
-            notes2 = get_notes(st.session_state.faculty_id, skill['skill_id'])
-            with st.expander(f"{ranking2} {skill['skill_name']}"):
-                st.markdown(f"Skill type: {skill['skill_type']}")
-                st.markdown(f"Frequency: {skill['frequency']}")
-                st.markdown(f"Average Employer Weight: {skill['avg_skill_weightage']}")
-                st.markdown(f"Average Student Proficiency: {skill['avg_student_proficiency']}")
-                display_notes(notes2)
-                display_add_notes(skill['skill_id'])
+        for ranking, skill in enumerate(filtered_skills, start=1):
+            notes = get_notes(st.session_state.faculty_id, skill['skill_id'])
+            display_skill_details(skill, ranking, notes)
 
-                ranking2 += 1
     
 
 st.write("## Top Skills")

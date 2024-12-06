@@ -14,7 +14,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View Top Industry Skills and Tools', 
+if st.button('View Top Industry Skills', 
              type='primary',
              use_container_width=True):
   st.switch_page('pages/DH_Top_Skills_And_Tools.py')
