@@ -140,4 +140,28 @@ Within venv folder:
 - **Search by Skill**
   - View all job listings and job details (name, company, description, industry, pay range, date posted, status, required skills)
   - View all students and student details (name, major, level email, GPA, co-op status, skills)
-  - Filter job postings and students by skill name 
+  - Filter job postings and students by skill name
+  - 
+
+## 🖥️ System Admin Persona 🖥️
+### Pages:
+- **Admin Home Page**
+  - Greets the admin. This page lets admins access the rest of the below pages (which can be accessed through the sidebar as well).
+- **Admin Profile Page**
+  - Displays the admin's information, including ID, name, email, industry,y and number of applications in the system.
+  - Admins can edit their own profile with the edit button and save their changes.
+- **Jobs Page**
+  - This page lets admins view a table of all jobs and relevant information.
+  - Admins can also add a job by giving in all information for a new job, or delete a job using its job ID.
+    - All fields must be filled out, and all jobs must have unique job IDs, or the page won't let it add the job.
+    - Any changes made will be updated on the table on this page and everywhere else it's accessed.
+- **Skills Page**
+  - Same as jobs page, admins can view, add, and delete skills.
+- **Employers Page**
+  - Same as jobs page, but admins don't have the option to delete employers, they can only view and add them.
+- **Faculties Page**
+  - Same as jobs page, but admins don't have the option to delete faculties, they can only view and add them.
+- **Advisors Page**
+  - Same as jobs page, but admins don't have the option to delete advisors, they can only view and add them.
+- **Students Page**
+  - Same as jobs page, admins can view, add, and delete students.
