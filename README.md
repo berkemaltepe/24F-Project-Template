@@ -7,7 +7,7 @@ NU SkillMatch is an application that assesses students' current skills against i
 
 Current solutions such as NUWorks make it difficult to know whether applicants are qualified for job postings with their current skill sets, and leads to many unqualified applicants. A data-driven approach to this problem can streamline the job application process and make it clearer to applicants what skills they need to work on, as well as give employers, co-op advisors and school administrators an idea of what skills students have.
 
-**YouTube Video Link:** https://youtu.be/5SegDjA5NTo
+**YouTube Video Link:** https://youtu.be/5Bz-5znE7Rk
 
 ## Project Components
 
@@ -124,7 +124,7 @@ Within venv folder:
   - Manage account settings, such as updating contact information.
 
 
-  ## 🏫 Department Head Persona 🏫
+## 🏫 Department Head Persona 🏫
 ### Pages:
 - **Top Skills**
   - View top skills among all job postings, ranked by frequency
@@ -140,4 +140,28 @@ Within venv folder:
 - **Search by Skill**
   - View all job listings and job details (name, company, description, industry, pay range, date posted, status, required skills)
   - View all students and student details (name, major, level email, GPA, co-op status, skills)
-  - Filter job postings and students by skill name 
+  - Filter job postings and students by skill name
+  - 
+
+## 🖥️ System Admin Persona 🖥️
+### Pages:
+- **Admin Home Page**
+  - Greets the admin. This page lets admins access the rest of the below pages (which can be accessed through the sidebar as well).
+- **Admin Profile Page**
+  - Displays the admin's information, including ID, name, email, industry,y and number of applications in the system.
+  - Admins can edit their own profile with the edit button and save their changes.
+- **Jobs Page**
+  - This page lets admins view a table of all jobs and relevant information.
+  - Admins can also add a job by giving in all information for a new job, or delete a job using its job ID.
+    - All fields must be filled out, and all jobs must have unique job IDs, or the page won't let it add the job.
+    - Any changes made will be updated on the table on this page and everywhere else it's accessed.
+- **Skills Page**
+  - Same as jobs page, admins can view, add, and delete skills.
+- **Employers Page**
+  - Same as jobs page, but admins don't have the option to delete employers, they can only view and add them.
+- **Faculties Page**
+  - Same as jobs page, but admins don't have the option to delete faculties, they can only view and add them.
+- **Advisors Page**
+  - Same as jobs page, but admins don't have the option to delete advisors, they can only view and add them.
+- **Students Page**
+  - Same as jobs page, admins can view, add, and delete students.
